@@ -80,10 +80,7 @@ export default function RootLayout() {
 					<Stack.Screen name="(tabs)" />
 					<Stack.Screen name="+not-found" />
 					<Stack.Screen name="another" />
-					<Stack.Screen
-						name="workout-details/[id]"
-						options={{ headerShown: true }}
-					/>
+					<Stack.Screen name="workouts/[id]" />
 				</Stack>
 				<PortalHost />
 			</ThemeProvider>

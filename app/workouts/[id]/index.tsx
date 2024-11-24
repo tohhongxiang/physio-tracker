@@ -1,6 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useLocalSearchParams, useNavigation } from "expo-router";
-import { useLayoutEffect } from "react";
+import { Link, useLocalSearchParams } from "expo-router";
 import { ScrollView, View } from "react-native";
 import getWorkout from "~/api/getWorkout";
 import { Button } from "~/components/ui/button";
@@ -9,29 +8,24 @@ import { Pencil } from "~/lib/icons/Pencil";
 import { Plus } from "~/lib/icons/Plus";
 import { Trash } from "~/lib/icons/Trash";
 import { DurationExercise, Exercise } from "~/types";
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogFooter,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger
+} from "~/components/ui/dialog";
 
 export default function SpecificWorkOutRoute() {
 	const { id } = useLocalSearchParams<{ id: string }>();
-	const navigation = useNavigation();
 
 	const { data, isPending } = useQuery({
 		queryKey: ["workouts", id],
 		queryFn: ({ queryKey }) => getWorkout(queryKey[1])
 	});
-
-	useLayoutEffect(() => {
-		if (isPending) {
-			navigation.setOptions({ title: "Loading Workout..." });
-			return;
-		}
-
-		if (!data) {
-			navigation.setOptions({ title: "Workout not Found!" });
-			return;
-		}
-
-		navigation.setOptions({ title: data.name });
-	}, [navigation, data]);
 
 	if (isPending) {
 		return (
@@ -56,10 +50,15 @@ export default function SpecificWorkOutRoute() {
 					<Text className="text-center text-xl font-semibold">
 						No exercises
 					</Text>
-					<Button className="flex flex-row gap-2">
-						<Plus size={20} className="text-primary-foreground" />
-						<Text>Add an Exercise</Text>
-					</Button>
+					<Link href={`/workouts/${id}/edit`} asChild>
+						<Button className="flex flex-row gap-2">
+							<Plus
+								size={20}
+								className="text-primary-foreground"
+							/>
+							<Text>Add an Exercise</Text>
+						</Button>
+					</Link>
 				</View>
 			</View>
 		);
@@ -72,21 +71,48 @@ export default function SpecificWorkOutRoute() {
 					{data.exercises.length} exercises
 				</Text>
 				<View className="flex flex-row gap-2">
-					<Button variant="secondary">
-						<Pencil
-							size={20}
-							className="text-secondary-foreground"
-						/>
-					</Button>
-					<Button
-						variant="destructive"
-						className="flex flex-row gap-2"
-					>
-						<Trash
-							size={20}
-							className="text-destructive-foreground"
-						/>
-					</Button>
+					<Link href={`/workouts/${id}/edit`} asChild>
+						<Button variant="secondary">
+							<Pencil
+								size={20}
+								className="text-secondary-foreground"
+							/>
+						</Button>
+					</Link>
+					<Dialog>
+						<DialogTrigger asChild>
+							<Button
+								variant="destructive"
+								className="flex flex-row gap-2"
+							>
+								<Trash
+									size={20}
+									className="text-destructive-foreground"
+								/>
+							</Button>
+						</DialogTrigger>
+						<DialogContent className="mx-8 sm:max-w-[425px]">
+							<DialogHeader>
+								<DialogTitle>Delete Workout?</DialogTitle>
+								<DialogDescription>
+									This action is permanent. You will lose all
+									data regarding this workout.
+								</DialogDescription>
+							</DialogHeader>
+							<DialogFooter className="flex flex-row justify-end gap-2">
+								<DialogClose asChild>
+									<Button variant="secondary">
+										<Text>Cancel</Text>
+									</Button>
+								</DialogClose>
+								<DialogClose asChild>
+									<Button variant="destructive">
+										<Text>Delete</Text>
+									</Button>
+								</DialogClose>
+							</DialogFooter>
+						</DialogContent>
+					</Dialog>
 				</View>
 			</View>
 			<ScrollView
@@ -120,9 +146,11 @@ export default function SpecificWorkOutRoute() {
 				))}
 			</ScrollView>
 			<View className="flex flex-col gap-4 p-4">
-				<Button>
-					<Text>Start Exercise</Text>
-				</Button>
+				<Link href={`/workouts/${id}/start`} asChild>
+					<Button>
+						<Text>Start Exercise</Text>
+					</Button>
+				</Link>
 			</View>
 		</View>
 	);

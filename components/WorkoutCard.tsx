@@ -37,7 +37,7 @@ export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
 				</Text>
 			</CardContent>
 			<CardFooter>
-				<Link href={`/workout-details/${workout.id}`} asChild>
+				<Link href={`/workouts/${workout.id}`} asChild>
 					<Button className="w-full">
 						<Text>Start</Text>
 					</Button>
