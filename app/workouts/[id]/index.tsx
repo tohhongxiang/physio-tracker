@@ -65,10 +65,15 @@ export default function SpecificWorkOutRoute() {
 	}
 
 	return (
-		<View className="flex h-full w-full flex-1 flex-col gap-2">
-			<View className="flex flex-row items-center justify-between px-4 pt-4">
-				<Text className="text-lg text-muted-foreground">
-					{data.exercises.length} exercises
+		<View className="flex h-full w-full max-w-lg flex-1 flex-col gap-2">
+			<View className="px-4 py-6">
+				<Text className={"text-justify text-muted-foreground"}>
+					{data.description}
+				</Text>
+			</View>
+			<View className="flex flex-row items-center justify-between px-4">
+				<Text className="text-2xl font-bold">
+					Exercises ({data.exercises.length})
 				</Text>
 				<View className="flex flex-row gap-2">
 					<Link href={`/workouts/${id}/edit`} asChild>
@@ -115,33 +120,71 @@ export default function SpecificWorkOutRoute() {
 					</Dialog>
 				</View>
 			</View>
-			<ScrollView
-				className="flex-grow"
-				contentContainerClassName="flex gap-4 p-4"
-				horizontal
-				centerContent
-			>
+			<ScrollView contentContainerClassName="flex gap-4 p-4">
 				{data.exercises.map((exercise) => (
 					<View
 						key={exercise.id}
-						className="rounded-md border border-muted-foreground p-4"
+						className="flex flex-col gap-4 rounded-md border border-muted-foreground/30 p-4"
 					>
-						<Text className="flex-grow font-mono">
-							{JSON.stringify(exercise, null, 2)}
+						<Text className="text-xl font-bold">
+							{exercise.name}
 						</Text>
-						<Text className="font-bold">{exercise.name}</Text>
-						<Text className="text-muted-foreground">
+						<Text className="text-lg text-muted-foreground">
 							{exercise.description}
 						</Text>
-						<Text>
-							{exercise.sets} sets, {exercise.repsPerSet} per set
+						<View className="flex flex-row">
+							<View className="flex flex-row items-center justify-center rounded-md bg-primary px-2 text-center">
+								<Text className="text-lg font-semibold text-primary-foreground">
+									{exercise.sets}
+								</Text>
+								<Text className="text-lg text-primary-foreground">
+									{" "}
+									set(s)
+								</Text>
+							</View>
+							<Text> x </Text>
+							<View className="flex flex-row items-center rounded-md bg-primary px-2 text-center">
+								<Text className="text-lg font-semibold text-primary-foreground">
+									{exercise.repsPerSet}
+								</Text>
+								<Text className="text-lg text-primary-foreground">
+									{" "}
+									rep(s)
+								</Text>
+							</View>
 							{hasDuration(exercise) && (
-								<Text>
-									, {exercise.durationPerRepSeconds} seconds
+								<>
+									<Text> x </Text>
+									<View className="flex flex-row items-center rounded-md bg-secondary px-2 text-center">
+										<Text className="text-lg font-semibold text-secondary-foreground">
+											{formatDuration(
+												exercise.durationPerRepSeconds
+											)}
+										</Text>
+										<Text className="text-lg text-secondary-foreground">
+											{" "}
+											per rep
+										</Text>
+									</View>
+								</>
+							)}
+						</View>
+						{hasDuration(exercise) && (
+							<View className="flex flex-row">
+								<Text className="text-lg">Rest </Text>
+								<View className="flex flex-row items-center rounded-md bg-secondary px-2 text-center">
+									<Text className="text-lg font-semibold text-secondary-foreground">
+										{formatDuration(
+											exercise.restBetweenRepsSeconds
+										)}
+									</Text>
+								</View>
+								<Text className="text-lg text-secondary-foreground">
+									{" "}
 									per rep
 								</Text>
-							)}
-						</Text>
+							</View>
+						)}
 					</View>
 				))}
 			</ScrollView>
@@ -161,4 +204,12 @@ function hasDuration(exercise: Exercise): exercise is DurationExercise {
 		exercise,
 		"durationPerRepSeconds"
 	);
+}
+
+const SECONDS_IN_ONE_MINUTE = 60;
+function formatDuration(durationSeconds: number) {
+	const minutes = Math.floor(durationSeconds / SECONDS_IN_ONE_MINUTE);
+	const seconds = durationSeconds % SECONDS_IN_ONE_MINUTE;
+
+	return `${minutes.toLocaleString("en-US", { minimumIntegerDigits: 2 })}:${seconds.toLocaleString("en-US", { minimumIntegerDigits: 2 })}`;
 }
