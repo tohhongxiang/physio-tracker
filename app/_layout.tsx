@@ -12,7 +12,7 @@ import { StatusBar } from "expo-status-bar";
 import * as React from "react";
 import { Platform } from "react-native";
 import { NAV_THEME } from "~/lib/constants";
-import { useColorScheme } from "~/lib/useColorScheme";
+import { useColorScheme } from "~/lib/use-color-scheme";
 import { PortalHost } from "@rn-primitives/portal";
 import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";

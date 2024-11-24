@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import NavigationHeader from "~/components/NavigationHeader";
+import NavigationHeader from "~/components/navigation-header";
 
 export default function WorkoutsTabLayout() {
 	return (

@@ -1,7 +1,7 @@
 import { Tabs } from "expo-router";
-import { ThemeToggle } from "~/components/ThemeToggle";
+import { ThemeToggle } from "~/components/theme-toggle";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import NavigationHeader from "~/components/NavigationHeader";
+import NavigationHeader from "~/components/navigation-header";
 
 export default function TabLayout() {
 	return (

@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import getWorkoutsToday from "~/api/getWorkoutsToday";
-import WorkoutCard from "~/components/WorkoutCard";
+import WorkoutCard from "~/components/workout-card";
 
 const theme: CalendarTheme = {
 	rowMonth: {
