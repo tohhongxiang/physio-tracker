@@ -20,10 +20,19 @@ export const workouts: Workout[] = [
 				id: "exercise-2",
 				name: "Twist and Stretch Back",
 				description: "Lorem Ipsum",
-				sets: 4,
+				sets: 2,
 				repsPerSet: 5,
 				durationPerRepSeconds: 5,
-				restBetweenRepsSeconds: 10
+				restBetweenRepsSeconds: 10,
+				restBetweenSetsSeconds: 15
+			},
+			{
+				id: "exercise-3",
+				name: "Banded Internal Rotation",
+				description: "Use resistance band to help",
+				sets: 2,
+				repsPerSet: 10,
+				restBetweenSetsSeconds: 10
 			}
 		]
 	},

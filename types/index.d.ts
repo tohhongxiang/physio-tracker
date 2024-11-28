@@ -16,10 +16,16 @@ type BaseExercise = {
 type DurationExercise = {
 	durationPerRepSeconds: number;
 	restBetweenRepsSeconds: number;
+	restBetweenSetsSeconds?: number;
 } & BaseExercise;
 
-type WeightedExercise = {
-	weightKg: number;
+type RepsExercise = {
+	durationPerRepSeconds?: number;
+	restBetweenRepsSeconds?: number;
+	restBetweenSetsSeconds: number;
 } & BaseExercise;
 
-export type Exercise = BaseExercise | DurationExercise | WeightedExercise;
+export type Exercise =
+	| DurationExercise
+	| RepsExercise
+	| (DurationExercise & RepsExercise);

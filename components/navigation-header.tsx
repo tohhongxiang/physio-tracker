@@ -19,7 +19,7 @@ export default function NavigationHeader({
 			style={{ marginTop: Constants.statusBarHeight }}
 		>
 			<View className="flex flex-row items-center justify-start gap-2">
-				{back && (
+				{back?.href && (
 					<Button
 						onPress={() => router.back()}
 						variant="ghost"

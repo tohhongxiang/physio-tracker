@@ -1,10 +1,5 @@
-import { View } from "react-native";
-import { Text } from "~/components/ui/text";
+import WorkoutStartPage from "~/features/workout-start";
 
 export default function StartWorkoutPage() {
-	return (
-		<View>
-			<Text>Start workout</Text>
-		</View>
-	);
+	return <WorkoutStartPage />;
 }
