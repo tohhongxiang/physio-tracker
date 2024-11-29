@@ -98,11 +98,41 @@ export default function ExercisePage({
 	}
 
 	const [timerKey, setTimerKey] = useState(0); // used to reset timer
+
 	function handleRepChange(change: number) {
-		setCurrentRep((c) => c + change);
 		setIsRunning(false);
 		setState(STATES.READY);
 		setTimerKey((c) => c + 1);
+
+		// final rep, final set
+		if (
+			currentRep === exercise.repsPerSet &&
+			currentSet === exercise.sets &&
+			change > 0
+		) {
+			return;
+		}
+
+		// first rep, first set
+		if (currentRep === 1 && currentSet === 1 && change < 0) {
+			return;
+		}
+
+		// finished current set
+		if (currentRep === exercise.repsPerSet && change > 0) {
+			setCurrentRep(1);
+			setCurrentSet((c) => c + change);
+			return;
+		}
+
+		//
+		if (currentRep === 1 && currentSet > 1 && change < 0) {
+			setCurrentRep(exercise.repsPerSet);
+			setCurrentSet((c) => c + change);
+			return;
+		}
+
+		setCurrentRep((c) => c + change);
 	}
 
 	function handleSetChange(change: number) {
@@ -157,7 +187,7 @@ export default function ExercisePage({
 				<Button
 					variant="secondary"
 					className="native:h-fit h-fit"
-					disabled={currentRep === 1}
+					disabled={currentRep === 1 && currentSet === 1}
 					onPress={() => handleRepChange(-1)}
 				>
 					<ChevronLeft className="text-secondary-foreground" />
@@ -178,7 +208,10 @@ export default function ExercisePage({
 					variant="secondary"
 					className="native:h-fit h-fit px-4 py-2"
 					onPress={() => handleRepChange(1)}
-					disabled={currentRep === exercise.repsPerSet}
+					disabled={
+						currentRep === exercise.repsPerSet &&
+						currentSet === exercise.sets
+					}
 				>
 					<View>
 						<ChevronRight className="text-secondary-foreground" />

@@ -33,6 +33,14 @@ export const workouts: Workout[] = [
 				sets: 2,
 				repsPerSet: 10,
 				restBetweenSetsSeconds: 10
+			},
+			{
+				id: "exercise-4",
+				name: "Test",
+				description: "Bling bang bang born",
+				sets: 1,
+				repsPerSet: 1,
+				restBetweenSetsSeconds: 10
 			}
 		]
 	},
