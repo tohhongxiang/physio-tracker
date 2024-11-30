@@ -1,47 +1,30 @@
-import { useQuery } from "@tanstack/react-query";
-import { useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { View } from "react-native";
-import getWorkout from "~/api/getWorkout";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import { ChevronLeft } from "~/lib/icons/ChevronLeft";
 import { ChevronRight } from "~/lib/icons/ChevronRight";
-import LoadingWorkoutPage from "./loading";
-import EmptyWorkoutPage from "./empty";
 import CompleteWorkoutPage from "./complete";
-import ExercisePage from "./exercise-page";
+import { Workout } from "~/types";
+import ExerciseStateDisplay from "./exercise-state-display";
+import useSound from "~/hooks/use-sound";
+import goSound from "~/assets/audio/go.mp3";
+import readySound from "~/assets/audio/ready.mp3";
+import LoadingWorkoutPage from "./loading";
+import WorkoutNotFound from "./not-found";
 
-export default function WorkoutStartPage() {
-	const { id } = useLocalSearchParams<{ id: string }>();
-	const { data, isPending } = useQuery({
-		queryKey: ["workouts", id],
-		queryFn: ({ queryKey }) => getWorkout(queryKey[1])
-	});
-
+export default function WorkoutStartPage({ workout }: { workout: Workout }) {
 	const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
+	const { exercises } = workout;
 
-	useEffect(() => {
-		if (!data) return;
+	const goSoundPlayer = useSound(goSound);
+	const readySoundPlayer = useSound(readySound);
 
-		setCurrentExerciseIndex(0);
-	}, [data]);
-
-	if (isPending) {
-		return <LoadingWorkoutPage />;
-	}
-
-	if (!data) {
-		return <EmptyWorkoutPage />;
-	}
-
-	const { exercises } = data;
 	if (currentExerciseIndex >= exercises.length) {
 		return <CompleteWorkoutPage />;
 	}
 
 	const currentExercise = exercises[currentExerciseIndex];
-
 	return (
 		<View className="flex flex-1 flex-col items-center justify-between">
 			<View className="flex w-full flex-row items-center justify-between p-8">
@@ -65,11 +48,20 @@ export default function WorkoutStartPage() {
 					<ChevronRight className="text-foreground" />
 				</Button>
 			</View>
-			<ExercisePage
+			<ExerciseStateDisplay
 				exercise={currentExercise}
-				key={currentExercise.id}
+				key={currentExercise.id} // reset all state when moving to a new exercise
 				onExerciseComplete={() => setCurrentExerciseIndex((c) => c + 1)}
+				onTimerComplete={() => goSoundPlayer.play()}
+				onTimerUpdate={({ remainingTimeMs }) => {
+					if (remainingTimeMs < 3000) {
+						readySoundPlayer.play();
+					}
+				}}
 			/>
 		</View>
 	);
 }
+
+WorkoutStartPage.Loading = LoadingWorkoutPage;
+WorkoutStartPage.NotFound = WorkoutNotFound;

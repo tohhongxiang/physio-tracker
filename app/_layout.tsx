@@ -79,7 +79,6 @@ export default function RootLayout() {
 				<Stack screenOptions={{ headerShown: false }}>
 					<Stack.Screen name="(tabs)" />
 					<Stack.Screen name="+not-found" />
-					<Stack.Screen name="another" />
 					<Stack.Screen name="workouts/[id]" />
 				</Stack>
 				<PortalHost />

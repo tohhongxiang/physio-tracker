@@ -27,7 +27,6 @@ const theme: CalendarTheme = {
 export default function Screen() {
 	const [selectedDate, setSelectedDate] = useState(toDateId(new Date()));
 	const handleCalendarDayPress = (day: string) => {
-		console.log(day);
 		setSelectedDate(day);
 	};
 
@@ -49,9 +48,7 @@ export default function Screen() {
 				<Text className="text-3xl font-bold">Workouts for Today</Text>
 				{isPending ? (
 					<View>
-						<Text className="text-center text-lg text-muted-foreground">
-							Loading...
-						</Text>
+						<WorkoutCard.Loading />
 					</View>
 				) : data ? (
 					<View>

@@ -47,6 +47,7 @@ export default function TabLayout() {
 				name="about"
 				options={{
 					title: "About",
+					// href: null,
 					tabBarIcon: ({ color, focused }) => (
 						<Ionicons
 							name={
@@ -64,6 +65,7 @@ export default function TabLayout() {
 				name="account"
 				options={{
 					title: "Account",
+					href: null,
 					tabBarIcon: ({ color }) => (
 						<Ionicons
 							name={"person-circle"}
