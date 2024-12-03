@@ -39,7 +39,9 @@ export default function ExerciseCard({ exercise }: { exercise: Exercise }) {
 						<Text className="text-lg"> × </Text>
 						<View className="flex flex-row items-center rounded-md bg-secondary px-2 text-center">
 							<Text className="text-lg font-semibold text-secondary-foreground">
-								{formatDuration(exercise.durationPerRepSeconds)}
+								{formatDuration(
+									exercise.durationPerRepSeconds * 1000
+								)}
 							</Text>
 							<Text className="text-lg text-secondary-foreground">
 								{" "}
@@ -75,7 +77,7 @@ function ExerciseRestDetails({
 				<>
 					<View className="flex flex-row items-center rounded-md bg-secondary px-2 text-center">
 						<Text className="text-lg font-semibold text-secondary-foreground">
-							{formatDuration(restBetweenRepsSeconds)}
+							{formatDuration(restBetweenRepsSeconds * 1000)}
 						</Text>
 					</View>
 					<Text className="text-lg text-secondary-foreground">
@@ -91,7 +93,7 @@ function ExerciseRestDetails({
 				<>
 					<View className="flex flex-row items-center rounded-md bg-secondary px-2 text-center">
 						<Text className="text-lg font-semibold text-secondary-foreground">
-							{formatDuration(restBetweenSetsSeconds)}
+							{formatDuration(restBetweenSetsSeconds * 1000)}
 						</Text>
 					</View>
 					<Text className="text-lg text-secondary-foreground">

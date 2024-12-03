@@ -142,7 +142,6 @@ export function useCountdownTimer({
 	}, [key]);
 
 	return {
-		isRunning: Boolean(lastAnimationFrameID.current),
 		start: handleStartTimer,
 		pause: handlePauseTimer,
 		restart: handleRestartTimer,
