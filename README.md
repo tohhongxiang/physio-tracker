@@ -4,4 +4,5 @@ Follow instructions [here](https://reactnative.dev/docs/set-up-your-environment)
 
 # Resources
 
-https://www.reactnative.express/app/project_structure
+-   https://www.reactnative.express/app/project_structure
+-   https://orm.drizzle.team/docs/get-started/expo-new

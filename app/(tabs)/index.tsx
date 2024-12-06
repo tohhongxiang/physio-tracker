@@ -5,10 +5,12 @@ import {
 	CalendarTheme,
 	toDateId
 } from "@marceloterreiro/flash-calendar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import getWorkoutsToday from "~/api/getWorkoutsToday";
 import WorkoutCard from "~/components/workout-card";
+import { usersTable } from "~/db/schema";
+import { useDatabase } from "~/providers/database-provider";
 
 const theme: CalendarTheme = {
 	rowMonth: {
@@ -35,9 +37,25 @@ export default function Screen() {
 		queryFn: getWorkoutsToday
 	});
 
+	const [items, setItems] = useState<
+		(typeof usersTable.$inferSelect)[] | null
+	>(null);
+	const { db } = useDatabase();
+	useEffect(() => {
+		(async () => {
+			const users = await db.select().from(usersTable);
+			setItems(users);
+		})();
+	}, []);
+
 	return (
 		<View className="flex flex-1 flex-col gap-4 p-8">
 			<View className="mb-8">
+				{items?.map((item) => (
+					<Text key={item.id}>
+						{item.email} - {item.name}
+					</Text>
+				))}
 				<Calendar
 					calendarMonthId={selectedDate}
 					onCalendarDayPress={handleCalendarDayPress}
