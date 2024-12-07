@@ -20,6 +20,10 @@ export default function RootLayout() {
 						<Stack.Screen name="(tabs)" />
 						<Stack.Screen name="+not-found" />
 						<Stack.Screen name="workouts/[id]" />
+						<Stack.Screen
+							name="(modals)/workouts/add"
+							options={{ presentation: "modal" }}
+						/>
 					</Stack>
 					<PortalHost />
 				</ThemeProvider>
