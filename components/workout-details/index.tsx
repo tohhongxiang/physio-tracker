@@ -1,17 +1,43 @@
-import { Link } from "expo-router";
+import { Link, useLocalSearchParams, useNavigation } from "expo-router";
 import { ScrollView, View } from "react-native";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
-import { Pencil } from "~/lib/icons/Pencil";
-import { Trash } from "~/lib/icons/Trash";
 import ExerciseCard from "~/components/workout-details/exercise-card";
-import DeleteWorkoutDialog from "./delete-workout-dialog";
 import { Workout } from "~/types";
 import LoadingWorkoutDetails from "./loading";
 import NotFound from "./not-found";
 import NoExercises from "./no-exercises";
+import { useEffect } from "react";
+import { Pencil } from "~/lib/icons/Pencil";
+import DeleteWorkoutDialog from "./delete-workout-dialog";
+import { Trash } from "~/lib/icons/Trash";
 
 export default function WorkoutDetails({ workout }: { workout: Workout }) {
+	const { id } = useLocalSearchParams<{ id: string }>();
+	const navigation = useNavigation();
+
+	useEffect(() => {
+		navigation.setOptions({
+			title: workout.name,
+			headerRight: () => (
+				<View className="flex flex-row">
+					<Link href={`/workouts/${id}/edit`} asChild>
+						<Button variant="ghost" size="sm">
+							<Pencil className="h-4 w-4 text-secondary-foreground" />
+						</Button>
+					</Link>
+					<DeleteWorkoutDialog
+						onDeleteConfirm={() => alert("Delete workout " + id)}
+					>
+						<Button variant="ghost" size="sm">
+							<Trash className="h-4 w-4 text-destructive" />
+						</Button>
+					</DeleteWorkoutDialog>
+				</View>
+			)
+		});
+	}, [id, navigation]);
+
 	return (
 		<View className="flex h-full w-full max-w-lg flex-1 flex-col gap-2">
 			<View className="px-4 py-6">
@@ -23,29 +49,6 @@ export default function WorkoutDetails({ workout }: { workout: Workout }) {
 				<Text className="text-2xl font-bold">
 					Exercises ({workout.exercises.length})
 				</Text>
-				<View className="flex flex-row gap-2">
-					<Link href={`/workouts/${workout.id}/edit`} asChild>
-						<Button variant="secondary">
-							<Pencil
-								size={20}
-								className="text-secondary-foreground"
-							/>
-						</Button>
-					</Link>
-					<DeleteWorkoutDialog
-						onDeleteConfirm={() => alert("Delete workout")}
-					>
-						<Button
-							variant="destructive"
-							className="flex flex-row gap-2"
-						>
-							<Trash
-								size={20}
-								className="text-destructive-foreground"
-							/>
-						</Button>
-					</DeleteWorkoutDialog>
-				</View>
 			</View>
 			<ScrollView contentContainerClassName="flex gap-4 p-4">
 				{workout.exercises.map((exercise) => (
