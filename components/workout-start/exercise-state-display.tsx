@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { Exercise } from "~/types";
 import { Text } from "~/components/ui/text";
-import hasDuration from "~/lib/has-duration";
+import hasDurationPerRep from "~/lib/has-duration-per-rep";
 import BottomControls from "./bottom-controls";
 import CounterDisplay from "./counter-display";
 import TimerDisplay from "./time-display";
@@ -57,7 +57,7 @@ export default function ExerciseStateDisplay({
 					<CounterDisplay
 						title="REPS"
 						text={
-							hasDuration(exercise)
+							hasDurationPerRep(exercise)
 								? `${currentRep} / ${exercise.repsPerSet}`
 								: exercise.repsPerSet.toString()
 						}
@@ -77,7 +77,7 @@ export default function ExerciseStateDisplay({
 				onRepChange={changeRep}
 				onSetChange={changeSet}
 				onStart={toggleTimer}
-				repChangeDisabled={!hasDuration(exercise)}
+				repChangeDisabled={!hasDurationPerRep(exercise)}
 			/>
 		</View>
 	);

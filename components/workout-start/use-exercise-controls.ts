@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { DurationExercise, Exercise, RepsExercise } from "~/types";
-import hasDuration from "~/lib/has-duration";
+import hasDurationPerRep from "~/lib/has-duration-per-rep";
 import { useCountdownTimer } from "~/hooks/use-countdown-timer";
 
 export const STATES = {
@@ -36,7 +36,7 @@ export default function useExerciseControls({
 	function handleStartButtonClicked() {
 		setIsRunning((c) => !c);
 		if (state === STATES.READY) {
-			if (hasDuration(exercise)) {
+			if (hasDurationPerRep(exercise)) {
 				setState(STATES.STARTING);
 			} else {
 				setState(STATES.RESTING_SET);
@@ -82,7 +82,7 @@ export default function useExerciseControls({
 		}
 
 		if (state === STATES.RESTING_REP || state === STATES.RESTING_SET) {
-			if (hasDuration(exercise)) {
+			if (hasDurationPerRep(exercise)) {
 				setState(STATES.RUNNING);
 			} else {
 				setIsRunning(false);
