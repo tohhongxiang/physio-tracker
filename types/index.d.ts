@@ -25,7 +25,6 @@ type RepsExercise = {
 	restBetweenSetsSeconds: number;
 } & BaseExercise;
 
-export type Exercise =
-	| DurationExercise
-	| RepsExercise
-	| (DurationExercise & RepsExercise);
+export type Exercise = Prettify<
+	(DurationExercise & RepsExercise) | DurationExercise | RepsExercise
+>;

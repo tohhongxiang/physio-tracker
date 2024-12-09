@@ -1,6 +1,6 @@
-import { useState, useRef, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-export function useCountdownTimer({
+export default function useCountdownTimer({
 	durationMs,
 	isPlaying = false,
 	onTimerComplete,
@@ -13,10 +13,7 @@ export function useCountdownTimer({
 }: {
 	durationMs: number;
 	isPlaying?: boolean;
-	onTimerComplete?: ({ elapsedTimeMs }: { elapsedTimeMs: number }) => {
-		newDurationMs?: number;
-		shouldRepeat: boolean;
-	};
+	onTimerComplete?: () => unknown;
 	onTimerUpdate?: ({
 		remainingTimeMs
 	}: {
@@ -24,41 +21,92 @@ export function useCountdownTimer({
 	}) => unknown;
 	onTimerRestart?: () => unknown;
 	onTimerStart?: () => unknown;
-	onTimerPause?: ({
-		remainingTimeMs
-	}: {
-		remainingTimeMs: number;
-	}) => unknown;
+	onTimerPause?: () => unknown;
 	updateIntervalMs?: number;
 	key?: number | string | null;
 }) {
 	const [remainingTimeMs, setRemainingTimeMs] = useState(durationMs);
+	useEffect(() => {
+		setRemainingTimeMs(durationMs);
+	}, [durationMs]);
 
-	const lastTimeRef = useRef<number | null>(null);
 	const lastAnimationFrameID = useRef<number | null>(null);
-	function handleUpdateTimer(time: number) {
-		if (lastTimeRef.current === null) {
-			lastTimeRef.current = time;
+	const lastUpdatedTime = useRef<number | null>();
+	const cleanUp = useCallback(() => {
+		lastUpdatedTime.current = null;
+		if (lastAnimationFrameID.current) {
+			cancelAnimationFrame(lastAnimationFrameID.current);
+			lastAnimationFrameID.current = null;
+		}
+	}, []);
+
+	const handleTimerUpdate = useCallback((time: number) => {
+		if (!lastAnimationFrameID.current || !lastUpdatedTime.current) {
+			lastUpdatedTime.current = time;
 			lastAnimationFrameID.current =
-				requestAnimationFrame(handleUpdateTimer);
+				requestAnimationFrame(handleTimerUpdate);
 			return;
 		}
 
-		const deltaMs = time - lastTimeRef.current;
-		lastTimeRef.current = time;
+		const deltaTimeMs = time - lastUpdatedTime.current;
+		lastUpdatedTime.current = time;
 
-		setRemainingTimeMs((remainingTimeMs) => {
-			const newRemainingTime = remainingTimeMs - deltaMs;
+		setRemainingTimeMs((current) => Math.max(0, current - deltaTimeMs));
+		lastAnimationFrameID.current = requestAnimationFrame(handleTimerUpdate);
+	}, []);
 
-			if (newRemainingTime <= 0) {
-				return 0;
+	const handleStartTimer = useCallback(() => {
+		onTimerStart?.();
+
+		lastAnimationFrameID.current = requestAnimationFrame(handleTimerUpdate);
+	}, [handleTimerUpdate, onTimerStart]);
+
+	const handlePauseTimer = useCallback(() => {
+		onTimerPause?.();
+	}, [onTimerPause]);
+
+	const handleRestartTimer = useCallback(() => {
+		onTimerRestart?.();
+		setRemainingTimeMs(durationMs);
+	}, [durationMs, onTimerRestart]);
+
+	// handle change in isPlaying
+	useEffect(() => {
+		if (isPlaying) {
+			handleStartTimer();
+		} else {
+			handlePauseTimer();
+		}
+
+		return cleanUp;
+	}, [handlePauseTimer, handleStartTimer, isPlaying, cleanUp]);
+
+	// handle when remaining time hits 0
+	useEffect(() => {
+		if (remainingTimeMs > 0 || !onTimerComplete) {
+			return;
+		}
+
+		if (durationMs === 0) {
+			return;
+		}
+
+		onTimerComplete();
+		setRemainingTimeMs(durationMs);
+
+		return () => {
+			if (isPlaying) {
+				// old reference to isPlaying. Since we want to set when !isPlaying, we negate to use the old reference
+				setRemainingTimeMs(durationMs); // set time back up when timer stops playing
 			}
+		};
+	}, [remainingTimeMs, durationMs, onTimerComplete, isPlaying, cleanUp]);
 
-			return newRemainingTime;
-		});
-
-		lastAnimationFrameID.current = requestAnimationFrame(handleUpdateTimer);
-	}
+	useEffect(() => {
+		if (key !== null) {
+			handleRestartTimer();
+		}
+	}, [key, handleRestartTimer]);
 
 	const lastTimeUpdateCounterRef = useRef(-1);
 	useEffect(() => {
@@ -74,72 +122,7 @@ export function useCountdownTimer({
 			onTimerUpdate?.({ remainingTimeMs });
 			return;
 		}
-
-		if (remainingTimeMs <= 0 && onTimerComplete) {
-			const { newDurationMs, shouldRepeat } = onTimerComplete({
-				elapsedTimeMs: durationMs
-			});
-
-			const newDurationToSetMs = newDurationMs ?? durationMs;
-			if (!shouldRepeat) {
-				setTimeout(() => setRemainingTimeMs(newDurationToSetMs), 0);
-			} else {
-				setRemainingTimeMs(newDurationToSetMs);
-			}
-		}
-	}, [remainingTimeMs]);
-
-	useEffect(() => {
-		setRemainingTimeMs(durationMs);
-	}, [durationMs]);
-
-	useEffect(() => {
-		if (isPlaying) {
-			handleStartTimer();
-		} else {
-			handlePauseTimer();
-		}
-	}, [isPlaying]);
-
-	function handleStartTimer() {
-		onTimerStart?.();
-
-		if (remainingTimeMs > 0) {
-			requestAnimationFrame(handleUpdateTimer);
-		} else {
-			onTimerComplete?.({ elapsedTimeMs: remainingTimeMs });
-		}
-	}
-
-	function clearTimerInterval() {
-		if (isPlaying) {
-			return;
-		}
-
-		if (lastAnimationFrameID.current) {
-			cancelAnimationFrame(lastAnimationFrameID.current);
-			lastAnimationFrameID.current = null;
-		}
-
-		lastTimeRef.current = null;
-	}
-
-	function handlePauseTimer() {
-		clearTimerInterval();
-		onTimerPause?.({ remainingTimeMs });
-	}
-
-	function handleRestartTimer() {
-		clearTimerInterval();
-		setRemainingTimeMs(durationMs);
-		onTimerRestart?.();
-	}
-
-	useEffect(() => {
-		if (key !== null) {
-			handleRestartTimer();
-		}
-	}, [key]);
+	}, [remainingTimeMs, updateIntervalMs, onTimerUpdate]);
 
 	return {
 		start: handleStartTimer,

@@ -48,7 +48,18 @@ export const workouts: Workout[] = [
 		id: "2",
 		name: "Legs",
 		description: "",
-		exercises: []
+		exercises: [
+			{
+				id: "exercise-5",
+				name: "Leg raises",
+				description: "I do what I want",
+				sets: 4,
+				repsPerSet: 10,
+				restBetweenRepsSeconds: 0,
+				restBetweenSetsSeconds: 0,
+				durationPerRepSeconds: 0
+			}
+		]
 	},
 	{
 		id: "3",

@@ -2,23 +2,31 @@ import { View } from "react-native";
 import useSound from "~/hooks/use-sound";
 import goSound from "~/assets/audio/go.mp3";
 import readySound from "~/assets/audio/ready.mp3";
-import { useCountdownTimer } from "~/hooks/use-countdown-timer";
-import { useState } from "react";
+import useCountdownTimer from "~/hooks/use-countdown-timer";
+import { useCallback, useState } from "react";
 import TimerDisplay from "~/components/workout-start/time-display";
 import { Button } from "~/components/ui/button";
 import { Play } from "~/lib/icons/Play";
 import { Pause } from "~/lib/icons/Pause";
 import CounterDisplay from "~/components/workout-start/counter-display";
 import { RotateCcw } from "~/lib/icons/RotateCcw";
+import { useFocusEffect } from "expo-router";
 
+const DURATION_MS = 10000;
 export default function TimerPage() {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [laps, setLaps] = useState(0);
 	const goSoundPlayer = useSound(goSound);
 	const readySoundPlayer = useSound(readySound);
 
+	useFocusEffect(
+		useCallback(() => {
+			return () => setIsPlaying(false);
+		}, [])
+	);
+
 	const timer = useCountdownTimer({
-		durationMs: 10000,
+		durationMs: DURATION_MS,
 		onTimerComplete: () => {
 			goSoundPlayer.play();
 			setLaps((c) => c + 1);

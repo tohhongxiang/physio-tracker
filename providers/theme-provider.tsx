@@ -6,12 +6,12 @@ import {
 	ThemeProvider as ReactNavigationThemeProvider
 } from "@react-navigation/native";
 import { SplashScreen } from "expo-router";
-import * as React from "react";
 import { Platform } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { NAV_THEME } from "~/lib/constants";
 import { useColorScheme } from "~/lib/use-color-scheme";
 import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
+import { useEffect, useState } from "react";
 
 const LIGHT_THEME: Theme = {
 	...DefaultTheme,
@@ -32,9 +32,9 @@ export default function ThemeProvider({
 	children: React.ReactNode;
 }) {
 	const { colorScheme, setColorScheme, isDarkColorScheme } = useColorScheme();
-	const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false);
+	const [isColorSchemeLoaded, setIsColorSchemeLoaded] = useState(false);
 
-	React.useEffect(() => {
+	useEffect(() => {
 		(async () => {
 			const theme = await AsyncStorage.getItem("theme");
 			if (Platform.OS === "web") {
@@ -59,7 +59,7 @@ export default function ThemeProvider({
 		})().finally(() => {
 			SplashScreen.hideAsync();
 		});
-	}, []);
+	}, [colorScheme, setColorScheme]);
 
 	if (!isColorSchemeLoaded) {
 		return null;

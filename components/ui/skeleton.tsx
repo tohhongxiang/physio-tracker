@@ -24,7 +24,7 @@ function Skeleton({
 			),
 			-1
 		);
-	}, []);
+	}, [sv]);
 
 	const style = useAnimatedStyle(() => ({
 		opacity: sv.value
