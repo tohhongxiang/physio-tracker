@@ -6,21 +6,21 @@ import ExerciseCardBadge from "./exercise-card-badge";
 export default function ExerciseRepsAndSetsDetails({
 	repsPerSet,
 	sets,
-	durationPerRepSeconds
+	durationPerRepSeconds = 0
 }: {
 	repsPerSet: number;
 	sets: number;
 	durationPerRepSeconds?: number;
 }) {
 	return (
-		<View className="flex flex-row">
+		<View className="flex flex-row flex-wrap gap-1">
 			<ExerciseCardBadge boldedText={sets.toString()} text={"set(s)"} />
 			<Text className="text-lg"> × </Text>
 			<ExerciseCardBadge
 				boldedText={repsPerSet.toString()}
 				text={"rep(s)"}
 			/>
-			{durationPerRepSeconds ? (
+			{durationPerRepSeconds > 0 ? (
 				<>
 					<Text className="text-lg"> × </Text>
 					<ExerciseCardBadge

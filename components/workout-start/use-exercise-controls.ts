@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { DurationExercise, Exercise, RepsExercise } from "~/types";
+import { Exercise } from "~/types";
 import hasDurationPerRep from "~/lib/has-duration-per-rep";
 import useCountdownTimer from "~/hooks/use-countdown-timer";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
@@ -197,15 +197,15 @@ function getDurationForTimer(exercise: Exercise, state: keyof typeof STATES) {
 	}
 
 	if (state === STATES.RUNNING) {
-		return (exercise as DurationExercise).durationPerRepSeconds;
+		return exercise.durationPerRepSeconds;
 	}
 
 	if (state === STATES.RESTING_REP) {
-		return (exercise as DurationExercise).restBetweenRepsSeconds;
+		return exercise.restBetweenRepsSeconds;
 	}
 
 	if (state === STATES.RESTING_SET) {
-		return (exercise as RepsExercise).restBetweenSetsSeconds;
+		return exercise.restBetweenSetsSeconds;
 	}
 
 	return -1;

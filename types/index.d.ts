@@ -5,26 +5,18 @@ export type Workout = {
 	exercises: Exercise[];
 };
 
-type BaseExercise = {
+export type Exercise = {
 	id: string;
 	name: string;
 	description: string;
 	sets: number;
 	repsPerSet: number;
-};
-
-type DurationExercise = {
 	durationPerRepSeconds: number;
 	restBetweenRepsSeconds: number;
-	restBetweenSetsSeconds?: number;
-} & BaseExercise;
-
-type RepsExercise = {
-	durationPerRepSeconds?: number;
-	restBetweenRepsSeconds?: number;
 	restBetweenSetsSeconds: number;
-} & BaseExercise;
+};
 
-export type Exercise = Prettify<
-	(DurationExercise & RepsExercise) | DurationExercise | RepsExercise
+export type CreateExercise = Omit<Exercise, "id">;
+export type CreateWorkout = Prettify<
+	Omit<Workout, "id" | "exercises"> & { exercises: CreateExercise[] }
 >;

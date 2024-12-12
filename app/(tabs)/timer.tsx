@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { TouchableWithoutFeedback, View } from "react-native";
 import useSound from "~/hooks/use-sound";
 import goSound from "~/assets/audio/go.mp3";
 import readySound from "~/assets/audio/ready.mp3";
@@ -11,9 +11,10 @@ import { Pause } from "~/lib/icons/Pause";
 import CounterDisplay from "~/components/workout-start/counter-display";
 import { RotateCcw } from "~/lib/icons/RotateCcw";
 import { useFocusEffect } from "expo-router";
+import TimerInput from "~/components/timer-input";
 
-const DURATION_MS = 10000;
 export default function TimerPage() {
+	const [durationSeconds, setDurationSeconds] = useState(10);
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [laps, setLaps] = useState(0);
 	const goSoundPlayer = useSound(goSound);
@@ -26,7 +27,7 @@ export default function TimerPage() {
 	);
 
 	const timer = useCountdownTimer({
-		durationMs: DURATION_MS,
+		durationMs: durationSeconds * 1000,
 		onTimerComplete: () => {
 			goSoundPlayer.play();
 			setLaps((c) => c + 1);
@@ -47,9 +48,25 @@ export default function TimerPage() {
 		setLaps(0);
 	}
 
+	function handleTimerInputConfirm(newDurationSeconds: number) {
+		if (newDurationSeconds !== durationSeconds) {
+			setIsPlaying(false);
+			setLaps(0);
+		}
+
+		setDurationSeconds(newDurationSeconds);
+	}
+
 	return (
 		<View className="flex flex-1 flex-col items-center justify-center gap-8">
-			<TimerDisplay durationMs={timer.remainingTimeMs} />
+			<TimerInput
+				value={durationSeconds}
+				onConfirm={handleTimerInputConfirm}
+			>
+				<TouchableWithoutFeedback>
+					<TimerDisplay durationMs={timer.remainingTimeMs} />
+				</TouchableWithoutFeedback>
+			</TimerInput>
 			<CounterDisplay title="Laps" text={laps.toString()} />
 			<View className="flex flex-row items-center justify-center gap-2">
 				<Button

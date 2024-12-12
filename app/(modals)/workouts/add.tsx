@@ -1,10 +1,10 @@
-import { View } from "react-native";
-import { Text } from "~/components/ui/text";
+import WorkoutForm from "~/components/workout-form";
+import { CreateWorkout } from "~/types";
 
 export default function AddWorkoutModal() {
-	return (
-		<View>
-			<Text>Add workout modal</Text>
-		</View>
-	);
+	function handleCreateWorkout(workout: CreateWorkout) {
+		console.log(workout);
+	}
+
+	return <WorkoutForm onSubmit={handleCreateWorkout} />;
 }

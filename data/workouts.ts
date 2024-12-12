@@ -14,7 +14,8 @@ export const workouts: Workout[] = [
 				sets: 2,
 				repsPerSet: 5,
 				durationPerRepSeconds: 5,
-				restBetweenRepsSeconds: 10
+				restBetweenRepsSeconds: 10,
+				restBetweenSetsSeconds: 0
 			},
 			{
 				id: "exercise-2",
@@ -32,7 +33,9 @@ export const workouts: Workout[] = [
 				description: "Use resistance band to help",
 				sets: 2,
 				repsPerSet: 10,
-				restBetweenSetsSeconds: 10
+				restBetweenSetsSeconds: 10,
+				restBetweenRepsSeconds: 0,
+				durationPerRepSeconds: 0
 			},
 			{
 				id: "exercise-4",
@@ -40,7 +43,9 @@ export const workouts: Workout[] = [
 				description: "Bling bang bang born",
 				sets: 1,
 				repsPerSet: 1,
-				restBetweenSetsSeconds: 10
+				restBetweenSetsSeconds: 10,
+				restBetweenRepsSeconds: 0,
+				durationPerRepSeconds: 0
 			}
 		]
 	},

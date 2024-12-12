@@ -4,8 +4,8 @@ import formatDuration from "~/lib/format-duration";
 import ExerciseCardBadge from "./exercise-card-badge";
 
 export default function ExerciseRestDetails({
-	restBetweenRepsSeconds,
-	restBetweenSetsSeconds
+	restBetweenRepsSeconds = 0,
+	restBetweenSetsSeconds = 0
 }: {
 	restBetweenRepsSeconds?: number;
 	restBetweenSetsSeconds?: number;
@@ -17,17 +17,17 @@ export default function ExerciseRestDetails({
 	return (
 		<View className="flex flex-row">
 			<Text className="text-lg">Rest </Text>
-			{restBetweenRepsSeconds && (
+			{restBetweenRepsSeconds > 0 && (
 				<ExerciseCardBadge
 					boldedText={formatDuration(restBetweenRepsSeconds * 1000)}
 					text={"per rep"}
 					variant="secondary"
 				/>
 			)}
-			{restBetweenRepsSeconds && restBetweenSetsSeconds && (
+			{restBetweenRepsSeconds > 0 && restBetweenSetsSeconds > 0 && (
 				<Text className="text-lg text-secondary-foreground"> , </Text>
 			)}
-			{restBetweenSetsSeconds && (
+			{restBetweenSetsSeconds > 0 && (
 				<ExerciseCardBadge
 					boldedText={formatDuration(restBetweenSetsSeconds * 1000)}
 					text={"per set"}

@@ -22,7 +22,11 @@ export default function RootLayout() {
 						<Stack.Screen name="workouts/[id]" />
 						<Stack.Screen
 							name="(modals)/workouts/add"
-							options={{ presentation: "modal" }}
+							options={{
+								presentation: "modal",
+								headerShown: true,
+								title: "Add New Workout"
+							}}
 						/>
 					</Stack>
 					<PortalHost />

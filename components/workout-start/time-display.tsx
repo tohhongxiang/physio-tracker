@@ -1,10 +1,17 @@
-import { View } from "react-native";
+import { View, ViewProps } from "react-native";
 import { Text } from "~/components/ui/text";
 import formatDuration from "~/lib/format-duration";
 
-export default function TimerDisplay({ durationMs }: { durationMs: number }) {
+interface TimerDisplayProps extends ViewProps {
+	durationMs: number;
+}
+
+export default function TimerDisplay({
+	durationMs,
+	...props
+}: TimerDisplayProps) {
 	return (
-		<View>
+		<View {...props}>
 			<Text className="text-7xl font-bold">
 				{formatDuration(durationMs, 2)}
 			</Text>

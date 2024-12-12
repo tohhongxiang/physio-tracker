@@ -11,9 +11,11 @@ export default function ExerciseCard({ exercise }: { exercise: Exercise }) {
 			className="flex flex-col gap-4 rounded-md border border-muted-foreground/30 p-4"
 		>
 			<Text className="text-xl font-bold">{exercise.name}</Text>
-			<Text className="text-lg text-muted-foreground">
-				{exercise.description}
-			</Text>
+			{exercise.description.length > 0 ? (
+				<Text className="text-lg text-muted-foreground">
+					{exercise.description}
+				</Text>
+			) : null}
 			<ExerciseRepsAndSetsDetails
 				repsPerSet={exercise.repsPerSet}
 				sets={exercise.sets}
