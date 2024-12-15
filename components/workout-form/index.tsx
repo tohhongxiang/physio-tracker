@@ -4,25 +4,36 @@ import { useState } from "react";
 import { View } from "react-native";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
-import ConfirmDialog from "~/components/confirm-dialog";
 import { WorkoutFormSchemaType } from "./schema";
 import useWorkoutForm from "./use-workout-form";
 import { formSteps } from "./form-steps";
+import { Workout } from "~/types";
+import { useAlertDialog } from "~/providers/alert-dialog-provider";
 
-export default function WorkoutForm({
-	data,
-	onSubmit
-}: {
-	data?: WorkoutFormSchemaType;
-	onSubmit?: (data: WorkoutFormSchemaType) => unknown;
-}) {
+type WorkoutFormProps =
+	| {
+			data: Workout;
+			onSubmit: (data: Workout) => unknown;
+	  }
+	| {
+			data?: never;
+			onSubmit: (data: WorkoutFormSchemaType) => unknown;
+	  };
+
+export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 	const [step, setStep] = useState(0);
 
 	const navigator = useNavigation();
-	const [discardChangesDialogOpen, setDiscardChangesDialogOpen] =
-		useState(false);
-	const [preventRemove, setPreventRemove] = useState(true);
-	usePreventRemove(preventRemove, ({ data }) => {
+	const alert = useAlertDialog();
+	const {
+		control,
+		handleSubmit,
+		formState: { errors, isDirty },
+		getValues,
+		trigger
+	} = useWorkoutForm(data);
+
+	usePreventRemove(isDirty, ({ data }) => {
 		if (step > 0) {
 			setStep((c) => c - 1);
 			return;
@@ -33,21 +44,15 @@ export default function WorkoutForm({
 			return;
 		}
 
-		setDiscardChangesDialogOpen(true);
+		alert({
+			title: "Discard Changes?",
+			description:
+				"You have unsaved changes. Discard them and leave the screen?",
+			variant: "destructive",
+			actionText: "Discard",
+			onSuccess: () => navigator.dispatch(data.action)
+		});
 	});
-
-	async function handleConfirmLeavePage() {
-		setPreventRemove(false);
-		setTimeout(() => navigator.goBack(), 0);
-	}
-
-	const {
-		control,
-		handleSubmit,
-		formState: { errors, isDirty },
-		getValues,
-		trigger
-	} = useWorkoutForm(data);
 
 	function handleGoToPreviousStep() {
 		if (step === 0) {
@@ -57,20 +62,16 @@ export default function WorkoutForm({
 
 		setStep((current) => current - 1);
 	}
+
+	const [isSubmitting, setIsSubmitting] = useState(false);
 	async function handleGoToNextStep() {
 		if (step === formSteps.length - 1) {
 			// final step, submit
-			handleSubmit(
-				(data) => {
-					onSubmit?.(data);
-				},
-				(errors) => {
-					console.log(
-						"Errors in submitting:",
-						JSON.stringify(errors, null, 2)
-					);
-				}
-			)();
+			handleSubmit(async (data) => {
+				setIsSubmitting(true);
+				await onSubmit?.(data as Workout);
+				setIsSubmitting(false);
+			})();
 			return;
 		}
 
@@ -102,21 +103,16 @@ export default function WorkoutForm({
 				<Button variant="secondary" onPress={handleGoToPreviousStep}>
 					<Text>{step === 0 ? "Cancel" : "Previous"}</Text>
 				</Button>
-				<Button onPress={handleGoToNextStep}>
+				<Button onPress={handleGoToNextStep} disabled={isSubmitting}>
 					<Text>
-						{step === formSteps.length - 1 ? "Finish" : "Next"}
+						{isSubmitting
+							? "Submitting..."
+							: step === formSteps.length - 1
+								? "Finish"
+								: "Next"}
 					</Text>
 				</Button>
 			</View>
-			<ConfirmDialog
-				title="Discard changes?"
-				description="You have unsaved changes. Discard them and leave the screen?"
-				variant="destructive"
-				confirmText="Discard"
-				onConfirm={handleConfirmLeavePage}
-				open={discardChangesDialogOpen}
-				onOpenChange={setDiscardChangesDialogOpen}
-			/>
 		</View>
 	);
 }

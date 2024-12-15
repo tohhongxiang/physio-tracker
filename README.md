@@ -22,3 +22,5 @@ yarn run dev:ios # Run development for ios
 - https://orm.drizzle.team/docs/get-started/expo-new
 - https://medium.com/@rutikpanchal121/building-a-robust-form-in-react-native-with-react-hook-form-and-zod-for-validation-7583678970c3
 - https://rnr-docs.vercel.app/getting-started/introduction/
+- https://github.com/drizzle-team/drizzle-studio-expo
+- https://gunnartorfis.github.io/sonner-native/toast

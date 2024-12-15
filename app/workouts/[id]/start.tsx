@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
-import getWorkout from "~/api/getWorkout";
+import getWorkout from "~/api/get-workout";
 import WorkoutStartPage from "~/components/workout-start";
 
 export default function StartWorkoutPage() {

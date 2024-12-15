@@ -17,7 +17,7 @@ export default function ExerciseCard({ exercise }: { exercise: Exercise }) {
 				</Text>
 			) : null}
 			<ExerciseRepsAndSetsDetails
-				repsPerSet={exercise.repsPerSet}
+				reps={exercise.reps}
 				sets={exercise.sets}
 				durationPerRepSeconds={exercise.durationPerRepSeconds}
 			/>

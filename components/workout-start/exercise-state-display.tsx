@@ -6,6 +6,8 @@ import BottomControls from "./bottom-controls";
 import CounterDisplay from "./counter-display";
 import TimerDisplay from "./time-display";
 import useExerciseControls, { STATES } from "./use-exercise-controls";
+import hasRestBetweenReps from "~/lib/has-rest-between-reps";
+import hasRestBetweenSets from "~/lib/has-rest-between-sets";
 
 const STATES_TO_MESSAGE: Record<keyof typeof STATES, string> = {
 	[STATES.READY]: "READY",
@@ -49,7 +51,16 @@ export default function ExerciseStateDisplay({
 	return (
 		<View className="flex flex-1 flex-col justify-between">
 			<View className="flex grow items-center justify-center gap-8">
-				<TimerDisplay durationMs={remainingTimeMs} />
+				<TimerDisplay
+					durationMs={remainingTimeMs}
+					className={
+						!hasDurationPerRep(exercise) &&
+						!hasRestBetweenReps(exercise) &&
+						!hasRestBetweenSets(exercise)
+							? "opacity-50"
+							: ""
+					}
+				/>
 				<Text className="text-3xl font-light tracking-wider">
 					{STATES_TO_MESSAGE[state]}
 				</Text>
@@ -58,8 +69,8 @@ export default function ExerciseStateDisplay({
 						title="REPS"
 						text={
 							hasDurationPerRep(exercise)
-								? `${currentRep} / ${exercise.repsPerSet}`
-								: exercise.repsPerSet.toString()
+								? `${currentRep} / ${exercise.reps}`
+								: exercise.reps.toString()
 						}
 					/>
 					<CounterDisplay
@@ -71,7 +82,7 @@ export default function ExerciseStateDisplay({
 			<BottomControls
 				currentRep={currentRep}
 				currentSet={currentSet}
-				totalReps={exercise.repsPerSet}
+				totalReps={exercise.reps}
 				totalSets={exercise.sets}
 				isTimerRunning={isTimerRunning}
 				onRepChange={changeRep}

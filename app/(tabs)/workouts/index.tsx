@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "expo-router";
 import { View } from "react-native";
-import getWorkouts from "~/api/getWorkouts";
+import getWorkouts from "~/api/get-workouts";
 import { Button } from "~/components/ui/button";
 import WorkoutsList from "~/components/workouts-list";
 import { Text } from "~/components/ui/text";
@@ -10,7 +10,8 @@ import { Plus } from "~/lib/icons/Plus";
 export default function WorkoutList() {
 	const { data, isPending, isRefetching, refetch } = useQuery({
 		queryKey: ["workouts"],
-		queryFn: getWorkouts
+		queryFn: getWorkouts,
+		refetchOnMount: false // prevent race condition where workout is created, but exercise is not created
 	});
 
 	if (isPending) {

@@ -1,10 +1,8 @@
 import WorkoutForm from "~/components/workout-form";
-import { CreateWorkout } from "~/types";
+import useCreateWorkout from "~/hooks/api/use-create-workout";
 
 export default function AddWorkoutModal() {
-	function handleCreateWorkout(workout: CreateWorkout) {
-		console.log(workout);
-	}
+	const { createWorkout } = useCreateWorkout();
 
-	return <WorkoutForm onSubmit={handleCreateWorkout} />;
+	return <WorkoutForm onSubmit={createWorkout} />;
 }

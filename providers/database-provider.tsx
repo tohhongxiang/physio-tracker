@@ -1,15 +1,12 @@
-import * as SQLite from "expo-sqlite";
-import { drizzle } from "drizzle-orm/expo-sqlite";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import migrations from "~/drizzle/migrations";
-import { usersTable } from "~/db/schema";
 import { createContext, useContext, useEffect } from "react";
 import { View } from "react-native";
 import { Text } from "~/components/ui/text";
+import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
+import { db, expoSQLiteDb } from "~/db/initalize";
 
-const expo = SQLite.openDatabaseSync("db.db");
-const db = drizzle(expo);
-const DBContext = createContext<{ db: typeof db }>({} as { db: typeof db });
+const DBContext = createContext({ db });
 
 export default function DatabaseProvider({
 	children
@@ -17,19 +14,10 @@ export default function DatabaseProvider({
 	children: React.ReactNode;
 }) {
 	const { success, error } = useMigrations(db, migrations);
+	useDrizzleStudio(expoSQLiteDb);
 
 	useEffect(() => {
 		if (!success) return;
-		(async () => {
-			await db.delete(usersTable);
-			await db.insert(usersTable).values([
-				{
-					name: "John",
-					age: 30,
-					email: "john@example.com"
-				}
-			]);
-		})();
 	}, [success]);
 
 	if (error) {

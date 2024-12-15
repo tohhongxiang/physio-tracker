@@ -12,7 +12,7 @@ export const workouts: Workout[] = [
 				name: "YITW",
 				description: "Do something about it",
 				sets: 2,
-				repsPerSet: 5,
+				reps: 5,
 				durationPerRepSeconds: 5,
 				restBetweenRepsSeconds: 10,
 				restBetweenSetsSeconds: 0
@@ -22,7 +22,7 @@ export const workouts: Workout[] = [
 				name: "Twist and Stretch Back",
 				description: "Lorem Ipsum",
 				sets: 2,
-				repsPerSet: 5,
+				reps: 5,
 				durationPerRepSeconds: 5,
 				restBetweenRepsSeconds: 10,
 				restBetweenSetsSeconds: 15
@@ -32,7 +32,7 @@ export const workouts: Workout[] = [
 				name: "Banded Internal Rotation",
 				description: "Use resistance band to help",
 				sets: 2,
-				repsPerSet: 10,
+				reps: 10,
 				restBetweenSetsSeconds: 10,
 				restBetweenRepsSeconds: 0,
 				durationPerRepSeconds: 0
@@ -42,7 +42,7 @@ export const workouts: Workout[] = [
 				name: "Test",
 				description: "Bling bang bang born",
 				sets: 1,
-				repsPerSet: 1,
+				reps: 1,
 				restBetweenSetsSeconds: 10,
 				restBetweenRepsSeconds: 0,
 				durationPerRepSeconds: 0
@@ -59,7 +59,7 @@ export const workouts: Workout[] = [
 				name: "Leg raises",
 				description: "I do what I want",
 				sets: 4,
-				repsPerSet: 10,
+				reps: 10,
 				restBetweenRepsSeconds: 0,
 				restBetweenSetsSeconds: 0,
 				durationPerRepSeconds: 0

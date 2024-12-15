@@ -87,7 +87,7 @@ export default function useExerciseControls({
 				break;
 			}
 			case STATES.RUNNING: {
-				if (currentRep === exercise.repsPerSet) {
+				if (currentRep === exercise.reps) {
 					handleSetComplete();
 				} else {
 					setCurrentRep((c) => c + 1);
@@ -138,7 +138,7 @@ export default function useExerciseControls({
 
 		// final rep, final set, do not allow increase
 		if (
-			currentRep === exercise.repsPerSet &&
+			currentRep === exercise.reps &&
 			currentSet === exercise.sets &&
 			change > 0
 		) {
@@ -151,7 +151,7 @@ export default function useExerciseControls({
 		}
 
 		// increase after finishing current set
-		if (currentRep === exercise.repsPerSet && change > 0) {
+		if (currentRep === exercise.reps && change > 0) {
 			setCurrentRep(1);
 			setCurrentSet((c) => c + change);
 			return;
@@ -159,7 +159,7 @@ export default function useExerciseControls({
 
 		// decrease to previous set
 		if (currentRep === 1 && currentSet > 1 && change < 0) {
-			setCurrentRep(exercise.repsPerSet);
+			setCurrentRep(exercise.reps);
 			setCurrentSet((c) => c + change);
 			return;
 		}

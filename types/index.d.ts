@@ -1,16 +1,16 @@
 export type Workout = {
-	id: string;
+	id: number;
 	name: string;
 	description: string;
 	exercises: Exercise[];
 };
 
 export type Exercise = {
-	id: string;
+	id: number;
 	name: string;
 	description: string;
 	sets: number;
-	repsPerSet: number;
+	reps: number;
 	durationPerRepSeconds: number;
 	restBetweenRepsSeconds: number;
 	restBetweenSetsSeconds: number;

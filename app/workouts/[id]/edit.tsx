@@ -1,22 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
 import { View } from "react-native";
-import getWorkout from "~/api/getWorkout";
+import getWorkout from "~/api/get-workout";
 import { Text } from "~/components/ui/text";
 import WorkoutForm from "~/components/workout-form";
-import { CreateWorkout } from "~/types";
+import useEditWorkout from "~/hooks/api/use-edit-workout";
 
 export default function EditWorkout() {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
 	const { data, isPending } = useQuery({
 		queryKey: ["workouts", id],
-		queryFn: ({ queryKey }) => getWorkout(queryKey[1])
+		queryFn: ({ queryKey }) => getWorkout(parseInt(queryKey[1]))
 	});
 
-	function handleSubmit(data: CreateWorkout) {
-		console.log("Edit workout", data);
-	}
+	const { editWorkout } = useEditWorkout();
 
 	if (isPending) {
 		return (
@@ -34,5 +32,12 @@ export default function EditWorkout() {
 		);
 	}
 
-	return <WorkoutForm data={data} onSubmit={handleSubmit} />;
+	return (
+		<WorkoutForm
+			data={data}
+			onSubmit={(data) =>
+				editWorkout({ id: parseInt(id), workout: data })
+			}
+		/>
+	);
 }

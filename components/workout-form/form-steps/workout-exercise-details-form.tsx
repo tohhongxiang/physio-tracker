@@ -29,7 +29,7 @@ export default function WorkoutExerciseDetailsForm({
 			name: "",
 			description: "",
 			sets: 1,
-			repsPerSet: 1,
+			reps: 1,
 			restBetweenRepsSeconds: 0,
 			restBetweenSetsSeconds: 0,
 			durationPerRepSeconds: 0
@@ -167,7 +167,7 @@ export default function WorkoutExerciseDetailsForm({
 									<View className="flex flex-row items-center justify-center gap-1 text-center">
 										<Controller
 											control={control}
-											name={`exercises.${index}.repsPerSet`}
+											name={`exercises.${index}.reps`}
 											render={({
 												field: {
 													onChange,
@@ -181,7 +181,7 @@ export default function WorkoutExerciseDetailsForm({
 														"w-16",
 														errors.exercises?.[
 															index
-														]?.repsPerSet &&
+														]?.reps &&
 															"border-destructive"
 													)}
 													value={String(value)}

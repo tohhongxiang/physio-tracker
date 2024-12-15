@@ -5,6 +5,10 @@ import { PortalHost } from "@rn-primitives/portal";
 import ThemeProvider from "~/providers/theme-provider";
 import QueryClientProvider from "~/providers/query-client-provider";
 import DatabaseProvider from "~/providers/database-provider";
+import { Toaster } from "sonner-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import AlertDialogProvider from "~/providers/alert-dialog-provider";
 
 export {
 	// Catch any errors thrown by the Layout component.
@@ -13,25 +17,32 @@ export {
 
 export default function RootLayout() {
 	return (
-		<DatabaseProvider>
-			<QueryClientProvider>
-				<ThemeProvider>
-					<Stack screenOptions={{ headerShown: false }}>
-						<Stack.Screen name="(tabs)" />
-						<Stack.Screen name="+not-found" />
-						<Stack.Screen name="workouts/[id]" />
-						<Stack.Screen
-							name="(modals)/workouts/add"
-							options={{
-								presentation: "modal",
-								headerShown: true,
-								title: "Add New Workout"
-							}}
-						/>
-					</Stack>
-					<PortalHost />
-				</ThemeProvider>
-			</QueryClientProvider>
-		</DatabaseProvider>
+		<SafeAreaProvider>
+			<GestureHandlerRootView>
+				<DatabaseProvider>
+					<QueryClientProvider>
+						<AlertDialogProvider>
+							<ThemeProvider>
+								<Stack screenOptions={{ headerShown: false }}>
+									<Stack.Screen name="(tabs)" />
+									<Stack.Screen name="+not-found" />
+									<Stack.Screen name="workouts/[id]" />
+									<Stack.Screen
+										name="(modals)/workouts/add"
+										options={{
+											presentation: "modal",
+											headerShown: true,
+											title: "Add New Workout"
+										}}
+									/>
+								</Stack>
+								<Toaster position="bottom-center" />
+								<PortalHost />
+							</ThemeProvider>
+						</AlertDialogProvider>
+					</QueryClientProvider>
+				</DatabaseProvider>
+			</GestureHandlerRootView>
+		</SafeAreaProvider>
 	);
 }
