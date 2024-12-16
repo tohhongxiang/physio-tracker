@@ -49,6 +49,7 @@
 		"babel-plugin-inline-import": "^3.0.0",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.0",
+		"date-fns": "^4.1.0",
 		"drizzle-orm": "^0.37.0",
 		"eas-cli": "^13.4.2",
 		"expo": "^52.0.7",

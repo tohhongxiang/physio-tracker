@@ -4,6 +4,17 @@ import { Text } from "~/components/ui/text";
 import { Workout } from "~/types";
 import LoadingWorkoutsList from "./loading";
 
+function renderItem({ item }: { item: Workout }) {
+	return <WorkoutCard workout={item} />;
+}
+
+function keyExtractor(item: Workout) {
+	return item.id.toString();
+}
+
+function itemSeparatorComponent() {
+	return <View className="p-2" />;
+}
 export default function WorkoutsList({
 	workouts = [],
 	refreshing,
@@ -20,15 +31,15 @@ export default function WorkoutsList({
 			key={workouts.length}
 			refreshing={refreshing}
 			onRefresh={onRefresh}
-			ItemSeparatorComponent={() => <View className="p-2" />}
+			ItemSeparatorComponent={itemSeparatorComponent}
 			contentContainerClassName="p-4"
-			ListEmptyComponent={() => (
+			ListEmptyComponent={
 				<Text className="text-center text-lg text-muted-foreground">
 					No workouts...
 				</Text>
-			)}
-			renderItem={({ item }) => <WorkoutCard workout={item} />}
-			keyExtractor={(item) => item.id.toString()}
+			}
+			renderItem={renderItem}
+			keyExtractor={keyExtractor}
 		/>
 	);
 }
