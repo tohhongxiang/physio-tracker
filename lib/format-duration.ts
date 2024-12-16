@@ -8,5 +8,5 @@ export default function formatDuration(durationMs: number, decimalPlaces = 0) {
 		(durationMs % (SECONDS_IN_ONE_MINUTE * MILLISECONDS_IN_ONE_SECOND)) /
 		MILLISECONDS_IN_ONE_SECOND;
 
-	return `${minutes.toLocaleString("en-US", { minimumIntegerDigits: 2 })}:${seconds.toLocaleString("en-US", { minimumIntegerDigits: 2, minimumFractionDigits: decimalPlaces, maximumFractionDigits: decimalPlaces })}`;
+	return `${minutes.toLocaleString("en-US", { minimumIntegerDigits: 2, useGrouping: false })}:${seconds.toLocaleString("en-US", { minimumIntegerDigits: 2, minimumFractionDigits: decimalPlaces, maximumFractionDigits: decimalPlaces })}`;
 }

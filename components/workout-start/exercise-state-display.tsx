@@ -64,7 +64,7 @@ export default function ExerciseStateDisplay({
 				<Text className="text-3xl font-light tracking-wider">
 					{STATES_TO_MESSAGE[state]}
 				</Text>
-				<View className="flex w-full flex-row justify-around py-4">
+				<View className="flex w-full flex-row flex-wrap justify-around gap-4 py-4">
 					<CounterDisplay
 						title="REPS"
 						text={

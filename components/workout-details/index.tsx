@@ -5,6 +5,7 @@ import { Workout } from "~/types";
 import LoadingWorkoutDetails from "./loading";
 import NotFound from "./not-found";
 import NoExercises from "./no-exercises";
+import ReadMoreText from "../read-more-text";
 
 export default function WorkoutDetails({
 	workout,
@@ -14,25 +15,28 @@ export default function WorkoutDetails({
 	showTitle?: boolean;
 }) {
 	return (
-		<View className="flex h-full w-full max-w-lg flex-1 flex-col gap-2">
+		<ScrollView className="flex h-full w-full max-w-lg flex-1 flex-col gap-2">
 			<View className="px-4 py-6">
 				{showTitle ? (
 					<Text className="text-3xl font-semibold">
 						{workout.name}
 					</Text>
 				) : null}
-				<Text className={"text-justify text-muted-foreground"}>
-					{workout.description.length > 0
-						? workout.description
-						: "No description provided..."}
-				</Text>
+				<ReadMoreText
+					className="text-justify text-muted-foreground"
+					text={
+						workout.description.length > 0
+							? workout.description
+							: "No description provided..."
+					}
+				/>
 			</View>
 			<View className="flex flex-row items-center justify-between px-4">
 				<Text className="text-2xl font-bold">
 					Exercises ({workout.exercises.length})
 				</Text>
 			</View>
-			<ScrollView contentContainerClassName="flex gap-4 p-4">
+			<View className="flex gap-4 p-4">
 				{workout.exercises.map(
 					(
 						exercise,
@@ -44,8 +48,8 @@ export default function WorkoutDetails({
 						/>
 					)
 				)}
-			</ScrollView>
-		</View>
+			</View>
+		</ScrollView>
 	);
 }
 

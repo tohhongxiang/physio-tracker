@@ -20,9 +20,15 @@ interface WorkoutCardProps extends ViewProps {
 export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
 	return (
 		<Card className="w-full max-w-md" {...props}>
-			<CardHeader className="flex flex-row items-center justify-between">
-				<CardTitle>{workout.name}</CardTitle>
-				<Link href={`/workouts/${workout.id}`} asChild>
+			<CardHeader className="flex w-full flex-row items-center justify-between gap-4">
+				<CardTitle className="flex-1" numberOfLines={1}>
+					{workout.name}
+				</CardTitle>
+				<Link
+					href={`/workouts/${workout.id}`}
+					asChild
+					className="shrink-0"
+				>
 					<Button variant="secondary">
 						<Eye size={16} className="text-secondary-foreground" />
 					</Button>

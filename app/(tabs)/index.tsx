@@ -15,7 +15,7 @@ export default function Screen() {
 	});
 
 	return (
-		<View className="flex flex-1 flex-col gap-4 p-8">
+		<View className="flex flex-1 flex-col gap-4 px-8 py-4">
 			<View className="mb-6">
 				<WorkoutCalendar />
 			</View>
