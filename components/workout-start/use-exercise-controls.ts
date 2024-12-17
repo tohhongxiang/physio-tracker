@@ -3,7 +3,6 @@ import { Exercise } from "~/types";
 import hasDurationPerRep from "~/lib/has-duration-per-rep";
 import useCountdownTimer from "~/hooks/use-countdown-timer";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
-import hasRestBetweenSets from "~/lib/has-rest-between-sets";
 
 export const STATES = {
 	READY: "READY",
@@ -60,7 +59,7 @@ export default function useExerciseControls({
 	}
 
 	function handleStartButtonClicked() {
-		if (!hasRestBetweenReps(exercise) && !hasRestBetweenSets(exercise)) {
+		if (noTimerForExercise(exercise)) {
 			if (currentSet === exercise.sets) {
 				handleExerciseComplete();
 			} else {
@@ -72,10 +71,15 @@ export default function useExerciseControls({
 
 		setIsRunning((c) => !c);
 		if (state === STATES.READY) {
-			if (!hasDurationPerRep(exercise)) {
-				setState(STATES.RESTING_SET);
-			} else {
+			if (hasDurationPerRep(exercise)) {
 				setState(STATES.STARTING);
+				return;
+			}
+
+			if (hasRestBetweenReps(exercise)) {
+				setState(STATES.RESTING_REP);
+			} else {
+				setState(STATES.RESTING_SET);
 			}
 		}
 	}
@@ -89,13 +93,23 @@ export default function useExerciseControls({
 			case STATES.RUNNING: {
 				if (currentRep === exercise.reps) {
 					handleSetComplete();
-				} else {
-					setCurrentRep((c) => c + 1);
+				} else if (hasRestBetweenReps(exercise)) {
 					setState(STATES.RESTING_REP);
+				}
+				setCurrentRep((c) => c + 1);
+				break;
+			}
+			case STATES.RESTING_REP: {
+				if (hasDurationPerRep(exercise)) {
+					setState(STATES.RUNNING);
+				} else if (currentRep === exercise.reps) {
+					handleSetComplete();
+				} else {
+					setIsRunning(false);
+					setCurrentRep((c) => c + 1);
 				}
 				break;
 			}
-			case STATES.RESTING_REP:
 			case STATES.RESTING_SET: {
 				if (hasDurationPerRep(exercise)) {
 					setState(STATES.RUNNING);
@@ -193,6 +207,14 @@ function getDurationForTimer(exercise: Exercise, state: keyof typeof STATES) {
 	}
 
 	if (state === STATES.READY || state === STATES.STARTING) {
+		if (!hasDurationPerRep(exercise)) {
+			if (hasRestBetweenReps(exercise)) {
+				return exercise.restBetweenRepsSeconds;
+			} else {
+				return exercise.restBetweenSetsSeconds;
+			}
+		}
+
 		return STARTING_TIME;
 	}
 

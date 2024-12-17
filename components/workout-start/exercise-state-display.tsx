@@ -68,7 +68,8 @@ export default function ExerciseStateDisplay({
 					<CounterDisplay
 						title="REPS"
 						text={
-							hasDurationPerRep(exercise)
+							hasDurationPerRep(exercise) ||
+							hasRestBetweenReps(exercise)
 								? `${currentRep} / ${exercise.reps}`
 								: exercise.reps.toString()
 						}

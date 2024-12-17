@@ -54,242 +54,252 @@ export default function WorkoutExerciseDetailsForm({
 				</Button>
 			</View>
 			<Separator />
-			<ScrollView
-				contentContainerClassName="flex flex-col gap-4 p-4"
-				className="-mx-4"
-				ref={scrollViewRef}
-			>
-				{fields.length === 0 ? (
-					<View>
-						<Text className="text-center text-xl text-muted-foreground">
-							^
-						</Text>
-						<Text className="text-center text-xl text-muted-foreground">
-							Click the button above to add an exercise!
-						</Text>
-					</View>
-				) : (
-					fields.map((exercise, index) => (
-						<Card key={exercise.id}>
-							<CardContent className="flex flex-col gap-4 pt-6">
-								<View>
-									<Label
-										nativeID="name"
-										className={cn(
-											"mb-2",
-											errors.exercises?.[index]?.name
-												?.message && "text-destructive"
-										)}
-									>
-										Name
-									</Label>
-									<Controller
-										control={control}
-										name={`exercises.${index}.name`}
-										render={({
-											field: { onChange, ...field }
-										}) => (
-											<Input
-												aria-labelledby="name"
-												placeholder="Name"
-												onChangeText={onChange}
-												{...field}
-											/>
-										)}
-									/>
-									{errors.exercises?.[index]?.name
-										?.message && (
-										<Text className="text-destructive">
-											{
+			{/* -mx-4 and p-4 to keep the scrollbar on the edge of the screen */}
+			<ScrollView className="-mx-4" ref={scrollViewRef}>
+				<View className="flex flex-col gap-4 p-4">
+					{fields.length === 0 ? (
+						<View>
+							<Text className="text-center text-xl text-muted-foreground">
+								^
+							</Text>
+							<Text className="text-center text-xl text-muted-foreground">
+								Click the button above to add an exercise!
+							</Text>
+						</View>
+					) : (
+						fields.map((exercise, index) => (
+							<Card key={exercise.id}>
+								<CardContent className="flex flex-col gap-4 pt-6">
+									<View>
+										<Label
+											nativeID="name"
+											className={cn(
+												"mb-2",
 												errors.exercises?.[index]?.name
-													?.message
-											}
-										</Text>
-									)}
-								</View>
-								<View>
-									<Label
-										nativeID="description"
-										className={cn(
-											"mb-2",
-											errors.exercises?.[index]
-												?.description?.message &&
-												"text-destructive"
+													?.message &&
+													"text-destructive"
+											)}
+										>
+											Name
+										</Label>
+										<Controller
+											control={control}
+											name={`exercises.${index}.name`}
+											render={({
+												field: { onChange, ...field }
+											}) => (
+												<Input
+													aria-labelledby="name"
+													placeholder="Name"
+													onChangeText={onChange}
+													{...field}
+												/>
+											)}
+										/>
+										{errors.exercises?.[index]?.name
+											?.message && (
+											<Text className="text-destructive">
+												{
+													errors.exercises?.[index]
+														?.name?.message
+												}
+											</Text>
 										)}
-									>
-										Description
-									</Label>
-									<Controller
-										control={control}
-										name={`exercises.${index}.description`}
-										render={({
-											field: { onChange, ...field }
-										}) => (
-											<Textarea
-												aria-labelledby="description"
-												placeholder="Description"
-												onChangeText={onChange}
-												{...field}
+									</View>
+									<View>
+										<Label
+											nativeID="description"
+											className={cn(
+												"mb-2",
+												errors.exercises?.[index]
+													?.description?.message &&
+													"text-destructive"
+											)}
+										>
+											Description
+										</Label>
+										<Controller
+											control={control}
+											name={`exercises.${index}.description`}
+											render={({
+												field: { onChange, ...field }
+											}) => (
+												<Textarea
+													aria-labelledby="description"
+													placeholder="Description"
+													onChangeText={onChange}
+													{...field}
+												/>
+											)}
+										/>
+									</View>
+									<View className="flex flex-row flex-wrap items-center gap-2">
+										<View className="flex flex-row items-center justify-center gap-1 text-center">
+											<Controller
+												control={control}
+												name={`exercises.${index}.sets`}
+												render={({
+													field: {
+														value,
+														onChange,
+														onBlur
+													}
+												}) => (
+													<Input
+														keyboardType="numeric"
+														className={cn(
+															"w-16",
+															errors.exercises?.[
+																index
+															]?.sets &&
+																"border-destructive"
+														)}
+														value={String(value)}
+														onChangeText={onChange}
+														onBlur={onBlur}
+													/>
+												)}
 											/>
-										)}
-									/>
-								</View>
-								<View className="flex flex-row flex-wrap items-center gap-2">
-									<View className="flex flex-row items-center justify-center gap-1 text-center">
-										<Controller
-											control={control}
-											name={`exercises.${index}.sets`}
-											render={({
-												field: {
-													value,
-													onChange,
-													onBlur
-												}
-											}) => (
-												<Input
-													keyboardType="numeric"
-													className={cn(
-														"w-16",
-														errors.exercises?.[
-															index
-														]?.sets &&
-															"border-destructive"
-													)}
-													value={String(value)}
-													onChangeText={onChange}
-													onBlur={onBlur}
-												/>
-											)}
-										/>
-										<Text className="text-lg"> set(s)</Text>
+											<Text className="text-lg">
+												{" "}
+												set(s)
+											</Text>
+										</View>
+										<Text className="text-lg"> × </Text>
+										<View className="flex flex-row items-center justify-center gap-1 text-center">
+											<Controller
+												control={control}
+												name={`exercises.${index}.reps`}
+												render={({
+													field: {
+														onChange,
+														onBlur,
+														value
+													}
+												}) => (
+													<Input
+														keyboardType="numeric"
+														className={cn(
+															"w-16",
+															errors.exercises?.[
+																index
+															]?.reps &&
+																"border-destructive"
+														)}
+														value={String(value)}
+														onChangeText={onChange}
+														onBlur={onBlur}
+													/>
+												)}
+											/>
+											<Text className="text-lg">
+												{" "}
+												rep(s)
+											</Text>
+										</View>
+										<Text className="text-lg"> × </Text>
+										<View className="flex flex-row items-center justify-center gap-1 text-center">
+											<Controller
+												control={control}
+												name={`exercises.${index}.durationPerRepSeconds`}
+												render={({
+													field: { onChange, value }
+												}) => (
+													<TimerInput
+														value={value}
+														onConfirm={onChange}
+														allowZeroDuration
+													>
+														<Button variant="outline">
+															<Text>
+																{formatDuration(
+																	value * 1000
+																)}
+															</Text>
+														</Button>
+													</TimerInput>
+												)}
+											/>
+											<Text className="text-lg">
+												{" "}
+												per rep
+											</Text>
+										</View>
 									</View>
-									<Text className="text-lg"> × </Text>
-									<View className="flex flex-row items-center justify-center gap-1 text-center">
-										<Controller
-											control={control}
-											name={`exercises.${index}.reps`}
-											render={({
-												field: {
-													onChange,
-													onBlur,
-													value
-												}
-											}) => (
-												<Input
-													keyboardType="numeric"
-													className={cn(
-														"w-16",
-														errors.exercises?.[
-															index
-														]?.reps &&
-															"border-destructive"
-													)}
-													value={String(value)}
-													onChangeText={onChange}
-													onBlur={onBlur}
-												/>
-											)}
-										/>
-										<Text className="text-lg"> rep(s)</Text>
+									<View className="flex flex-row flex-wrap items-center gap-2">
+										<View className="flex flex-row items-center justify-center gap-2 text-center">
+											<Text className="text-lg">
+												Rest
+											</Text>
+											<Controller
+												control={control}
+												name={`exercises.${index}.restBetweenRepsSeconds`}
+												render={({
+													field: { onChange, value }
+												}) => (
+													<TimerInput
+														value={value}
+														onConfirm={onChange}
+														allowZeroDuration
+													>
+														<Button variant="outline">
+															<Text>
+																{formatDuration(
+																	value * 1000
+																)}
+															</Text>
+														</Button>
+													</TimerInput>
+												)}
+											/>
+											<Text className="text-lg">
+												{" "}
+												per rep,
+											</Text>
+										</View>
+										<View className="flex flex-row items-center justify-center gap-1 text-center">
+											<Controller
+												control={control}
+												name={`exercises.${index}.restBetweenSetsSeconds`}
+												render={({
+													field: { onChange, value }
+												}) => (
+													<TimerInput
+														value={value}
+														onConfirm={onChange}
+														allowZeroDuration
+													>
+														<Button variant="outline">
+															<Text>
+																{formatDuration(
+																	value * 1000
+																)}
+															</Text>
+														</Button>
+													</TimerInput>
+												)}
+											/>
+											<Text className="text-lg">
+												{" "}
+												per set
+											</Text>
+										</View>
 									</View>
-									<Text className="text-lg"> × </Text>
-									<View className="flex flex-row items-center justify-center gap-1 text-center">
-										<Controller
-											control={control}
-											name={`exercises.${index}.durationPerRepSeconds`}
-											render={({
-												field: { onChange, value }
-											}) => (
-												<TimerInput
-													value={value}
-													onConfirm={onChange}
-													allowZeroDuration
-												>
-													<Button variant="outline">
-														<Text>
-															{formatDuration(
-																value * 1000
-															)}
-														</Text>
-													</Button>
-												</TimerInput>
-											)}
-										/>
-										<Text className="text-lg">
-											{" "}
-											per rep
-										</Text>
-									</View>
-								</View>
-								<View className="flex flex-row flex-wrap items-center gap-2">
-									<View className="flex flex-row items-center justify-center gap-2 text-center">
-										<Text className="text-lg">Rest</Text>
-										<Controller
-											control={control}
-											name={`exercises.${index}.restBetweenRepsSeconds`}
-											render={({
-												field: { onChange, value }
-											}) => (
-												<TimerInput
-													value={value}
-													onConfirm={onChange}
-													allowZeroDuration
-												>
-													<Button variant="outline">
-														<Text>
-															{formatDuration(
-																value * 1000
-															)}
-														</Text>
-													</Button>
-												</TimerInput>
-											)}
-										/>
-										<Text className="text-lg">
-											{" "}
-											per rep,
-										</Text>
-									</View>
-									<View className="flex flex-row items-center justify-center gap-1 text-center">
-										<Controller
-											control={control}
-											name={`exercises.${index}.restBetweenSetsSeconds`}
-											render={({
-												field: { onChange, value }
-											}) => (
-												<TimerInput
-													value={value}
-													onConfirm={onChange}
-													allowZeroDuration
-												>
-													<Button variant="outline">
-														<Text>
-															{formatDuration(
-																value * 1000
-															)}
-														</Text>
-													</Button>
-												</TimerInput>
-											)}
-										/>
-										<Text className="text-lg">
-											{" "}
-											per set
-										</Text>
-									</View>
-								</View>
-							</CardContent>
-							<CardFooter className="flex justify-end">
-								<Button
-									variant="destructive"
-									onPress={() => handleDeleteExercise(index)}
-								>
-									<Text>Delete</Text>
-								</Button>
-							</CardFooter>
-						</Card>
-					))
-				)}
+								</CardContent>
+								<CardFooter className="flex justify-end">
+									<Button
+										variant="destructive"
+										onPress={() =>
+											handleDeleteExercise(index)
+										}
+									>
+										<Text>Delete</Text>
+									</Button>
+								</CardFooter>
+							</Card>
+						))
+					)}
+				</View>
 			</ScrollView>
 		</View>
 	);
