@@ -7,7 +7,7 @@ export default function StartWorkoutPage() {
 	const { id } = useLocalSearchParams<{ id: string }>();
 	const { data, isPending } = useQuery({
 		queryKey: ["workouts", id],
-		queryFn: ({ queryKey }) => getWorkout(queryKey[1])
+		queryFn: ({ queryKey }) => getWorkout(parseInt(queryKey[1]))
 	});
 
 	if (isPending) {

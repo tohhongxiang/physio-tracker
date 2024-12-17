@@ -8,7 +8,10 @@ import { Frown } from "~/lib/icons/Frown";
 export default function WorkoutNotFound() {
 	const navigation = useNavigation();
 	useEffect(() => {
-		navigation.setOptions({ title: "Workout Not Found!" });
+		navigation.setOptions({
+			title: "Workout Not Found!",
+			headerRight: () => null
+		});
 	}, [navigation]);
 
 	return (

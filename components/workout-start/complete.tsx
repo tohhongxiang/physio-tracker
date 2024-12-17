@@ -9,7 +9,7 @@ export default function CompleteWorkoutPage() {
 			<Text className="text-center text-4xl font-bold">
 				Workout Complete!
 			</Text>
-			<View className="flex flex-row gap-4">
+			<View className="flex flex-row flex-wrap items-stretch justify-center gap-4">
 				<Link href="/" asChild>
 					<Button>
 						<Text>Back to Homepage</Text>

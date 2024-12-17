@@ -4,7 +4,6 @@ import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import { ChevronLeft } from "~/lib/icons/ChevronLeft";
 import { ChevronRight } from "~/lib/icons/ChevronRight";
-import CompleteWorkoutPage from "./complete";
 import { Workout } from "~/types";
 import ExerciseStateDisplay from "./exercise-state-display";
 import useSound from "~/hooks/use-sound";
@@ -12,6 +11,7 @@ import goSound from "~/assets/audio/go.mp3";
 import readySound from "~/assets/audio/ready.mp3";
 import LoadingWorkoutPage from "./loading";
 import WorkoutNotFound from "./not-found";
+import { useRouter } from "expo-router";
 
 export default function WorkoutStartPage({ workout }: { workout: Workout }) {
 	const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
@@ -20,8 +20,13 @@ export default function WorkoutStartPage({ workout }: { workout: Workout }) {
 	const goSoundPlayer = useSound(goSound);
 	const readySoundPlayer = useSound(readySound);
 
-	if (currentExerciseIndex >= exercises.length) {
-		return <CompleteWorkoutPage />;
+	const router = useRouter();
+	function handleExerciseComplete() {
+		if (currentExerciseIndex === workout.exercises.length - 1) {
+			return router.push(`/workouts/${workout.id}/complete`);
+		}
+
+		setCurrentExerciseIndex((c) => c + 1);
 	}
 
 	const currentExercise = exercises[currentExerciseIndex];
@@ -51,7 +56,7 @@ export default function WorkoutStartPage({ workout }: { workout: Workout }) {
 			<ExerciseStateDisplay
 				exercise={currentExercise}
 				key={currentExercise.id} // reset all state when moving to a new exercise
-				onExerciseComplete={() => setCurrentExerciseIndex((c) => c + 1)}
+				onExerciseComplete={handleExerciseComplete}
 				onTimerComplete={() => goSoundPlayer.play()}
 				onTimerUpdate={({ remainingTimeMs }) => {
 					if (remainingTimeMs < 3000) {
