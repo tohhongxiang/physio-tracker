@@ -15,6 +15,7 @@ import { Trash } from "~/lib/icons/Trash";
 import { Text } from "~/components/ui/text";
 import useDeleteWorkout from "~/hooks/api/use-delete-workout";
 import { useAlertDialog } from "~/providers/alert-dialog-provider";
+import WorkoutNotFound from "~/components/workout-not-found";
 
 export default function SpecificWorkOutRoute() {
 	const { id } = useLocalSearchParams<{ id: string }>();
@@ -76,7 +77,7 @@ export default function SpecificWorkOutRoute() {
 	}
 
 	if (!data) {
-		return <WorkoutDetails.NotFound />;
+		return <WorkoutNotFound />;
 	}
 
 	if (data.exercises.length === 0) {

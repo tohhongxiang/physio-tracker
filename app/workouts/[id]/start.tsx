@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
 import getWorkout from "~/api/get-workout";
+import WorkoutNotFound from "~/components/workout-not-found";
 import WorkoutStartPage from "~/components/workout-start";
 
 export default function StartWorkoutPage() {
@@ -15,7 +16,7 @@ export default function StartWorkoutPage() {
 	}
 
 	if (!data) {
-		return <WorkoutStartPage.NotFound />;
+		return <WorkoutNotFound />;
 	}
 
 	return <WorkoutStartPage workout={data} />;

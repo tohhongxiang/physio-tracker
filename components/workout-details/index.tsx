@@ -3,7 +3,6 @@ import { Text } from "~/components/ui/text";
 import ExerciseCard from "~/components/workout-details/exercise-card";
 import { Workout } from "~/types";
 import LoadingWorkoutDetails from "./loading";
-import NotFound from "./not-found";
 import NoExercises from "./no-exercises";
 import ReadMoreText from "../read-more-text";
 
@@ -54,5 +53,4 @@ export default function WorkoutDetails({
 }
 
 WorkoutDetails.Loading = LoadingWorkoutDetails;
-WorkoutDetails.NotFound = NotFound;
 WorkoutDetails.NoExercises = NoExercises;

@@ -10,7 +10,6 @@ import useSound from "~/hooks/use-sound";
 import goSound from "~/assets/audio/go.mp3";
 import readySound from "~/assets/audio/ready.mp3";
 import LoadingWorkoutPage from "./loading";
-import WorkoutNotFound from "./not-found";
 import { useRouter } from "expo-router";
 
 export default function WorkoutStartPage({ workout }: { workout: Workout }) {
@@ -69,4 +68,3 @@ export default function WorkoutStartPage({ workout }: { workout: Workout }) {
 }
 
 WorkoutStartPage.Loading = LoadingWorkoutPage;
-WorkoutStartPage.NotFound = WorkoutNotFound;
