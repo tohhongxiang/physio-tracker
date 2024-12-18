@@ -1,9 +1,14 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteWorkout } from "~/api/delete-workout";
 import { Workout } from "~/types";
-import { toast } from "sonner-native";
 
-export default function useDeleteWorkout() {
+export default function useDeleteWorkout({
+	onSuccess,
+	onError
+}: {
+	onSuccess?: (deletedId: Workout["id"]) => void;
+	onError?: (error: Error) => void;
+} = {}) {
 	const queryClient = useQueryClient();
 
 	const { isPending, mutate, error } = useMutation({
@@ -18,8 +23,10 @@ export default function useDeleteWorkout() {
 			);
 
 			queryClient.setQueryData(["workouts", deletedId], null);
-			toast.success("Successfully deleted workout!");
-		}
+
+			onSuccess?.(deletedId);
+		},
+		onError
 	});
 
 	return { isLoading: isPending, deleteWorkout: mutate, error };

@@ -16,6 +16,7 @@ import { Text } from "~/components/ui/text";
 import useDeleteWorkout from "~/hooks/api/use-delete-workout";
 import { useAlertDialog } from "~/providers/alert-dialog-provider";
 import WorkoutNotFound from "~/components/workout-not-found";
+import { toast } from "sonner-native";
 
 export default function SpecificWorkOutRoute() {
 	const { id } = useLocalSearchParams<{ id: string }>();
@@ -25,7 +26,9 @@ export default function SpecificWorkOutRoute() {
 		queryFn: ({ queryKey }) => getWorkout(parseInt(queryKey[1]))
 	});
 
-	const { deleteWorkout, isLoading } = useDeleteWorkout();
+	const { deleteWorkout, isLoading } = useDeleteWorkout({
+		onSuccess: () => toast.success("Successfully deleted workout!")
+	});
 	const alert = useAlertDialog();
 	const router = useRouter();
 
