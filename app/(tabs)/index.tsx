@@ -9,25 +9,26 @@ import { PartyPopper } from "~/lib/icons/PartyPopper";
 import { Link } from "expo-router";
 
 export default function Screen() {
-	const { data, isPending } = useQuery({
-		queryKey: ["workouts", "today"],
-		queryFn: getWorkoutsToday
-	});
+	const { data: todaysWorkout, isPending: isFetchingTodaysWorkout } =
+		useQuery({
+			queryKey: ["workouts", "today"],
+			queryFn: getWorkoutsToday
+		});
 
 	return (
 		<View className="flex flex-1 flex-col gap-4 px-8 py-4">
-			<View className="mb-6">
+			<View className="mb-2">
 				<WorkoutCalendar />
 			</View>
 			<View className="flex flex-col gap-4">
 				<Text className="text-3xl font-bold">Today&apos;s Workout</Text>
-				{isPending ? (
+				{isFetchingTodaysWorkout ? (
 					<View>
 						<WorkoutCard.Loading />
 					</View>
-				) : data ? (
+				) : todaysWorkout ? (
 					<View>
-						{data.map((workout) => (
+						{todaysWorkout.map((workout) => (
 							<WorkoutCard workout={workout} key={workout.id} />
 						))}
 					</View>

@@ -1,6 +1,12 @@
 import { relations } from "drizzle-orm";
 import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
+export const workouts = sqliteTable("workouts", {
+	id: int().primaryKey({ autoIncrement: true }),
+	name: text().notNull(),
+	description: text().notNull().default("")
+});
+
 export const exercises = sqliteTable("exercises", {
 	id: int().primaryKey({ autoIncrement: true }),
 	name: text().notNull(),
@@ -19,19 +25,31 @@ export const exercises = sqliteTable("exercises", {
 		.notNull()
 });
 
-export const workouts = sqliteTable("workouts", {
+export const workoutLogs = sqliteTable("workout_logs", {
 	id: int().primaryKey({ autoIncrement: true }),
-	name: text().notNull(),
-	description: text().notNull().default("")
+	workoutId: int("workout_id")
+		.references(() => workouts.id, { onDelete: "cascade" })
+		.notNull(),
+	completedAt: text("completed_at").notNull() // Store dates as 'YYYY-MM-DD'
 });
 
-export const workoutsRelations = relations(exercises, ({ one }) => ({
-	exercises: one(workouts, {
+export const workoutsRelations = relations(workouts, ({ many }) => ({
+	exercises: many(exercises),
+	workoutLogs: many(workoutLogs)
+}));
+
+export const exercisesRelations = relations(exercises, ({ one }) => ({
+	workout: one(workouts, {
 		fields: [exercises.workoutId],
 		references: [workouts.id]
 	})
 }));
 
-export const exercisesRelations = relations(workouts, ({ many }) => ({
-	exercises: many(exercises)
+export const workoutLogsRelations = relations(workoutLogs, ({ one }) => ({
+	workout: one(workouts, {
+		fields: [workoutLogs.workoutId],
+		references: [workouts.id]
+	})
 }));
+
+// TODO: Index for workout logs on (userId, completedAt)

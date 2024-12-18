@@ -9,10 +9,18 @@ import { Button } from "./ui/button";
 import { ChevronLeft } from "~/lib/icons/ChevronLeft";
 import { ChevronRight } from "~/lib/icons/ChevronRight";
 import { useState } from "react";
-import { addMonths, startOfMonth, subMonths } from "date-fns";
+import {
+	addMonths,
+	getMonth,
+	getYear,
+	startOfMonth,
+	subMonths
+} from "date-fns";
 import { View } from "react-native";
 import { cn } from "~/lib/utils";
 import { CircleCheckBig } from "~/lib/icons/CircleCheckBig";
+import { useQuery } from "@tanstack/react-query";
+import getWorkoutsDoneByYearMonth from "~/api/get-done-workouts-by-month-year";
 
 const WEEK_DAYS_HEIGHT = 48;
 const DAY_HEIGHT = 52;
@@ -23,42 +31,34 @@ const theme: CalendarTheme = {
 		base: () => ({
 			container: {
 				paddingHorizontal: 8,
-				paddingVertical: 2,
-				borderRadius: 4,
-				width: "100%"
+				paddingVertical: 8,
+				borderRadius: "100%"
 			}
 		}),
 		today: () => ({
 			container: {
-				borderWidth: 0,
-				backgroundColor: "inherit"
+				borderWidth: 0
 			}
 		})
 	}
 };
 
-const MARKED_DATES = [
-	new Date("2024-11-22"),
-	new Date("2024-11-24"),
-	new Date("2024-11-25"),
-	new Date("2024-11-26"),
-	new Date("2024-11-27"),
-	new Date("2024-11-28"),
-	new Date("2024-11-29"),
-	new Date("2024-11-30"),
-	new Date("2024-12-1"),
-	new Date("2024-12-2"),
-	new Date("2024-12-3"),
-	new Date("2024-12-12"),
-	new Date("2024-12-13"),
-	new Date("2024-12-14"),
-	new Date("2024-12-15")
-];
-
 export default function WorkoutCalendar() {
-	const [currentMonth, setCurrentMonth] = useState(startOfMonth(new Date()));
+	const [currentDate, setCurrentDate] = useState(startOfMonth(new Date()));
+
+	const currentMonth = getMonth(currentDate) + 1;
+	const currentYear = getYear(currentDate);
+	const { data: completedWorkouts = [] } = useQuery({
+		queryKey: ["workout-logs", currentYear, currentMonth],
+		queryFn: ({ queryKey }) =>
+			getWorkoutsDoneByYearMonth(
+				queryKey[1] as number,
+				queryKey[2] as number
+			)
+	});
+
 	const { calendarRowMonth, weekDaysList, weeksList } = useCalendar({
-		calendarMonthId: toDateId(currentMonth)
+		calendarMonthId: toDateId(currentDate)
 	});
 
 	function onCalendarDayPress(id: string) {
@@ -66,14 +66,19 @@ export default function WorkoutCalendar() {
 	}
 
 	function onGoToPreviousMonth() {
-		setCurrentMonth(subMonths(currentMonth, 1));
+		setCurrentDate(subMonths(currentDate, 1));
 	}
 
 	function onGoToNextMonth() {
-		setCurrentMonth(addMonths(currentMonth, 1));
+		setCurrentDate(addMonths(currentDate, 1));
 	}
 
-	const markedDates = new Set(MARKED_DATES.map((date) => toDateId(date)));
+	const markedDates = new Set(
+		completedWorkouts.map((completedWorkouts) =>
+			toDateId(new Date(completedWorkouts.completedAt))
+		)
+	);
+
 	return (
 		<Calendar.VStack>
 			<Calendar.HStack
@@ -108,7 +113,11 @@ export default function WorkoutCalendar() {
 							<View
 								className={cn(
 									"flex-1 rounded-full",
-									day.isToday && "bg-foreground"
+									day.isToday
+										? markedDates.has(day.id)
+											? "bg-secondary"
+											: "bg-primary"
+										: ""
 								)}
 							>
 								{day.isDifferentMonth ? (
@@ -122,7 +131,7 @@ export default function WorkoutCalendar() {
 									>
 										<View className="flex flex-col items-center justify-center">
 											{markedDates.has(day.id) ? (
-												<CircleCheckBig className="text-green-600 dark:text-green-500" />
+												<CircleCheckBig className="text-green-500" />
 											) : (
 												<Text
 													className={cn(
