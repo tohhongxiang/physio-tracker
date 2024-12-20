@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Exercise } from "~/types";
 import hasDurationPerRep from "~/lib/has-duration-per-rep";
 import useCountdownTimer from "~/hooks/use-countdown-timer";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
+import { useFocusEffect } from "expo-router";
 
 export const STATES = {
 	READY: "READY",
@@ -33,6 +34,12 @@ export default function useExerciseControls({
 	const [state, setState] = useState<keyof typeof STATES>(STATES.READY);
 	const [currentRep, setCurrentRep] = useState(1);
 	const [currentSet, setCurrentSet] = useState(1);
+
+	useFocusEffect(
+		useCallback(() => {
+			return () => setIsRunning(false);
+		}, [])
+	);
 
 	function handleExerciseComplete() {
 		setCurrentRep(1);
