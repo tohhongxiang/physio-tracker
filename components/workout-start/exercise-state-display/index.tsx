@@ -2,12 +2,12 @@ import { View } from "react-native";
 import { Exercise } from "~/types";
 import { Text } from "~/components/ui/text";
 import hasDurationPerRep from "~/lib/has-duration-per-rep";
-import BottomControls from "./bottom-controls";
-import CounterDisplay from "./counter-display";
-import TimerDisplay from "./time-display";
-import useExerciseControls, { STATES } from "./use-exercise-controls";
+import BottomControls from "../bottom-controls";
+import TimerDisplay from "../time-display";
+import useExerciseControls, { STATES } from "../use-exercise-controls";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
 import hasRestBetweenSets from "~/lib/has-rest-between-sets";
+import CounterContainer from "./counter-container";
 
 const STATES_TO_MESSAGE: Record<keyof typeof STATES, string> = {
 	[STATES.READY]: "READY",
@@ -64,21 +64,11 @@ export default function ExerciseStateDisplay({
 				<Text className="text-3xl font-light tracking-wider">
 					{STATES_TO_MESSAGE[state]}
 				</Text>
-				<View className="flex w-full flex-row flex-wrap justify-around gap-4 py-4">
-					<CounterDisplay
-						title="REPS"
-						text={
-							hasDurationPerRep(exercise) ||
-							hasRestBetweenReps(exercise)
-								? `${currentRep} / ${exercise.reps}`
-								: exercise.reps.toString()
-						}
-					/>
-					<CounterDisplay
-						title="SETS"
-						text={`${currentSet} / ${exercise.sets}`}
-					/>
-				</View>
+				<CounterContainer
+					exercise={exercise}
+					currentRep={currentRep}
+					currentSet={currentSet}
+				/>
 			</View>
 			<BottomControls
 				currentRep={currentRep}

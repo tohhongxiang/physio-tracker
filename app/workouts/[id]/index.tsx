@@ -21,12 +21,12 @@ import { toast } from "sonner-native";
 export default function SpecificWorkOutRoute() {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
-	const { data, isPending } = useQuery({
+	const { data: workout, isPending: isLoadingWorkout } = useQuery({
 		queryKey: ["workouts", id],
 		queryFn: ({ queryKey }) => getWorkout(parseInt(queryKey[1]))
 	});
 
-	const { deleteWorkout, isLoading } = useDeleteWorkout({
+	const { deleteWorkout, isLoading: isDeletingWorkout } = useDeleteWorkout({
 		onSuccess: () => toast.success("Successfully deleted workout!")
 	});
 	const alert = useAlertDialog();
@@ -35,15 +35,15 @@ export default function SpecificWorkOutRoute() {
 	const navigation = useNavigation();
 
 	useEffect(() => {
-		if (!data) {
+		if (!workout) {
 			return;
 		}
 
 		navigation.setOptions({
-			title: data.name,
+			title: workout.name,
 			headerRight: () => (
 				<View className="flex flex-row">
-					<Link href={`/workouts/${data.id}/edit`} asChild>
+					<Link href={`/workouts/${workout.id}/edit`} asChild>
 						<Button variant="ghost" size="sm">
 							<Pencil className="h-4 w-4 text-secondary-foreground" />
 						</Button>
@@ -60,7 +60,7 @@ export default function SpecificWorkOutRoute() {
 								actionText: "Delete",
 								loadingText: "Deleting...",
 								onConfirm: async () => {
-									deleteWorkout(data.id);
+									deleteWorkout(workout.id);
 								},
 								onSuccess: () => {
 									router.push("/(tabs)/workouts");
@@ -73,25 +73,25 @@ export default function SpecificWorkOutRoute() {
 				</View>
 			)
 		});
-	}, [navigation, data, deleteWorkout, isLoading, router, alert]);
+	}, [navigation, workout, deleteWorkout, isDeletingWorkout, router, alert]);
 
-	if (isPending) {
+	if (isLoadingWorkout) {
 		return <WorkoutDetails.Loading />;
 	}
 
-	if (!data) {
+	if (!workout) {
 		return <WorkoutNotFound />;
 	}
 
-	if (data.exercises.length === 0) {
+	if (workout.exercises.length === 0) {
 		return <WorkoutDetails.NoExercises id={id} />;
 	}
 
 	return (
 		<View className="flex-1">
-			<WorkoutDetails workout={data} />
+			<WorkoutDetails workout={workout} />
 			<View className="flex flex-col gap-4 p-4">
-				<Link href={`/workouts/${data.id}/start`} asChild>
+				<Link href={`/workouts/${workout.id}/start`} asChild>
 					<Button>
 						<Text>Start Exercise</Text>
 					</Button>
