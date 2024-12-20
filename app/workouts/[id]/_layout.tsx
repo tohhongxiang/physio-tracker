@@ -35,7 +35,7 @@ export default function Layout() {
 			<Stack.Screen name="edit" options={{ title: "Edit" }} />
 			<Stack.Screen
 				name="complete"
-				options={{ title: "Workout Complete!" }}
+				options={{ title: "Workout Complete!", presentation: "modal" }}
 			/>
 		</Stack>
 	);

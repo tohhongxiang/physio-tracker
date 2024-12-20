@@ -20,3 +20,9 @@ export type CreateExercise = Omit<Exercise, "id">;
 export type CreateWorkout = Prettify<
 	Omit<Workout, "id" | "exercises"> & { exercises: CreateExercise[] }
 >;
+
+export type WorkoutLog = {
+	id: number;
+	completedAt: Date;
+	workout: Workout;
+};

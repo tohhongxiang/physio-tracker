@@ -1,18 +1,18 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getMonth, getYear } from "date-fns";
-import addWorkoutLog from "~/api/add-workout-log";
+import createWorkoutLog from "~/api/create-workout-log";
 
-export default function useAddWorkoutLog({
+export default function useCreateWorkoutLog({
 	onSuccess,
 	onError
 }: {
-	onSuccess?: (data: Awaited<ReturnType<typeof addWorkoutLog>>) => void;
+	onSuccess?: (data: Awaited<ReturnType<typeof createWorkoutLog>>) => void;
 	onError?: (error: Error) => void;
 } = {}) {
 	const queryClient = useQueryClient();
 
 	const { isPending, mutate, error } = useMutation({
-		mutationFn: addWorkoutLog,
+		mutationFn: createWorkoutLog,
 		onSuccess: (data) => {
 			const dateCompleted = new Date(data.completedAt);
 			const yearCompleted = getYear(dateCompleted);
@@ -28,5 +28,5 @@ export default function useAddWorkoutLog({
 		onError
 	});
 
-	return { isLoading: isPending, addWorkoutLog: mutate, error };
+	return { isLoading: isPending, createWorkoutLog: mutate, error };
 }

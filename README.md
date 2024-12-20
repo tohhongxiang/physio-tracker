@@ -24,3 +24,4 @@ yarn run dev:ios # Run development for ios
 - https://rnr-docs.vercel.app/getting-started/introduction/
 - https://github.com/drizzle-team/drizzle-studio-expo
 - https://gunnartorfis.github.io/sonner-native/toast
+- https://stackoverflow.com/questions/52817922/typescript-return-type-depending-on-parameter

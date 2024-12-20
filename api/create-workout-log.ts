@@ -2,7 +2,7 @@ import { db } from "~/db/initalize";
 import { workoutLogs } from "~/db/schema";
 import { Workout } from "~/types";
 
-export default async function addWorkoutLog({
+export default async function createWorkoutLog({
 	workoutId,
 	date = new Date()
 }: {

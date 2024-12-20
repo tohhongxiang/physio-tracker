@@ -3,12 +3,12 @@ import { View } from "react-native";
 import { toast } from "sonner-native";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
-import useAddWorkoutLog from "~/hooks/api/use-add-workout-log";
+import useCreateWorkoutLog from "~/hooks/api/use-create-workout-log";
 
 export default function CompleteWorkoutPage() {
 	const { id } = useLocalSearchParams<{ id: string }>();
 	const router = useRouter();
-	const { addWorkoutLog, isLoading } = useAddWorkoutLog({
+	const { createWorkoutLog, isLoading } = useCreateWorkoutLog({
 		onSuccess: () => {
 			router.push("/");
 		},
@@ -17,7 +17,7 @@ export default function CompleteWorkoutPage() {
 	});
 
 	function handleMarkAsComplete() {
-		addWorkoutLog({ workoutId: parseInt(id), date: new Date() });
+		createWorkoutLog({ workoutId: parseInt(id), date: new Date() });
 	}
 
 	return (
