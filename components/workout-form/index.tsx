@@ -25,21 +25,15 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 
 	const navigator = useNavigation();
 	const alert = useAlertDialog();
-	const {
-		control,
-		handleSubmit,
-		formState: { errors, isDirty },
-		getValues,
-		trigger
-	} = useWorkoutForm(data);
+	const form = useWorkoutForm(data);
 
-	usePreventRemove(isDirty, ({ data }) => {
+	usePreventRemove(form.formState.isDirty, ({ data }) => {
 		if (step > 0) {
 			setStep((c) => c - 1);
 			return;
 		}
 
-		if (!isDirty) {
+		if (!form.formState.isDirty) {
 			navigator.dispatch(data.action);
 			return;
 		}
@@ -67,7 +61,7 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 	async function handleGoToNextStep() {
 		if (step === formSteps.length - 1) {
 			// final step, submit
-			handleSubmit(async (data) => {
+			form.handleSubmit(async (data) => {
 				setIsSubmitting(true);
 				await onSubmit?.(data as Workout);
 				setIsSubmitting(false);
@@ -77,7 +71,7 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 
 		// if we need to validate from the current step
 		if (formSteps[step].validate) {
-			const isValid = await trigger(formSteps[step].validate, {
+			const isValid = await form.trigger(formSteps[step].validate, {
 				shouldFocus: true
 			});
 
@@ -92,13 +86,7 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 	const CurrentStepUI = formSteps[step].component;
 	return (
 		<View className="flex flex-1 flex-col gap-4 p-4">
-			{
-				<CurrentStepUI
-					value={getValues()}
-					control={control}
-					errors={errors}
-				/>
-			}
+			{<CurrentStepUI form={form} />}
 			<View className="flex shrink-0 flex-row justify-end gap-4">
 				<Button variant="secondary" onPress={handleGoToPreviousStep}>
 					<Text>{step === 0 ? "Cancel" : "Previous"}</Text>

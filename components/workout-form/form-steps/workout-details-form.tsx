@@ -7,7 +7,12 @@ import { cn } from "~/lib/utils";
 import { View } from "react-native";
 import { FormStepProps } from "./form-step-props";
 
-export default function WorkoutDetailsForm({ control, errors }: FormStepProps) {
+export default function WorkoutDetailsForm({
+	form: {
+		control,
+		formState: { errors }
+	}
+}: FormStepProps) {
 	return (
 		<View className="flex flex-col gap-4">
 			<View>
