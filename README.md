@@ -11,9 +11,10 @@ yarn
 And start developing with one of the commands (use development build)
 
 ```sh
-yarn run web
 yarn run dev:android # Run development for android
 yarn run dev:ios # Run development for ios
+
+yarn start # Starting normal development
 ```
 
 # Resources
