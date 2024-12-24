@@ -1,24 +1,32 @@
 import { View } from "react-native";
 import { Text } from "~/components/ui/text";
 import { useQuery } from "@tanstack/react-query";
-import getWorkoutsToday from "~/api/getWorkoutsToday";
+import getWorkoutToday from "~/api/get-workout-today";
 import WorkoutCard from "~/components/workout-card";
 import WorkoutCalendar from "~/components/workout-calendar";
 import { Button } from "~/components/ui/button";
 import { PartyPopper } from "~/lib/icons/PartyPopper";
 import { Link } from "expo-router";
+import { useState } from "react";
+import { startOfMonth } from "date-fns";
+import { ArrowRight } from "~/lib/icons/ArrowRight";
 
-export default function Screen() {
+export default function IndexPage() {
+	const [currentDate, setCurrentDate] = useState(startOfMonth(new Date()));
+
 	const { data: todaysWorkout, isPending: isFetchingTodaysWorkout } =
 		useQuery({
 			queryKey: ["workouts", "today"],
-			queryFn: getWorkoutsToday
+			queryFn: getWorkoutToday
 		});
 
 	return (
 		<View className="flex flex-1 flex-col gap-4 px-8 py-4">
 			<View className="mb-2">
-				<WorkoutCalendar />
+				<WorkoutCalendar
+					currentDate={currentDate}
+					onDateChange={setCurrentDate}
+				/>
 			</View>
 			<View className="flex flex-col gap-4">
 				<Text className="text-3xl font-bold">Today&apos;s Workout</Text>
@@ -28,12 +36,10 @@ export default function Screen() {
 					</View>
 				) : todaysWorkout ? (
 					<View>
-						{todaysWorkout.map((workout) => (
-							<WorkoutCard workout={workout} key={workout.id} />
-						))}
+						<WorkoutCard workout={todaysWorkout} />
 					</View>
 				) : (
-					<View className="flex flex-col gap-4 p-4">
+					<View className="mt-8 flex flex-col gap-4 px-4">
 						<PartyPopper
 							className="mx-auto text-muted-foreground"
 							size={48}
@@ -41,9 +47,13 @@ export default function Screen() {
 						<Text className="text-center text-lg text-muted-foreground">
 							You have no workouts for today!
 						</Text>
-						<Link href="/(modals)/workouts/add" asChild>
-							<Button>
-								<Text>Add a new workout</Text>
+						<Link href="/(tabs)/workouts" asChild>
+							<Button className="flex flex-row items-center justify-between gap-2">
+								<Text></Text>
+								<Text className="flex-1 text-center">
+									See your other workouts
+								</Text>
+								<ArrowRight className="text-primary-foreground" />
 							</Button>
 						</Link>
 					</View>

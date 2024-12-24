@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getMonth, getYear } from "date-fns";
 import createWorkoutLog from "~/api/create-workout-log";
+import { Workout, WorkoutLog } from "~/types";
 
 export default function useCreateWorkoutLog({
 	onSuccess,
@@ -20,7 +21,16 @@ export default function useCreateWorkoutLog({
 
 			queryClient.setQueryData(
 				["workout-logs", yearCompleted, monthCompleted],
-				(previousLogs: unknown[]) => [...previousLogs, data]
+				(previousLogs: WorkoutLog[]) => [...previousLogs, data]
+			);
+
+			// if completed workout is workout of the day, clear it
+			queryClient.setQueryData(
+				["workouts", "today"],
+				(previousWorkout: Workout) =>
+					data.workoutId === previousWorkout.id
+						? null
+						: previousWorkout
 			);
 
 			onSuccess?.(data);

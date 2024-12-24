@@ -8,14 +8,7 @@ import { Text } from "./ui/text";
 import { Button } from "./ui/button";
 import { ChevronLeft } from "~/lib/icons/ChevronLeft";
 import { ChevronRight } from "~/lib/icons/ChevronRight";
-import { useState } from "react";
-import {
-	addMonths,
-	getMonth,
-	getYear,
-	startOfMonth,
-	subMonths
-} from "date-fns";
+import { addMonths, getMonth, getYear, subMonths } from "date-fns";
 import { View } from "react-native";
 import { cn } from "~/lib/utils";
 import { CircleCheckBig } from "~/lib/icons/CircleCheckBig";
@@ -43,13 +36,21 @@ const theme: CalendarTheme = {
 	}
 };
 
-export default function WorkoutCalendar() {
-	const [currentDate, setCurrentDate] = useState(startOfMonth(new Date()));
+type WorkoutCalendarProps = {
+	currentDate: Date;
+	onDateChange: (date: Date) => void;
+};
 
-	const currentMonth = getMonth(currentDate) + 1;
-	const currentYear = getYear(currentDate);
+export default function WorkoutCalendar({
+	currentDate,
+	onDateChange
+}: WorkoutCalendarProps) {
 	const { data: completedWorkouts = [] } = useQuery({
-		queryKey: ["workout-logs", currentYear, currentMonth],
+		queryKey: [
+			"workout-logs",
+			getYear(currentDate),
+			getMonth(currentDate) + 1
+		],
 		queryFn: ({ queryKey }) =>
 			getWorkoutsDoneByYearMonth(
 				queryKey[1] as number,
@@ -66,11 +67,11 @@ export default function WorkoutCalendar() {
 	}
 
 	function onGoToPreviousMonth() {
-		setCurrentDate(subMonths(currentDate, 1));
+		onDateChange(subMonths(currentDate, 1));
 	}
 
 	function onGoToNextMonth() {
-		setCurrentDate(addMonths(currentDate, 1));
+		onDateChange(addMonths(currentDate, 1));
 	}
 
 	const markedDates = new Set(
