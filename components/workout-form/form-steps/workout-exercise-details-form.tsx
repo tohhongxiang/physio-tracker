@@ -81,11 +81,11 @@ export default function WorkoutExerciseDetailsForm({
 				itemLayoutAnimation={LinearTransition.duration(150).easing(
 					Easing.ease
 				)}
-				ListEmptyComponent={() => (
-					<View>
-						<Text>Nothing here.</Text>
-					</View>
-				)}
+				ListEmptyComponent={
+					<Text className="text-center text-lg italic text-muted-foreground opacity-75">
+						No exercises yet.
+					</Text>
+				}
 				contentContainerClassName={"min-h-0"}
 				ItemSeparatorComponent={() => <View className="p-2" />}
 				renderItem={({ index }) => {
