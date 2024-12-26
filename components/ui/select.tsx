@@ -141,7 +141,7 @@ const SelectContent = React.forwardRef<
 	SelectPrimitive.ContentRef,
 	SelectPrimitive.ContentProps & { portalHost?: string }
 >(({ className, children, position = "popper", portalHost, ...props }, ref) => {
-	const { open } = SelectPrimitive.useRootContext();
+	const { open, triggerPosition } = SelectPrimitive.useRootContext();
 
 	return (
 		<SelectPrimitive.Portal hostName={portalHost}>
@@ -162,6 +162,7 @@ const SelectContent = React.forwardRef<
 								: "web:animate-out web:fade-out-0 web:zoom-out-95",
 							className
 						)}
+						style={{ width: triggerPosition?.width }}
 						position={position}
 						{...props}
 					>
