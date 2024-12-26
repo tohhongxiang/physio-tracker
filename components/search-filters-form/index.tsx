@@ -27,7 +27,6 @@ export default function SearchFiltersForm({
 	filters?: WorkoutFilters;
 	onConfirm: () => void;
 }) {
-	console.log(filters);
 	const [sortByOption, setSortByOption] = useState<
 		(typeof SELECT_OPTIONS)[number]
 	>(

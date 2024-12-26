@@ -8,20 +8,17 @@ import { Text } from "~/components/ui/text";
 import { Plus } from "~/lib/icons/Plus";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { SlidersHorizontal } from "~/lib/icons/SlidersHorizontal";
-import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import {
+	BottomSheetBackdrop,
+	BottomSheetModal,
+	BottomSheetView
+} from "@gorhom/bottom-sheet";
 import SearchFiltersForm from "~/components/search-filters-form";
 import { useLocalSearchParams } from "expo-router/build/hooks";
 import { WorkoutFilters } from "~/types";
 import { Badge } from "~/components/ui/badge";
 
 export default function WorkoutList() {
-	const searchParams = useLocalSearchParams<WorkoutFilters>();
-	const { data, isPending, isRefetching, refetch } = useQuery({
-		queryKey: ["workouts", searchParams],
-		queryFn: () => getWorkouts(searchParams),
-		refetchOnMount: false // prevent race condition where workout is created, but exercise is not created
-	});
-
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 	const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 	useFocusEffect(
@@ -30,6 +27,13 @@ export default function WorkoutList() {
 			return () => bottomSheetModalRef.current?.close();
 		}, [])
 	);
+
+	const searchParams = useLocalSearchParams<WorkoutFilters>();
+	const { data, isPending, isRefetching, refetch } = useQuery({
+		queryKey: ["workouts", searchParams],
+		queryFn: () => getWorkouts(searchParams),
+		refetchOnMount: false // prevent race condition where workout is created, but exercise is not created
+	});
 
 	const navigation = useNavigation();
 	useEffect(() => {
@@ -96,6 +100,19 @@ export default function WorkoutList() {
 					</View>
 				)}
 				backgroundComponent={null}
+				backdropComponent={(props) => (
+					<BottomSheetBackdrop
+						opacity={1}
+						pressBehavior={"close"}
+						disappearsOnIndex={-1}
+						style={{
+							backgroundColor: "rgba(0, 0, 0, 0.5)",
+							height: "100%",
+							width: "100%"
+						}}
+						{...props}
+					/>
+				)}
 			>
 				<BottomSheetView className="flex flex-col gap-4 bg-popover p-8">
 					<SearchFiltersForm
