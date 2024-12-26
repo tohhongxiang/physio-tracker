@@ -27,14 +27,19 @@ export default function SearchFiltersForm({
 	filters?: WorkoutFilters;
 	onConfirm: () => void;
 }) {
+	console.log(filters);
 	const [sortByOption, setSortByOption] = useState<
-		(typeof SELECT_OPTIONS)[number] | undefined
-	>(SELECT_OPTIONS.find((option) => option.value === filters.sortBy));
+		(typeof SELECT_OPTIONS)[number]
+	>(
+		SELECT_OPTIONS.find((option) => option.value === filters.sortBy) ??
+			SELECT_OPTIONS[0]
+	);
 	const [localSearch, setLocalSearch] = useState(filters.search ?? "");
 
 	useEffect(() => {
 		setSortByOption(
-			SELECT_OPTIONS.find((option) => option.value === filters.sortBy)
+			SELECT_OPTIONS.find((option) => option.value === filters.sortBy) ??
+				SELECT_OPTIONS[0]
 		);
 		setLocalSearch(filters.search ?? "");
 	}, [filters.search, filters.sortBy]);
@@ -66,7 +71,12 @@ export default function SearchFiltersForm({
 			</View>
 			<View className="flex flex-col gap-2">
 				<Label>Sort By:</Label>
-				<Select value={sortByOption} onValueChange={setSortByOption}>
+				<Select
+					value={sortByOption}
+					onValueChange={(option) =>
+						setSortByOption(option ?? SELECT_OPTIONS[0])
+					}
+				>
 					<SelectTrigger>
 						<SelectValue
 							className="native:text-lg text-sm text-foreground"
