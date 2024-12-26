@@ -1,11 +1,15 @@
 import * as SelectPrimitive from "@rn-primitives/select";
+import { useRootContext, ValueProps, ValueRef } from "@rn-primitives/select";
+import { Text } from "./text";
+import * as Slot from "@rn-primitives/slot";
 import * as React from "react";
+import { forwardRef } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
-import { Check } from "../../lib/icons/Check";
-import { ChevronDown } from "../../lib/icons/ChevronDown";
-import { ChevronUp } from "../../lib/icons/ChevronUp";
-import { cn } from "../../lib/utils";
+import { Check } from "~/lib/icons/Check";
+import { ChevronDown } from "~/lib/icons/ChevronDown";
+import { ChevronUp } from "~/lib/icons/ChevronUp";
+import { cn } from "~/lib/utils";
 
 type Option = SelectPrimitive.Option;
 
@@ -13,7 +17,56 @@ const Select = SelectPrimitive.Root;
 
 const SelectGroup = SelectPrimitive.Group;
 
-const SelectValue = SelectPrimitive.Value;
+const SelectValue = forwardRef<ValueRef, ValueProps>(
+	({ asChild, placeholder, ...props }, ref) => {
+		const { value } = useRootContext();
+
+		if (asChild) {
+			return (
+				<Slot.Text ref={ref} {...props}>
+					{value?.label ?? placeholder}
+				</Slot.Text>
+			);
+		}
+
+		if (value) {
+			return (
+				<Text ref={ref} {...props}>
+					{value.label}
+				</Text>
+			);
+		}
+
+		let placeHolderClassNames = "";
+		let nonPlaceHolderClassNames = "";
+
+		if (props.className?.includes("placeholder:")) {
+			const classNamesList = props.className.split(" ");
+
+			placeHolderClassNames = classNamesList
+				.filter((item) => item.includes("placeholder:"))
+				.map((item) => item.replaceAll("placeholder:", ""))
+				.join(" ");
+			nonPlaceHolderClassNames = classNamesList
+				.filter((item) => !item.includes("placeholder:"))
+				.join(" ");
+		} else {
+			nonPlaceHolderClassNames = props.className ?? "";
+		}
+
+		return (
+			<Text
+				ref={ref}
+				{...props}
+				className={cn(nonPlaceHolderClassNames, placeHolderClassNames)}
+				data-placeholder={placeholder}
+			>
+				{placeholder}
+			</Text>
+		);
+	}
+);
+SelectValue.displayName = "SelectValue";
 
 const SelectTrigger = React.forwardRef<
 	SelectPrimitive.TriggerRef,
@@ -22,7 +75,7 @@ const SelectTrigger = React.forwardRef<
 	<SelectPrimitive.Trigger
 		ref={ref}
 		className={cn(
-			"native:h-12 flex h-10 flex-row items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm text-muted-foreground web:ring-offset-background web:focus:outline-none web:focus:ring-2 web:focus:ring-ring web:focus:ring-offset-2 [&>span]:line-clamp-1",
+			"native:h-12 flex h-10 flex-row items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground web:ring-offset-background web:focus:outline-none web:focus:ring-2 web:focus:ring-ring web:focus:ring-offset-2 [&>span]:line-clamp-1",
 			props.disabled && "opacity-50 web:cursor-not-allowed",
 			className
 		)}
@@ -32,7 +85,7 @@ const SelectTrigger = React.forwardRef<
 		<ChevronDown
 			size={16}
 			aria-hidden={true}
-			className="text-foreground opacity-50"
+			className="text-muted-foreground"
 		/>
 	</SelectPrimitive.Trigger>
 ));

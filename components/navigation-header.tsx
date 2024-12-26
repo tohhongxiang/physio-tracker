@@ -8,10 +8,15 @@ import Constants from "expo-constants";
 
 export default function NavigationHeader({
 	title,
-	back
+	back,
+	headerRight
 }: {
 	title: string;
 	back?: { title?: string; href?: string };
+	headerRight?: (props: {
+		tintColor?: string;
+		canGoBack?: boolean;
+	}) => React.ReactNode;
 }) {
 	return (
 		<View
@@ -34,7 +39,10 @@ export default function NavigationHeader({
 				)}
 				<Text className="text-2xl font-bold">{title}</Text>
 			</View>
-			<ThemeToggle />
+			<View className="flex flex-row items-center justify-end gap-4">
+				{headerRight?.({})}
+				<ThemeToggle />
+			</View>
 		</View>
 	);
 }

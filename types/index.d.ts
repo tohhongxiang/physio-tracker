@@ -5,6 +5,11 @@ export type Workout = {
 	exercises: Exercise[];
 };
 
+export type WorkoutFilters = {
+	search?: string;
+	sortBy?: "name" | "dateCreated";
+};
+
 export type Exercise = {
 	id: number;
 	name: string;

@@ -64,7 +64,7 @@ export default function WorkoutExerciseDetailsForm({
 	}
 
 	return (
-		<View className="flex flex-1 flex-col gap-4">
+		<View className="flex flex-1 grow flex-col gap-4">
 			<View className="px-4 py-2">
 				<Button
 					onPress={handleAddExercise}
@@ -74,7 +74,6 @@ export default function WorkoutExerciseDetailsForm({
 					<Text>Add Exercise</Text>
 				</Button>
 			</View>
-			{/* -mx-4 and p-4 to keep the scrollbar on the edge of the screen */}
 			<Animated.FlatList
 				ref={scrollViewRef}
 				data={fields}
@@ -82,6 +81,12 @@ export default function WorkoutExerciseDetailsForm({
 				itemLayoutAnimation={LinearTransition.duration(150).easing(
 					Easing.ease
 				)}
+				ListEmptyComponent={() => (
+					<View>
+						<Text>Nothing here.</Text>
+					</View>
+				)}
+				contentContainerClassName={"min-h-0"}
 				ItemSeparatorComponent={() => <View className="p-2" />}
 				renderItem={({ index }) => {
 					const specialErrors = getSpecialExerciseErrorMessages(

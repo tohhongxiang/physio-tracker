@@ -32,7 +32,10 @@ export default function Layout() {
 					)
 				}}
 			/>
-			<Stack.Screen name="edit" options={{ title: "Edit" }} />
+			<Stack.Screen
+				name="edit"
+				options={{ title: "Edit", presentation: "modal" }}
+			/>
 			<Stack.Screen
 				name="complete"
 				options={{ title: "Workout Complete!", presentation: "modal" }}

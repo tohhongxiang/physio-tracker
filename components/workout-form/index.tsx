@@ -85,9 +85,11 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 
 	const CurrentStepUI = formSteps[step].component;
 	return (
-		<View className="flex flex-1 flex-col gap-4 p-4">
-			{<CurrentStepUI form={form} />}
-			<View className="flex shrink-0 flex-row justify-end gap-4">
+		<View className="flex flex-1 flex-col p-4">
+			<View className="flex-1">
+				<CurrentStepUI form={form} />
+			</View>
+			<View className="flex shrink-0 flex-row justify-end gap-4 pt-4">
 				<Button variant="secondary" onPress={handleGoToPreviousStep}>
 					<Text>{step === 0 ? "Cancel" : "Previous"}</Text>
 				</Button>

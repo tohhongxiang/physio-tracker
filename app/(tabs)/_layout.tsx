@@ -12,7 +12,9 @@ export default function TabLayout() {
 						title={props.options.title ?? props.route.name}
 					/>
 				),
-				headerRight: () => <ThemeToggle />
+				headerRight: () => <ThemeToggle />,
+				tabBarHideOnKeyboard: true,
+				animation: "shift"
 			}}
 		>
 			<Tabs.Screen
@@ -76,6 +78,19 @@ export default function TabLayout() {
 					title: "Timer",
 					tabBarIcon: ({ color }) => (
 						<Ionicons name="time-outline" color={color} size={24} />
+					)
+				}}
+			/>
+			<Tabs.Screen
+				name="test"
+				options={{
+					title: "Test",
+					tabBarIcon: ({ color }) => (
+						<Ionicons
+							name="flask-outline"
+							color={color}
+							size={24}
+						/>
 					)
 				}}
 			/>

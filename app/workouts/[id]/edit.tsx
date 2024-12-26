@@ -9,7 +9,7 @@ import { useRouter } from "expo-router";
 import { toast } from "sonner-native";
 import WorkoutNotFound from "~/components/workout-not-found";
 
-export default function EditWorkout() {
+export default function EditWorkoutModal() {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
 	const { data, isPending } = useQuery({
