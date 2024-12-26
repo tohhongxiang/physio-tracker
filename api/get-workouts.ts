@@ -8,8 +8,8 @@ export default async function getWorkouts(filters: WorkoutFilters = {}) {
 				? like(workouts.name, `%${filters.search}%`)
 				: undefined,
 		with: { exercises: true },
-		orderBy: (workouts, { desc }) =>
-			filters.sortBy === "name" ? desc(workouts.name) : desc(workouts.id)
+		orderBy: (workouts, { desc, asc }) =>
+			filters.sortBy === "name" ? asc(workouts.name) : desc(workouts.id)
 	});
 
 	return result as Workout[];

@@ -11,37 +11,33 @@ import {
 	SelectValue
 } from "~/components/ui/select";
 import { Label } from "~/components/ui/label";
-import { router, useLocalSearchParams } from "expo-router";
+import { router } from "expo-router";
 import { WorkoutFilters } from "~/types";
 
 const SELECT_OPTIONS = [
+	{ label: "No sort", value: "" },
 	{ label: "Name", value: "name" },
 	{ label: "Date created", value: "dateCreated" }
 ];
 
 export default function SearchFiltersForm({
+	filters = { search: "", sortBy: "" },
 	onConfirm
 }: {
+	filters?: WorkoutFilters;
 	onConfirm: () => void;
 }) {
-	const searchParams = useLocalSearchParams<WorkoutFilters>();
-
 	const [sortByOption, setSortByOption] = useState<
 		(typeof SELECT_OPTIONS)[number] | undefined
-	>(
-		SELECT_OPTIONS.find((option) => option.value === searchParams.sortBy) ??
-			SELECT_OPTIONS[0]
-	);
-	const [localSearch, setLocalSearch] = useState(searchParams.search ?? "");
+	>(SELECT_OPTIONS.find((option) => option.value === filters.sortBy));
+	const [localSearch, setLocalSearch] = useState(filters.search ?? "");
 
 	useEffect(() => {
 		setSortByOption(
-			SELECT_OPTIONS.find(
-				(option) => option.value === searchParams.sortBy
-			) ?? SELECT_OPTIONS[0]
+			SELECT_OPTIONS.find((option) => option.value === filters.sortBy)
 		);
-		setLocalSearch(searchParams.search ?? "");
-	}, [searchParams.search, searchParams.sortBy]);
+		setLocalSearch(filters.search ?? "");
+	}, [filters.search, filters.sortBy]);
 
 	function handleResetFilters() {
 		setSortByOption(SELECT_OPTIONS[0]);
@@ -51,12 +47,15 @@ export default function SearchFiltersForm({
 	}
 
 	function handleConfirmFilters() {
-		router.setParams({ sortBy: sortByOption?.value, search: localSearch });
+		router.setParams({
+			sortBy: sortByOption?.value ?? "",
+			search: localSearch
+		});
 		onConfirm?.();
 	}
 
 	return (
-		<View>
+		<View className="flex flex-col gap-4">
 			<View className="flex flex-col gap-2">
 				<Label>Filter by Name:</Label>
 				<Input
@@ -71,7 +70,7 @@ export default function SearchFiltersForm({
 					<SelectTrigger>
 						<SelectValue
 							className="native:text-lg text-sm text-foreground"
-							placeholder="Placeholder"
+							placeholder=""
 						/>
 					</SelectTrigger>
 					<SelectContent className="pr-4">

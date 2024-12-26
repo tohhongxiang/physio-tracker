@@ -7,7 +7,7 @@ export type Workout = {
 
 export type WorkoutFilters = {
 	search?: string;
-	sortBy?: "name" | "dateCreated";
+	sortBy?: "name" | "dateCreated" | "";
 };
 
 export type Exercise = {

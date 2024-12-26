@@ -12,7 +12,6 @@ export default function useCreateWorkout({
 } = {}) {
 	const queryClient = useQueryClient();
 	const searchParams = useLocalSearchParams<WorkoutFilters>();
-	console.log("Search params in create workout", searchParams);
 
 	const { isPending, mutate, error } = useMutation({
 		mutationFn: createWorkout,
