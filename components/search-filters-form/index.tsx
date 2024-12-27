@@ -11,51 +11,48 @@ import {
 	SelectValue
 } from "~/components/ui/select";
 import { Label } from "~/components/ui/label";
-import { router } from "expo-router";
 import { WorkoutFilters } from "~/types";
+import { DEFAULT_LIMIT } from "~/hooks/use-workout-filter-params";
 
 const SELECT_OPTIONS = [
 	{ label: "No sort", value: "" },
 	{ label: "Name", value: "name" },
 	{ label: "Date created", value: "dateCreated" }
-];
+] as const;
+
+const LIMIT_OPTIONS = [2, 10, 25, DEFAULT_LIMIT] as const;
 
 export default function SearchFiltersForm({
-	filters = { search: "", sortBy: "" },
-	onConfirm
+	filters,
+	onConfirm,
+	onReset
 }: {
-	filters?: WorkoutFilters;
-	onConfirm: () => void;
+	filters: WorkoutFilters;
+	onConfirm: (filters: WorkoutFilters) => void;
+	onReset: () => void;
 }) {
-	const [sortByOption, setSortByOption] = useState<
-		(typeof SELECT_OPTIONS)[number]
-	>(
+	const [sortByOption, setSortByOption] = useState(
 		SELECT_OPTIONS.find((option) => option.value === filters.sortBy) ??
 			SELECT_OPTIONS[0]
 	);
-	const [localSearch, setLocalSearch] = useState(filters.search ?? "");
+	const [localSearch, setLocalSearch] = useState(filters.search);
+	const [limit, setLimit] = useState(filters.limit);
 
 	useEffect(() => {
 		setSortByOption(
 			SELECT_OPTIONS.find((option) => option.value === filters.sortBy) ??
 				SELECT_OPTIONS[0]
 		);
-		setLocalSearch(filters.search ?? "");
-	}, [filters.search, filters.sortBy]);
-
-	function handleResetFilters() {
-		setSortByOption(SELECT_OPTIONS[0]);
-		setLocalSearch("");
-
-		router.setParams({ search: "", sortBy: "" });
-	}
+		setLocalSearch(filters.search);
+		setLimit(filters.limit);
+	}, [filters.search, filters.sortBy, filters.limit]);
 
 	function handleConfirmFilters() {
-		router.setParams({
+		onConfirm?.({
 			sortBy: sortByOption?.value ?? "",
-			search: localSearch
+			search: localSearch,
+			limit
 		});
-		onConfirm?.();
 	}
 
 	return (
@@ -73,7 +70,10 @@ export default function SearchFiltersForm({
 				<Select
 					value={sortByOption}
 					onValueChange={(option) =>
-						setSortByOption(option ?? SELECT_OPTIONS[0])
+						setSortByOption(
+							(option ??
+								SELECT_OPTIONS[0]) as (typeof SELECT_OPTIONS)[number]
+						)
 					}
 				>
 					<SelectTrigger>
@@ -95,10 +95,41 @@ export default function SearchFiltersForm({
 					</SelectContent>
 				</Select>
 			</View>
-			<View className="p-2" />
+			<View className="flex flex-col gap-2">
+				<Label>Limit per Page:</Label>
+				<Select
+					value={{ label: String(limit), value: String(limit) }}
+					onValueChange={(option) =>
+						setLimit(
+							option?.value
+								? parseInt(option.value)
+								: DEFAULT_LIMIT
+						)
+					}
+				>
+					<SelectTrigger>
+						<SelectValue
+							className="native:text-lg text-sm text-foreground"
+							placeholder=""
+						/>
+					</SelectTrigger>
+					<SelectContent className="pr-4">
+						{LIMIT_OPTIONS.map((option) => (
+							<SelectItem
+								key={option}
+								label={String(option)}
+								value={String(option)}
+							>
+								{option}
+							</SelectItem>
+						))}
+					</SelectContent>
+				</Select>
+			</View>
+			<View className="p-12" />
 			<View className="flex flex-row items-center gap-4">
 				<Button
-					onPress={handleResetFilters}
+					onPress={onReset}
 					variant="secondary"
 					className="flex-grow"
 				>

@@ -3,7 +3,6 @@ import { Link, useFocusEffect, useNavigation } from "expo-router";
 import { Keyboard, View } from "react-native";
 import getWorkouts from "~/api/get-workouts";
 import { Button } from "~/components/ui/button";
-import WorkoutsList from "~/components/workouts-list";
 import { Text } from "~/components/ui/text";
 import { Plus } from "~/lib/icons/Plus";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -14,31 +13,45 @@ import {
 	BottomSheetView
 } from "@gorhom/bottom-sheet";
 import SearchFiltersForm from "~/components/search-filters-form";
-import { useLocalSearchParams } from "expo-router/build/hooks";
-import { WorkoutFilters } from "~/types";
 import { Badge } from "~/components/ui/badge";
+import useWorkoutFilterParams from "~/hooks/use-workout-filter-params";
+import { WorkoutFilters } from "~/types";
+import usePageParams from "~/hooks/use-page-params";
+import Pagination from "~/components/pagination";
+import WorkoutsList from "~/components/workouts-list";
 
 export default function WorkoutList() {
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 	const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 	useFocusEffect(
-		// close bottom sheet if leaving page
 		useCallback(() => {
+			// close bottom sheet if leaving page
 			return () => bottomSheetModalRef.current?.close();
 		}, [])
 	);
 
-	const searchParams = useLocalSearchParams<WorkoutFilters>();
-	const { data, isPending, isRefetching, refetch } = useQuery({
-		queryKey: ["workouts", searchParams],
-		queryFn: () => getWorkouts(searchParams),
+	const {
+		isSearchFilterModified,
+		filters,
+		setSearchParams,
+		resetSearchParams
+	} = useWorkoutFilterParams();
+
+	const { page, goToNextPage, goToPreviousPage, setPage } = usePageParams();
+
+	const {
+		data: { count, data } = { count: 0, data: [] },
+		isPending,
+		isRefetching,
+		refetch
+	} = useQuery({
+		queryKey: ["workouts", { ...filters, page }],
+		queryFn: () => getWorkouts({ ...filters, page }),
 		refetchOnMount: false // prevent race condition where workout is created, but exercise is not created
 	});
 
 	const navigation = useNavigation();
 	useEffect(() => {
-		const isFilterActive = searchParams.search || searchParams.sortBy;
-
 		navigation.setOptions({
 			headerRight: () => (
 				<Button
@@ -52,7 +65,7 @@ export default function WorkoutList() {
 					}
 				>
 					<SlidersHorizontal className={"text-primary"} size={23} />
-					{isFilterActive ? (
+					{isSearchFilterModified ? (
 						<Badge
 							variant="destructive"
 							className="absolute right-0 top-1 h-3 w-3 rounded-full p-0"
@@ -61,11 +74,19 @@ export default function WorkoutList() {
 				</Button>
 			)
 		});
-	}, [navigation, searchParams, isBottomSheetOpen]);
+	}, [navigation, filters, isBottomSheetOpen, isSearchFilterModified]);
 
-	function handleSearchFiltersConfirm() {
+	function handleSearchFiltersConfirm(updatedParams: WorkoutFilters) {
+		setSearchParams(updatedParams);
+		setPage(0);
+
 		Keyboard.dismiss();
 		bottomSheetModalRef.current?.close();
+	}
+
+	function handleResetSearchParams() {
+		resetSearchParams();
+		setPage(0);
 	}
 
 	if (isPending) {
@@ -87,6 +108,17 @@ export default function WorkoutList() {
 				workouts={workouts}
 				refreshing={isRefetching}
 				onRefresh={refetch}
+				ListFooterComponentClassName="pt-8"
+				ListFooterComponent={
+					<Pagination
+						currentPage={page}
+						onGoToNextPage={goToNextPage}
+						onGoToPreviousPage={goToPreviousPage}
+						onGoToPage={setPage}
+						dataCount={count}
+						pageLimit={filters.limit}
+					/>
+				}
 			/>
 			<BottomSheetModal
 				ref={bottomSheetModalRef}
@@ -117,7 +149,8 @@ export default function WorkoutList() {
 				<BottomSheetView className="flex flex-col gap-4 bg-popover p-8">
 					<SearchFiltersForm
 						onConfirm={handleSearchFiltersConfirm}
-						filters={searchParams}
+						onReset={handleResetSearchParams}
+						filters={filters}
 					/>
 				</BottomSheetView>
 			</BottomSheetModal>
