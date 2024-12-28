@@ -19,6 +19,7 @@ import { WorkoutFilters } from "~/types";
 import usePageParams from "~/hooks/use-page-params";
 import Pagination from "~/components/pagination";
 import WorkoutsList from "~/components/workouts-list";
+import { workoutQueryKeys } from "~/hooks/api/query-keys";
 
 export default function WorkoutList() {
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -45,7 +46,7 @@ export default function WorkoutList() {
 		isRefetching,
 		refetch
 	} = useQuery({
-		queryKey: ["workouts", { ...filters, page }],
+		queryKey: workoutQueryKeys.list({ ...filters, page }),
 		queryFn: () => getWorkouts({ ...filters, page }),
 		refetchOnMount: false // prevent race condition where workout is created, but exercise is not created
 	});

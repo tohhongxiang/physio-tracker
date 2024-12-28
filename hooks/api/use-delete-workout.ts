@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteWorkout } from "~/api/delete-workout";
 import { Workout } from "~/types";
 import useWorkoutFilterParams from "../use-workout-filter-params";
+import { workoutQueryKeys } from "./query-keys";
 
 export default function useDeleteWorkout({
 	onSuccess,
@@ -17,7 +18,7 @@ export default function useDeleteWorkout({
 		mutationFn: deleteWorkout,
 		onSuccess: (deletedId) => {
 			queryClient.setQueryData(
-				["workouts", { ...filters, page: 0 }],
+				workoutQueryKeys.list({ ...filters, page: 0 }),
 				({
 					count,
 					data: previousWorkouts
@@ -32,7 +33,7 @@ export default function useDeleteWorkout({
 				})
 			);
 
-			queryClient.setQueryData(["workouts", deletedId], null);
+			queryClient.setQueryData(workoutQueryKeys.detail(deletedId), null);
 
 			onSuccess?.(deletedId);
 		},

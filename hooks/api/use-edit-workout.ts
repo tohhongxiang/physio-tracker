@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import editWorkout from "~/api/edit-workout";
 import { Workout } from "~/types";
+import { workoutQueryKeys } from "./query-keys";
+import useWorkoutFilterParams from "../use-workout-filter-params";
 
 export default function useEditWorkout({
 	onSuccess,
@@ -10,21 +12,35 @@ export default function useEditWorkout({
 	onError?: (error: Error) => void;
 }) {
 	const queryClient = useQueryClient();
+	const { filters } = useWorkoutFilterParams();
 
 	const { isPending, mutate, error } = useMutation({
 		mutationFn: editWorkout,
-		onSuccess: (data) => {
+		onSuccess: (editedWorkout) => {
 			queryClient.setQueryData(
-				["workouts"],
-				(previousWorkouts: Workout[]) =>
-					previousWorkouts.map((workout) =>
-						workout.id === data.id ? data : workout
+				workoutQueryKeys.list({ ...filters, page: 0 }),
+				({
+					count,
+					data: previousWorkouts
+				}: {
+					count: number;
+					data: Workout[];
+				}) => ({
+					count,
+					data: previousWorkouts.map((workout) =>
+						workout.id === editedWorkout.id
+							? editedWorkout
+							: workout
 					)
+				})
 			);
 
-			queryClient.setQueryData(["workouts", data.id], data);
+			queryClient.setQueryData(
+				workoutQueryKeys.detail(editedWorkout.id),
+				editedWorkout
+			);
 
-			onSuccess?.(data);
+			onSuccess?.(editedWorkout);
 		},
 		onError
 	});

@@ -10,13 +10,14 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import { startOfMonth } from "date-fns";
 import { ArrowRight } from "~/lib/icons/ArrowRight";
+import { workoutQueryKeys } from "~/hooks/api/query-keys";
 
 export default function IndexPage() {
 	const [currentDate, setCurrentDate] = useState(startOfMonth(new Date()));
 
 	const { data: todaysWorkout, isPending: isFetchingTodaysWorkout } =
 		useQuery({
-			queryKey: ["workouts", "today"],
+			queryKey: workoutQueryKeys.today(),
 			queryFn: getWorkoutToday
 		});
 

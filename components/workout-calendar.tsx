@@ -14,6 +14,7 @@ import { cn } from "~/lib/utils";
 import { CircleCheckBig } from "~/lib/icons/CircleCheckBig";
 import { useQuery } from "@tanstack/react-query";
 import getWorkoutsDoneByYearMonth from "~/api/get-done-workouts-by-month-year";
+import { workoutLogQueryKeys } from "~/hooks/api/query-keys";
 
 const WEEK_DAYS_HEIGHT = 48;
 const DAY_HEIGHT = 52;
@@ -46,11 +47,10 @@ export default function WorkoutCalendar({
 	onDateChange
 }: WorkoutCalendarProps) {
 	const { data: completedWorkouts = [] } = useQuery({
-		queryKey: [
-			"workout-logs",
+		queryKey: workoutLogQueryKeys.month(
 			getYear(currentDate),
 			getMonth(currentDate) + 1
-		],
+		),
 		queryFn: ({ queryKey }) =>
 			getWorkoutsDoneByYearMonth(
 				queryKey[1] as number,

@@ -17,13 +17,14 @@ import useDeleteWorkout from "~/hooks/api/use-delete-workout";
 import { useAlertDialog } from "~/providers/alert-dialog-provider";
 import WorkoutNotFound from "~/components/workout-not-found";
 import { toast } from "sonner-native";
+import { workoutQueryKeys } from "~/hooks/api/query-keys";
 
 export default function SpecificWorkOutRoute() {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
 	const { data: workout, isPending: isLoadingWorkout } = useQuery({
-		queryKey: ["workouts", id],
-		queryFn: ({ queryKey }) => getWorkout(parseInt(queryKey[1]))
+		queryKey: workoutQueryKeys.detail(parseInt(id)),
+		queryFn: ({ queryKey }) => getWorkout(queryKey[1])
 	});
 
 	const { deleteWorkout, isLoading: isDeletingWorkout } = useDeleteWorkout({

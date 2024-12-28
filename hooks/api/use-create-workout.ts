@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import createWorkout from "~/api/create-workout";
 import { Workout } from "~/types";
 import useWorkoutFilterParams from "../use-workout-filter-params";
+import { workoutQueryKeys } from "./query-keys";
 
 export default function useCreateWorkout({
 	onSuccess,
@@ -17,7 +18,7 @@ export default function useCreateWorkout({
 		mutationFn: createWorkout,
 		onSuccess: (createdWorkout) => {
 			queryClient.setQueryData(
-				["workouts", { ...filters, page: 0 }],
+				workoutQueryKeys.list({ ...filters, page: 0 }),
 				({
 					count,
 					data: previousWorkouts
@@ -31,7 +32,7 @@ export default function useCreateWorkout({
 			);
 
 			queryClient.setQueryData(
-				["workouts", createdWorkout.id],
+				workoutQueryKeys.detail(createdWorkout.id),
 				createdWorkout
 			);
 
