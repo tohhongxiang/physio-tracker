@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteWorkout } from "~/api/delete-workout";
 import { Workout } from "~/types";
+import useWorkoutFilterParams from "../use-workout-filter-params";
 
 export default function useDeleteWorkout({
 	onSuccess,
@@ -10,16 +11,25 @@ export default function useDeleteWorkout({
 	onError?: (error: Error) => void;
 } = {}) {
 	const queryClient = useQueryClient();
+	const { filters } = useWorkoutFilterParams();
 
 	const { isPending, mutate, error } = useMutation({
 		mutationFn: deleteWorkout,
 		onSuccess: (deletedId) => {
 			queryClient.setQueryData(
-				["workouts"],
-				(previousWorkouts: Workout[]) =>
-					previousWorkouts.filter(
+				["workouts", { ...filters, page: 0 }],
+				({
+					count,
+					data: previousWorkouts
+				}: {
+					count: number;
+					data: Workout[];
+				}) => ({
+					count: count - 1,
+					data: previousWorkouts.filter(
 						(workouts) => workouts.id !== deletedId
 					)
+				})
 			);
 
 			queryClient.setQueryData(["workouts", deletedId], null);

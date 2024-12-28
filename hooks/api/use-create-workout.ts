@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useLocalSearchParams } from "expo-router";
 import createWorkout from "~/api/create-workout";
-import { Workout, WorkoutFilters } from "~/types";
+import { Workout } from "~/types";
+import useWorkoutFilterParams from "../use-workout-filter-params";
 
 export default function useCreateWorkout({
 	onSuccess,
@@ -11,19 +11,31 @@ export default function useCreateWorkout({
 	onError?: (error: Error) => void;
 } = {}) {
 	const queryClient = useQueryClient();
-	const searchParams = useLocalSearchParams<WorkoutFilters>();
+	const { filters } = useWorkoutFilterParams();
 
 	const { isPending, mutate, error } = useMutation({
 		mutationFn: createWorkout,
-		onSuccess: (data) => {
+		onSuccess: (createdWorkout) => {
 			queryClient.setQueryData(
-				["workouts", searchParams],
-				(previousWorkouts: Workout[]) => [data, ...previousWorkouts]
+				["workouts", { ...filters, page: 0 }],
+				({
+					count,
+					data: previousWorkouts
+				}: {
+					count: number;
+					data: Workout[];
+				}) => ({
+					count: count + 1,
+					data: [createdWorkout, ...previousWorkouts]
+				})
 			);
 
-			queryClient.setQueryData(["workouts", data.id], data);
+			queryClient.setQueryData(
+				["workouts", createdWorkout.id],
+				createdWorkout
+			);
 
-			onSuccess?.(data);
+			onSuccess?.(createdWorkout);
 		},
 		onError
 	});
