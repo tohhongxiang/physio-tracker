@@ -9,5 +9,11 @@ export async function deleteWorkout(workoutId: Workout["id"]) {
 		.where(eq(workouts.id, workoutId))
 		.returning();
 
-	return result[0].id;
+	const deletedWorkout = result[0];
+
+	if (!deletedWorkout) {
+		throw new Error("Workout not found!");
+	}
+
+	return deletedWorkout;
 }

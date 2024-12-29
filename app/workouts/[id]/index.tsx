@@ -28,7 +28,8 @@ export default function SpecificWorkOutRoute() {
 	});
 
 	const { deleteWorkout, isLoading: isDeletingWorkout } = useDeleteWorkout({
-		onSuccess: () => toast.success("Successfully deleted workout!")
+		onSuccess: () => toast.success("Successfully deleted workout!"),
+		onError: (error) => toast.error(error.message)
 	});
 	const alert = useAlertDialog();
 	const router = useRouter();

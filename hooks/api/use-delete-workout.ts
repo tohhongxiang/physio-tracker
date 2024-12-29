@@ -8,7 +8,7 @@ export default function useDeleteWorkout({
 	onSuccess,
 	onError
 }: {
-	onSuccess?: (deletedId: Workout["id"]) => void;
+	onSuccess?: (deletedId: Omit<Workout, "exercises">) => void;
 	onError?: (error: Error) => void;
 } = {}) {
 	const queryClient = useQueryClient();
@@ -16,7 +16,7 @@ export default function useDeleteWorkout({
 
 	const { isPending, mutate, error } = useMutation({
 		mutationFn: deleteWorkout,
-		onSuccess: (deletedId) => {
+		onSuccess: (deletedWorkout) => {
 			queryClient.setQueryData(
 				workoutQueryKeys.list({ ...filters, page: 0 }),
 				({
@@ -28,14 +28,17 @@ export default function useDeleteWorkout({
 				}) => ({
 					count: count - 1,
 					data: previousWorkouts.filter(
-						(workouts) => workouts.id !== deletedId
+						(workouts) => workouts.id !== deletedWorkout.id
 					)
 				})
 			);
 
-			queryClient.setQueryData(workoutQueryKeys.detail(deletedId), null);
+			queryClient.setQueryData(
+				workoutQueryKeys.detail(deletedWorkout.id),
+				null
+			);
 
-			onSuccess?.(deletedId);
+			onSuccess?.(deletedWorkout);
 		},
 		onError
 	});

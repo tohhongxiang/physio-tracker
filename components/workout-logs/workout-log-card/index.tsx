@@ -6,6 +6,10 @@ import { Button } from "../../ui/button";
 import { ChevronRight } from "~/lib/icons/ChevronRight";
 import { cn } from "~/lib/utils";
 import Loading from "./loading";
+import { Trash } from "~/lib/icons/Trash";
+import { useAlertDialog } from "~/providers/alert-dialog-provider";
+import { toast } from "sonner-native";
+import useDeleteWorkoutLog from "~/hooks/api/use-delete-workout-log";
 
 interface WorkoutLogCardProps extends ViewProps {
 	workoutLog: WorkoutLog;
@@ -16,6 +20,29 @@ export default function WorkoutLogCard({
 	className,
 	...props
 }: WorkoutLogCardProps) {
+	const { deleteWorkoutLog } = useDeleteWorkoutLog({
+		onSuccess: () => {
+			toast.success("Successfully deleted log!");
+		},
+		onError: (error) => {
+			toast.error(error.message);
+		}
+	});
+	const alert = useAlertDialog();
+
+	function handleDeleteDialogPress() {
+		alert({
+			variant: "destructive",
+			title: "Delete Log?",
+			description: "This action is permanent.",
+			actionText: "Delete",
+			loadingText: "Deleting...",
+			onConfirm: async () => {
+				deleteWorkoutLog(workoutLog.id);
+			}
+		});
+	}
+
 	return (
 		<Link key={workoutLog.id} href={`/workouts/${workoutLog.workout.id}`}>
 			<View
@@ -38,14 +65,27 @@ export default function WorkoutLogCard({
 						}).format(workoutLog.completedAt)}
 					</Text>
 				</View>
-				<Text className="flex-1 font-bold">
+				<Text className="line-clamp-3 flex-1 font-bold">
 					{workoutLog.workout.name}
 				</Text>
-				<Link href={`/workouts/${workoutLog.workout.id}`} asChild>
-					<Button variant="ghost" size="icon" className="self-center">
-						<ChevronRight className="text-muted-foreground" />
+				<View className="flex flex-row gap-2">
+					<Button
+						variant="ghost"
+						className="self-center"
+						onPress={handleDeleteDialogPress}
+					>
+						<Trash size={20} className="text-destructive" />
 					</Button>
-				</Link>
+					<Link href={`/workouts/${workoutLog.workout.id}`} asChild>
+						<Button
+							variant="ghost"
+							size="icon"
+							className="self-center"
+						>
+							<ChevronRight className="text-muted-foreground" />
+						</Button>
+					</Link>
+				</View>
 			</View>
 		</Link>
 	);

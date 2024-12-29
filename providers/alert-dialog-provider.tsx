@@ -142,7 +142,7 @@ export default function AlertDialogProvider({
 		<DialogContext.Provider value={{ alert: handleAlert }}>
 			{children}
 			<AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-				<AlertDialogContent className="native:max-w-md">
+				<AlertDialogContent className="w-full">
 					<AlertDialogHeader>
 						<AlertDialogTitle>{state.title}</AlertDialogTitle>
 						<AlertDialogDescription>
