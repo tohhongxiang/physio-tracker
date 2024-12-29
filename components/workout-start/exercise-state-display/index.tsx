@@ -8,6 +8,8 @@ import useExerciseControls, { STATES } from "../use-exercise-controls";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
 import hasRestBetweenSets from "~/lib/has-rest-between-sets";
 import CounterContainer from "./counter-container";
+import ExerciseRestDetails from "~/components/workout-details/exercise-card/exercise-rest-details";
+import ExerciseRepsAndSetsDetails from "~/components/workout-details/exercise-card/exercise-reps-and-sets-details";
 
 const STATES_TO_MESSAGE: Record<keyof typeof STATES, string> = {
 	[STATES.READY]: "READY",
@@ -69,6 +71,15 @@ export default function ExerciseStateDisplay({
 					currentRep={currentRep}
 					currentSet={currentSet}
 				/>
+				<View className="mb-8 flex flex-col items-center justify-center gap-4">
+					<ExerciseRepsAndSetsDetails
+						durationPerRepSeconds={exercise.durationPerRepSeconds}
+					/>
+					<ExerciseRestDetails
+						restBetweenRepsSeconds={exercise.restBetweenRepsSeconds}
+						restBetweenSetsSeconds={exercise.restBetweenSetsSeconds}
+					/>
+				</View>
 			</View>
 			<BottomControls
 				currentRep={currentRep}

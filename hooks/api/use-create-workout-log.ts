@@ -28,10 +28,14 @@ export default function useCreateWorkoutLog({
 			// if completed workout is workout of the day, clear it
 			queryClient.setQueryData(
 				workoutQueryKeys.today(),
-				(previousWorkout: Workout) =>
-					data.workoutId === previousWorkout.id
-						? null
-						: previousWorkout
+				(previousWorkout: Workout) => {
+					if (!previousWorkout) return previousWorkout;
+					if (data.workoutId === previousWorkout.id) {
+						return null;
+					}
+
+					return previousWorkout;
+				}
 			);
 
 			onSuccess?.(data);

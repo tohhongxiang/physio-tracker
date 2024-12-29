@@ -57,7 +57,7 @@ export default function useExerciseControls({
 		setCurrentRep(1);
 		setCurrentSet((c) => c + 1);
 
-		if (exercise.restBetweenSetsSeconds) {
+		if (exercise.restBetweenSetsSeconds > 0) {
 			setState(STATES.RESTING_SET);
 		} else {
 			setIsRunning(false);
@@ -100,6 +100,7 @@ export default function useExerciseControls({
 			case STATES.RUNNING: {
 				if (currentRep === exercise.reps) {
 					handleSetComplete();
+					return;
 				} else if (hasRestBetweenReps(exercise)) {
 					setState(STATES.RESTING_REP);
 				}
