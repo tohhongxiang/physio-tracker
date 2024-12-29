@@ -10,8 +10,8 @@ const workoutQueryKeys = {
 
 const workoutLogQueryKeys = {
 	all: ["workout-logs"] as const,
-	month: (year: number, month: number) =>
-		[...workoutLogQueryKeys.all, year, month] as const
+	month: (year: number, month: number, withWorkoutData = false) =>
+		[...workoutLogQueryKeys.all, year, month, withWorkoutData] as const
 };
 
 export { workoutQueryKeys, workoutLogQueryKeys };

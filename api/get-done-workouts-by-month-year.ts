@@ -45,11 +45,13 @@ export default async function getWorkoutsDoneByYearMonth(
 						exercises: true
 					}
 				}
-			}
+			},
+			orderBy: (workoutLogs, { desc }) => desc(workoutLogs.completedAt)
 		});
 	} else {
 		result = await db.query.workoutLogs.findMany({
-			where: condition // note: ilike is not supported for sqlite
+			where: condition, // note: ilike is not supported for sqlite
+			orderBy: (workoutLogs, { desc }) => desc(workoutLogs.completedAt)
 		});
 	}
 

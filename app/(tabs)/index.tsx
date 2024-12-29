@@ -22,13 +22,14 @@ export default function IndexPage() {
 		});
 
 	return (
-		<View className="flex flex-1 flex-col gap-4 px-8 py-4">
-			<View className="mb-2">
+		<View className="flex flex-1 flex-col gap-4 p-4">
+			<View>
 				<WorkoutCalendar
 					currentDate={currentDate}
 					onDateChange={setCurrentDate}
 				/>
 			</View>
+			<View className="p-4" />
 			<View className="flex flex-col gap-4">
 				<Text className="text-3xl font-bold">Today&apos;s Workout</Text>
 				{isFetchingTodaysWorkout ? (
@@ -51,6 +52,7 @@ export default function IndexPage() {
 						<Link href="/(tabs)/workouts" asChild>
 							<Button className="flex flex-row items-center justify-between gap-2">
 								<Text></Text>
+								{/* Empty text to keep main text in the center */}
 								<Text className="flex-1 text-center">
 									See your other workouts
 								</Text>
