@@ -34,9 +34,9 @@ export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
 					</Button>
 				</Link>
 			</CardHeader>
-			<CardContent>
+			<CardContent className="flex flex-col gap-4">
 				{workout.description && (
-					<Text className="mb-4 line-clamp-3 text-muted-foreground">
+					<Text className="line-clamp-2 text-muted-foreground">
 						{workout.description}
 					</Text>
 				)}

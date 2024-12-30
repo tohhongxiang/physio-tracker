@@ -22,14 +22,13 @@ export default function IndexPage() {
 		});
 
 	return (
-		<View className="flex flex-1 flex-col gap-4 p-4">
+		<View className="flex flex-1 flex-col gap-8 p-4">
 			<View>
 				<WorkoutCalendar
 					currentDate={currentDate}
 					onDateChange={setCurrentDate}
 				/>
 			</View>
-			<View className="p-4" />
 			<View className="flex flex-col gap-4">
 				<Text className="text-3xl font-bold">Today&apos;s Workout</Text>
 				{isFetchingTodaysWorkout ? (

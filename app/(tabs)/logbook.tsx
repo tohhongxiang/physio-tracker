@@ -21,12 +21,11 @@ export default function RecentWorkouts() {
 	});
 
 	return (
-		<ScrollView contentContainerClassName="flex flex-col gap-4 p-4">
+		<ScrollView contentContainerClassName="flex flex-col gap-8 p-4">
 			<WorkoutCalendar
 				currentDate={currentDate}
 				onDateChange={setCurrentDate}
 			/>
-			<View className="p-4" />
 			<View className="flex flex-col gap-4">
 				<Text className="text-3xl font-bold">
 					Your Completed Workouts
