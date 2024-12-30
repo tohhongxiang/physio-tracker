@@ -59,23 +59,10 @@ export default function TabLayout() {
 				}}
 			/>
 			<Tabs.Screen
-				name="account"
-				options={{
-					title: "Account",
-					href: null,
-					tabBarIcon: ({ color }) => (
-						<Ionicons
-							name={"person-circle"}
-							color={color}
-							size={24}
-						/>
-					)
-				}}
-			/>
-			<Tabs.Screen
 				name="timer"
 				options={{
 					title: "Timer",
+					href: null,
 					tabBarIcon: ({ color }) => (
 						<Ionicons name="time-outline" color={color} size={24} />
 					)
@@ -85,6 +72,7 @@ export default function TabLayout() {
 				name="test"
 				options={{
 					title: "Test",
+					href: null,
 					tabBarIcon: ({ color }) => (
 						<Ionicons
 							name="flask-outline"
