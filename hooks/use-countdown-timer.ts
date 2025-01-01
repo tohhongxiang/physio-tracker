@@ -114,6 +114,12 @@ export default function useCountdownTimer({
 			remainingTimeMs / updateIntervalMs
 		);
 
+		if (lastTimeUpdateCounter > lastTimeUpdateCounterRef.current) {
+			// if timer increased, do not play onTimerUpdate
+			lastTimeUpdateCounterRef.current = lastTimeUpdateCounter;
+			return;
+		}
+
 		if (
 			lastTimeUpdateCounterRef.current !== lastTimeUpdateCounter &&
 			remainingTimeMs > 0 // do not call onTimerUpdate if there is no remaining time

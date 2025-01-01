@@ -28,9 +28,11 @@ export default function ExerciseStateDisplay({
 	exercise: Exercise;
 	onExerciseComplete?: () => unknown;
 	onTimerUpdate?: ({
-		remainingTimeMs
+		remainingTimeMs,
+		totalDurationMs
 	}: {
 		remainingTimeMs: number;
+		totalDurationMs: number;
 	}) => unknown;
 	onTimerComplete?: () => unknown;
 }) {
