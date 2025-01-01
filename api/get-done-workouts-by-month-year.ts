@@ -30,7 +30,10 @@ export default async function getWorkoutsDoneByYearMonth(
 	month: number,
 	includeWorkoutData: boolean = false
 ) {
-	const condition = like(workoutLogs.completedAt, `${year}-${month}%`);
+	const condition = like(
+		workoutLogs.completedAt,
+		`${year}-${month.toString().padStart(2, "0")}%`
+	); // note: ilike is not supported for sqlite
 	let result: (Omit<WorkoutLog, "workout" | "completedAt"> & {
 		completedAt: string;
 	})[] = [];
@@ -38,7 +41,7 @@ export default async function getWorkoutsDoneByYearMonth(
 	if (includeWorkoutData) {
 		result = await db.query.workoutLogs.findMany({
 			columns: { workoutId: false },
-			where: condition, // note: ilike is not supported for sqlite
+			where: condition,
 			with: {
 				workout: {
 					with: {
@@ -50,7 +53,7 @@ export default async function getWorkoutsDoneByYearMonth(
 		});
 	} else {
 		result = await db.query.workoutLogs.findMany({
-			where: condition, // note: ilike is not supported for sqlite
+			where: condition,
 			orderBy: (workoutLogs, { desc }) => desc(workoutLogs.completedAt)
 		});
 	}
