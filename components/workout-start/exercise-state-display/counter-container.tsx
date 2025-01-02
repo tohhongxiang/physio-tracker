@@ -65,13 +65,14 @@ export default function CounterContainer({
 				}
 				ref={repsCounterRef}
 			/>
-			{exercise.description ? (
-				<DescriptionDialog text={exercise.description}>
-					<Button variant="ghost">
-						<Info className="text-primary" />
-					</Button>
-				</DescriptionDialog>
-			) : null}
+			<DescriptionDialog text={exercise.description}>
+				<Button
+					variant="ghost"
+					disabled={exercise.description.length === 0}
+				>
+					<Info className="text-primary" />
+				</Button>
+			</DescriptionDialog>
 			<CounterDisplay
 				title="SETS"
 				ref={setsCounterRef}
