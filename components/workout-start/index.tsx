@@ -11,6 +11,7 @@ import goSound from "~/assets/audio/go.mp3";
 import readySound from "~/assets/audio/ready.mp3";
 import LoadingWorkoutPage from "./loading";
 import { useRouter } from "expo-router";
+import { Progress } from "../ui/progress";
 
 export default function WorkoutStartPage({ workout }: { workout: Workout }) {
 	const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
@@ -31,7 +32,15 @@ export default function WorkoutStartPage({ workout }: { workout: Workout }) {
 	const currentExercise = exercises[currentExerciseIndex];
 	return (
 		<View className="flex flex-1 flex-col items-center justify-between">
-			<View className="flex w-full flex-row items-center justify-between p-8">
+			<View className="flex w-full px-4 py-2">
+				<Progress
+					className="h-2"
+					value={
+						(currentExerciseIndex / (exercises.length - 1)) * 100
+					}
+				/>
+			</View>
+			<View className="flex w-full flex-row items-center justify-between p-8 pt-4">
 				<Button
 					variant="ghost"
 					size="icon"

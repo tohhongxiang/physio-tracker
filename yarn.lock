@@ -3096,7 +3096,7 @@
   dependencies:
     zustand "^4.4.7"
 
-"@rn-primitives/progress@~1.1.0":
+"@rn-primitives/progress@^1.1.0":
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@rn-primitives/progress/-/progress-1.1.0.tgz#f84b6fe55033d9e3025e63b3d4862500943c184f"
   integrity sha512-TeiQQhH983UkueOybjia4qy3JAI9qsx2s3Tge3ldQpe7K00ql8mDDhand+LR4/uEHtQHjLI6Z/rIGrh7Xdld/Q==
