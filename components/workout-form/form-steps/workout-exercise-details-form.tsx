@@ -157,7 +157,7 @@ export default function WorkoutExerciseDetailsForm({
 										)}
 									/>
 								</View>
-								<View className="flex flex-row flex-wrap items-center gap-2">
+								<View className="flex flex-row flex-wrap items-center gap-2 py-2">
 									<View className="flex flex-row items-center justify-center gap-1 text-center">
 										<Controller
 											control={control}
@@ -244,7 +244,7 @@ export default function WorkoutExerciseDetailsForm({
 										</Text>
 									</View>
 								</View>
-								<View className="flex flex-row flex-wrap items-center gap-2">
+								<View className="flex flex-row flex-wrap items-center gap-2 py-2">
 									<View className="flex flex-row items-center justify-center gap-2 text-center">
 										<Text className="text-lg">Rest</Text>
 										<Controller

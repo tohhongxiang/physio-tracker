@@ -15,7 +15,7 @@ export default function WorkoutDetails({
 }) {
 	return (
 		<ScrollView className="flex h-full w-full max-w-lg flex-1 flex-col gap-2">
-			<View className="px-4 py-6">
+			<View className="p-4">
 				{showTitle ? (
 					<Text className="text-3xl font-semibold">
 						{workout.name}
