@@ -83,16 +83,12 @@ export default function useCountdownTimer({
 
 	// handle when remaining time hits 0
 	useEffect(() => {
-		if (remainingTimeMs > 0 || !onTimerComplete) {
+		if (remainingTimeMs > 0 || !onTimerComplete || durationMs === 0) {
 			return;
 		}
 
-		if (durationMs === 0) {
-			return;
-		}
-
-		onTimerComplete();
 		setRemainingTimeMs(durationMs);
+		onTimerComplete();
 
 		return () => {
 			if (isPlaying) {
@@ -100,7 +96,7 @@ export default function useCountdownTimer({
 				setRemainingTimeMs(durationMs); // set time back up when timer stops playing
 			}
 		};
-	}, [remainingTimeMs, durationMs, onTimerComplete, isPlaying, cleanUp]);
+	}, [remainingTimeMs, durationMs, onTimerComplete, isPlaying]);
 
 	useEffect(() => {
 		if (key !== null) {

@@ -1,12 +1,17 @@
-import { AudioSource, useAudioPlayer } from "expo-audio";
+import { Audio, AVPlaybackSource } from "expo-av";
+import { useCallback, useEffect, useMemo } from "react";
 
-export default function useSound(audioSource: AudioSource) {
-	const player = useAudioPlayer(audioSource);
+export default function useSound(audioSource: AVPlaybackSource) {
+	const player = useMemo(() => new Audio.Sound(), []);
 
-	async function play() {
-		await player.seekTo(0);
-		player.play();
-	}
+	useEffect(() => {
+		player.loadAsync(audioSource);
+	}, [audioSource, player]);
+
+	const play = useCallback(async () => {
+		await player.setPositionAsync(0);
+		await player.playAsync();
+	}, [player]);
 
 	return { play };
 }

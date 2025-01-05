@@ -1,9 +1,7 @@
-import { useCallback, useState } from "react";
-import { Exercise } from "~/types";
-import hasDurationPerRep from "~/lib/has-duration-per-rep";
-import useCountdownTimer from "~/hooks/use-countdown-timer";
-import hasRestBetweenReps from "~/lib/has-rest-between-reps";
 import { useFocusEffect } from "expo-router";
+import { useCallback, useMemo, useState } from "react";
+import useCountdownTimer from "~/hooks/use-countdown-timer";
+import { Exercise } from "~/types";
 
 export const STATES = {
 	READY: "READY",
@@ -12,8 +10,6 @@ export const STATES = {
 	RESTING_REP: "RESTING_REP",
 	RESTING_SET: "RESTING_SET"
 } as const;
-
-const STARTING_TIME = 10;
 
 export default function useExerciseControls({
 	exercise,
@@ -43,15 +39,43 @@ export default function useExerciseControls({
 		}, [])
 	);
 
-	function handleExerciseComplete() {
+	const handleExerciseComplete = useCallback(() => {
 		setCurrentRep(1);
 		setCurrentSet(1);
 		setIsRunning(false);
 		setState(STATES.READY);
 		onExerciseComplete?.();
-	}
+	}, [onExerciseComplete]);
 
-	function handleSetComplete() {
+	const handleStartButtonClicked = useCallback(() => {
+		if (noTimerForExercise(exercise)) {
+			if (currentSet === exercise.sets) {
+				handleExerciseComplete();
+			} else {
+				setCurrentSet((c) => c + 1);
+			}
+
+			return;
+		}
+
+		setIsRunning((c) => !c);
+		if (state !== STATES.READY) {
+			return;
+		}
+
+		if (exercise.durationPerRepSeconds > 0) {
+			setState(STATES.STARTING);
+			return;
+		}
+
+		if (exercise.restBetweenRepsSeconds > 0) {
+			setState(STATES.RESTING_REP);
+		} else {
+			setState(STATES.RESTING_SET);
+		}
+	}, [currentSet, exercise, handleExerciseComplete, state]);
+
+	const handleSetComplete = useCallback(() => {
 		if (currentSet === exercise.sets) {
 			handleExerciseComplete();
 		}
@@ -65,52 +89,48 @@ export default function useExerciseControls({
 			setIsRunning(false);
 			setState(STATES.READY);
 		}
-	}
+	}, [
+		currentSet,
+		exercise.restBetweenSetsSeconds,
+		exercise.sets,
+		handleExerciseComplete
+	]);
 
-	function handleStartButtonClicked() {
-		if (noTimerForExercise(exercise)) {
-			if (currentSet === exercise.sets) {
-				handleExerciseComplete();
-			} else {
-				setCurrentSet((c) => c + 1);
-			}
-
-			return;
+	const handleRepComplete = useCallback(() => {
+		setCurrentRep((c) => c + 1);
+		if (exercise.restBetweenRepsSeconds > 0) {
+			setState(STATES.RESTING_REP);
 		}
+	}, [exercise.restBetweenRepsSeconds]);
 
-		setIsRunning((c) => !c);
-		if (state === STATES.READY) {
-			if (hasDurationPerRep(exercise)) {
-				setState(STATES.STARTING);
-				return;
-			}
-
-			if (hasRestBetweenReps(exercise)) {
-				setState(STATES.RESTING_REP);
-			} else {
-				setState(STATES.RESTING_SET);
-			}
-		}
-	}
-
-	function handleTimerComplete() {
+	const durationSeconds = useMemo(
+		() => getDurationForTimer(exercise, state),
+		[exercise, state]
+	);
+	const handleTimerComplete = useCallback(() => {
 		switch (state) {
 			case STATES.STARTING: {
 				setState(STATES.RUNNING);
 				break;
 			}
 			case STATES.RUNNING: {
-				if (currentRep === exercise.reps) {
+				if (
+					currentRep === exercise.reps &&
+					currentSet === exercise.sets
+				) {
+					// exercise is complete
+					handleExerciseComplete();
+				} else if (currentRep === exercise.reps) {
+					// set is complete
 					handleSetComplete();
-					return;
-				} else if (hasRestBetweenReps(exercise)) {
-					setState(STATES.RESTING_REP);
+				} else {
+					// rep is complete
+					handleRepComplete();
 				}
-				setCurrentRep((c) => c + 1);
 				break;
 			}
 			case STATES.RESTING_REP: {
-				if (hasDurationPerRep(exercise)) {
+				if (exercise.durationPerRepSeconds > 0) {
 					setState(STATES.RUNNING);
 				} else if (currentRep === exercise.reps) {
 					handleSetComplete();
@@ -121,7 +141,7 @@ export default function useExerciseControls({
 				break;
 			}
 			case STATES.RESTING_SET: {
-				if (hasDurationPerRep(exercise)) {
+				if (exercise.durationPerRepSeconds > 0) {
 					setState(STATES.RUNNING);
 				} else if (currentSet === exercise.sets) {
 					handleExerciseComplete();
@@ -131,24 +151,36 @@ export default function useExerciseControls({
 				}
 				break;
 			}
-			default:
+			default: {
 				break;
+			}
 		}
-	}
 
-	const [timerKey, setTimerKey] = useState(0); // used to reset timer
-	const durationSeconds = getDurationForTimer(exercise, state);
+		onTimerComplete?.();
+		return {
+			shouldRepeat: isRunning,
+			newDurationMs: durationSeconds * 1000
+		};
+	}, [
+		currentRep,
+		currentSet,
+		durationSeconds,
+		exercise.durationPerRepSeconds,
+		exercise.reps,
+		exercise.sets,
+		handleExerciseComplete,
+		handleRepComplete,
+		handleSetComplete,
+		isRunning,
+		onTimerComplete,
+		state
+	]);
+
+	const [timerKey, setTimerKey] = useState(0);
 	const timer = useCountdownTimer({
 		isPlaying: isRunning,
 		durationMs: durationSeconds * 1000,
-		onTimerComplete: () => {
-			handleTimerComplete();
-			onTimerComplete?.();
-			return {
-				shouldRepeat: isRunning,
-				newDurationMs: durationSeconds * 1000
-			};
-		},
+		onTimerComplete: handleTimerComplete,
 		onTimerUpdate: ({ remainingTimeMs }) => {
 			return onTimerUpdate?.({
 				remainingTimeMs,
@@ -158,49 +190,60 @@ export default function useExerciseControls({
 		key: timerKey
 	});
 
-	function handleRepChange(change: number) {
-		setIsRunning(false);
-		setState(STATES.READY);
-		setTimerKey((c) => c + 1);
+	const handleRepChange = useCallback(
+		(change: number) => {
+			setIsRunning(false);
+			setState(STATES.READY);
+			setTimerKey((c) => c + 1);
 
-		// final rep, final set, do not allow increase
-		if (
-			currentRep === exercise.reps &&
-			currentSet === exercise.sets &&
-			change > 0
-		) {
-			return;
-		}
+			// final rep, final set, do not allow increase
+			if (
+				currentRep === exercise.reps &&
+				currentSet === exercise.sets &&
+				change > 0
+			) {
+				return;
+			}
 
-		// first rep, first set, do not allow decrease
-		if (currentRep === 1 && currentSet === 1 && change < 0) {
-			return;
-		}
+			// first rep, first set, do not allow decrease
+			if (currentRep === 1 && currentSet === 1 && change < 0) {
+				return;
+			}
 
-		// increase after finishing current set
-		if (currentRep === exercise.reps && change > 0) {
+			// increase after finishing current set
+			if (currentRep === exercise.reps && change > 0) {
+				setCurrentRep(1);
+				setCurrentSet((c) => c + change);
+				return;
+			}
+
+			// decrease to previous set
+			if (currentRep === 1 && currentSet > 1 && change < 0) {
+				setCurrentRep(exercise.reps);
+				setCurrentSet((c) => c + change);
+				return;
+			}
+
+			setCurrentRep((c) => c + change);
+		},
+		[currentRep, currentSet, exercise.reps, exercise.sets]
+	);
+
+	const handleSetChange = useCallback(
+		(change: number) => {
+			if (change < 0) {
+				setCurrentSet((c) => Math.max(0, c + change));
+			} else {
+				setCurrentSet((c) => Math.min(exercise.sets, c + change));
+			}
+
 			setCurrentRep(1);
-			setCurrentSet((c) => c + change);
-			return;
-		}
-
-		// decrease to previous set
-		if (currentRep === 1 && currentSet > 1 && change < 0) {
-			setCurrentRep(exercise.reps);
-			setCurrentSet((c) => c + change);
-			return;
-		}
-
-		setCurrentRep((c) => c + change);
-	}
-
-	function handleSetChange(change: number) {
-		setCurrentSet((c) => c + change);
-		setCurrentRep(1);
-		setIsRunning(false);
-		setState(STATES.READY);
-		setTimerKey((c) => c + 1);
-	}
+			setIsRunning(false);
+			setState(STATES.READY);
+			setTimerKey((c) => c + 1);
+		},
+		[exercise.sets]
+	);
 
 	return {
 		state,
@@ -214,14 +257,19 @@ export default function useExerciseControls({
 	};
 }
 
+const STARTING_TIME = 10;
 function getDurationForTimer(exercise: Exercise, state: keyof typeof STATES) {
-	if (noTimerForExercise(exercise)) {
+	if (
+		(exercise.restBetweenRepsSeconds ?? 0) === 0 &&
+		(exercise.restBetweenSetsSeconds ?? 0) === 0 &&
+		(exercise.durationPerRepSeconds ?? 0) === 0
+	) {
 		return 0;
 	}
 
 	if (state === STATES.READY || state === STATES.STARTING) {
-		if (!hasDurationPerRep(exercise)) {
-			if (hasRestBetweenReps(exercise)) {
+		if (exercise.durationPerRepSeconds === 0) {
+			if (exercise.restBetweenRepsSeconds > 0) {
 				return exercise.restBetweenRepsSeconds;
 			} else {
 				return exercise.restBetweenSetsSeconds;

@@ -62,7 +62,7 @@ export default function TabLayout() {
 				name="timer"
 				options={{
 					title: "Timer",
-					href: null,
+					// href: null,
 					tabBarIcon: ({ color }) => (
 						<Ionicons name="time-outline" color={color} size={24} />
 					)

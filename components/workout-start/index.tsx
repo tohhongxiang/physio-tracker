@@ -65,7 +65,7 @@ export default function WorkoutStartPage({ workout }: { workout: Workout }) {
 				exercise={currentExercise}
 				key={currentExercise.id} // reset all state when moving to a new exercise
 				onExerciseComplete={handleExerciseComplete}
-				onTimerComplete={() => goSoundPlayer.play()}
+				onTimerComplete={goSoundPlayer.play}
 				onTimerUpdate={({ remainingTimeMs, totalDurationMs }) => {
 					if (
 						remainingTimeMs < Math.min(3000, totalDurationMs - 1000) // make sure readySound and goSound do not play at the same time
