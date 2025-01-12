@@ -74,6 +74,11 @@ export default function WorkoutExerciseDetailsForm({
 					<Text>Add Exercise</Text>
 				</Button>
 			</View>
+			{errors.exercises?.message ? (
+				<Text className="text-center text-lg text-destructive">
+					{errors.exercises?.message}
+				</Text>
+			) : null}
 			<Animated.FlatList
 				ref={scrollViewRef}
 				data={fields}

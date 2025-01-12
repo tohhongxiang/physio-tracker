@@ -28,7 +28,12 @@ export const WorkoutFormSchema = z.object({
 		.string()
 		.min(1, { message: "Name must be at least 1 character long" }),
 	description: z.string().default(""),
-	exercises: z.array(ExerciseFormSchema).default([])
+	exercises: z
+		.array(ExerciseFormSchema)
+		.default([])
+		.refine((exercises) => exercises.length > 0, {
+			message: "There must be at least 1 exercise"
+		})
 });
 
 export type WorkoutFormSchemaType = z.infer<typeof WorkoutFormSchema>;
