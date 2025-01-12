@@ -111,14 +111,16 @@ export default function WorkoutList() {
 				onRefresh={refetch}
 				ListFooterComponentClassName="pt-8"
 				ListFooterComponent={
-					<Pagination
-						currentPage={page}
-						onGoToNextPage={goToNextPage}
-						onGoToPreviousPage={goToPreviousPage}
-						onGoToPage={setPage}
-						dataCount={count}
-						pageLimit={filters.limit}
-					/>
+					workouts.length > 0 ? (
+						<Pagination
+							currentPage={page}
+							onGoToNextPage={goToNextPage}
+							onGoToPreviousPage={goToPreviousPage}
+							onGoToPage={setPage}
+							dataCount={count}
+							pageLimit={filters.limit}
+						/>
+					) : null
 				}
 			/>
 			<BottomSheetModal

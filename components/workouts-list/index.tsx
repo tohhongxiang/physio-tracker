@@ -3,6 +3,7 @@ import WorkoutCard from "~/components/workout-card";
 import { Text } from "~/components/ui/text";
 import { Workout } from "~/types";
 import LoadingWorkoutsList from "./loading";
+import { SearchX } from "~/lib/icons/SearchX";
 
 function renderItem({ item }: { item: Workout }) {
 	return <WorkoutCard workout={item} />;
@@ -44,9 +45,12 @@ export default function WorkoutsList({
 			ItemSeparatorComponent={itemSeparatorComponent}
 			contentContainerClassName="p-4"
 			ListEmptyComponent={
-				<Text className="text-center text-lg text-muted-foreground">
-					No workouts...
-				</Text>
+				<View className="flex flex-col items-center justify-center gap-4 py-8">
+					<SearchX className="text-muted-foreground" size={64} />
+					<Text className="text-center text-lg text-muted-foreground">
+						No workouts were found...
+					</Text>
+				</View>
 			}
 			renderItem={renderItem}
 			keyExtractor={keyExtractor}
