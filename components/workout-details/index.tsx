@@ -5,6 +5,7 @@ import { Workout } from "~/types";
 import LoadingWorkoutDetails from "./loading";
 import NoExercises from "./no-exercises";
 import ReadMoreText from "../read-more-text";
+import WorkoutDurationBadge from "../exercise-detail-badges/workout-duration-badge";
 
 export default function WorkoutDetails({
 	workout,
@@ -22,7 +23,7 @@ export default function WorkoutDetails({
 					</Text>
 				) : null}
 				<ReadMoreText
-					className="text-justify text-muted-foreground"
+					className="text-muted-foreground"
 					text={
 						workout.description.length > 0
 							? workout.description
@@ -34,6 +35,10 @@ export default function WorkoutDetails({
 				<Text className="text-2xl font-bold">
 					Exercises ({workout.exercises.length})
 				</Text>
+				<WorkoutDurationBadge
+					workout={workout as Workout}
+					variant="secondary"
+				/>
 			</View>
 			<View className="flex gap-4 p-4">
 				{workout.exercises.map(

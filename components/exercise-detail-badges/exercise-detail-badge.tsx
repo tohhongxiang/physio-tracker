@@ -3,13 +3,14 @@ import { View } from "react-native";
 import { Text } from "~/components/ui/text";
 import { cn } from "~/lib/utils";
 
-const exerciseCardBadgeVariants = cva(
+export const exerciseDetailBadgeVariants = cva(
 	"flex flex-row items-center rounded-md px-2 text-center",
 	{
 		variants: {
 			variant: {
 				primary: "bg-primary",
-				secondary: "bg-secondary"
+				secondary: "bg-secondary",
+				ghost: ""
 			}
 		},
 		defaultVariants: {
@@ -18,11 +19,12 @@ const exerciseCardBadgeVariants = cva(
 	}
 );
 
-const exerciseCardBadgeTextVariants = cva("text-lg", {
+export const exerciseDetailBadgeTextVariants = cva("text-lg", {
 	variants: {
 		variant: {
 			primary: "text-primary-foreground",
-			secondary: "text-secondary-foreground"
+			secondary: "text-secondary-foreground",
+			ghost: "text-foreground"
 		}
 	},
 	defaultVariants: {
@@ -30,22 +32,30 @@ const exerciseCardBadgeTextVariants = cva("text-lg", {
 	}
 });
 
-type ExerciseCardBadgeProps = {
+type ExerciseDetailBadgeProps = {
 	boldedText: string;
 	text: string;
-} & VariantProps<typeof exerciseCardBadgeVariants>;
+	leftIcon?: React.ReactNode;
+	className?: string;
+} & VariantProps<typeof exerciseDetailBadgeVariants>;
 
-export default function ExerciseCardBadge({
+export default function ExerciseDetailBadge({
 	boldedText,
 	text,
-	variant
-}: ExerciseCardBadgeProps) {
+	variant,
+	leftIcon,
+	className
+}: ExerciseDetailBadgeProps) {
 	return (
-		<View className={exerciseCardBadgeVariants({ variant })}>
+		<View
+			className={cn(exerciseDetailBadgeVariants({ variant }), className)}
+		>
+			{leftIcon}
 			<Text
 				className={cn(
 					"font-semibold",
-					exerciseCardBadgeTextVariants({ variant })
+					exerciseDetailBadgeTextVariants({ variant }),
+					leftIcon && "ml-2"
 				)}
 			>
 				{boldedText}
@@ -53,7 +63,7 @@ export default function ExerciseCardBadge({
 			<Text
 				className={cn(
 					"text-secondary-foreground",
-					exerciseCardBadgeTextVariants({ variant })
+					exerciseDetailBadgeTextVariants({ variant })
 				)}
 			>
 				{" "}

@@ -8,10 +8,12 @@ import {
 import { Button } from "../ui/button";
 import { Text } from "../ui/text";
 import { Link } from "expo-router";
-import { ViewProps } from "react-native";
+import { View, ViewProps } from "react-native";
 import { Workout } from "~/types";
 import { Eye } from "~/lib/icons/Eye";
 import LoadingWorkoutCard from "./loading";
+import WorkoutDurationBadge from "../exercise-detail-badges/workout-duration-badge";
+import NumberOfExercisesBadge from "../exercise-detail-badges/number-of-exercises-badge";
 
 interface WorkoutCardProps extends ViewProps {
 	workout: Workout;
@@ -36,14 +38,22 @@ export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
 			</CardHeader>
 			<CardContent className="flex flex-col gap-4">
 				{workout.description && (
-					<Text className="line-clamp-2 text-muted-foreground">
+					<Text className="line-clamp-2 text-lg text-muted-foreground">
 						{workout.description}
 					</Text>
 				)}
-				<Text className="text-muted-foreground">
-					{workout.exercises.length}{" "}
-					{workout.exercises.length === 1 ? "exercise" : "exercises"}
-				</Text>
+				<View className="flex flex-row justify-between">
+					<NumberOfExercisesBadge
+						number={workout.exercises.length}
+						variant="ghost"
+						className="px-0"
+					/>
+					<WorkoutDurationBadge
+						workout={workout}
+						variant="ghost"
+						className="px-0"
+					/>
+				</View>
 			</CardContent>
 			<CardFooter>
 				<Link href={`/workouts/${workout.id}/start`} asChild>

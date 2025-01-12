@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { Text } from "~/components/ui/text";
 import formatDuration from "~/lib/format-duration";
-import ExerciseCardBadge from "./exercise-card-badge";
+import ExerciseDetailBadge from "~/components/exercise-detail-badges/exercise-detail-badge";
 
 export default function ExerciseRepsAndSetsDetails({
 	reps = 0,
@@ -15,14 +15,14 @@ export default function ExerciseRepsAndSetsDetails({
 	return (
 		<View className="flex flex-row flex-wrap gap-1">
 			{sets > 0 ? (
-				<ExerciseCardBadge
+				<ExerciseDetailBadge
 					boldedText={sets.toString()}
 					text={"set(s)"}
 				/>
 			) : null}
 			{reps > 0 && sets > 0 ? <Text className="text-lg"> × </Text> : null}
 			{reps > 0 ? (
-				<ExerciseCardBadge
+				<ExerciseDetailBadge
 					boldedText={reps.toString()}
 					text={"rep(s)"}
 				/>
@@ -31,7 +31,7 @@ export default function ExerciseRepsAndSetsDetails({
 				<Text className="text-lg"> × </Text>
 			) : null}
 			{durationPerRepSeconds > 0 ? (
-				<ExerciseCardBadge
+				<ExerciseDetailBadge
 					boldedText={formatDuration(durationPerRepSeconds * 1000)}
 					text={"per rep"}
 					variant="secondary"

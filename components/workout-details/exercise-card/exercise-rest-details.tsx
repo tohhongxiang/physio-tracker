@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { Text } from "~/components/ui/text";
 import formatDuration from "~/lib/format-duration";
-import ExerciseCardBadge from "./exercise-card-badge";
+import ExerciseDetailBadge from "~/components/exercise-detail-badges/exercise-detail-badge";
 
 export default function ExerciseRestDetails({
 	restBetweenRepsSeconds = 0,
@@ -18,7 +18,7 @@ export default function ExerciseRestDetails({
 		<View className="flex flex-row">
 			<Text className="text-lg">Rest </Text>
 			{restBetweenRepsSeconds > 0 && (
-				<ExerciseCardBadge
+				<ExerciseDetailBadge
 					boldedText={formatDuration(restBetweenRepsSeconds * 1000)}
 					text={"per rep"}
 					variant="secondary"
@@ -28,7 +28,7 @@ export default function ExerciseRestDetails({
 				<Text className="text-lg text-secondary-foreground"> , </Text>
 			)}
 			{restBetweenSetsSeconds > 0 && (
-				<ExerciseCardBadge
+				<ExerciseDetailBadge
 					boldedText={formatDuration(restBetweenSetsSeconds * 1000)}
 					text={"per set"}
 					variant="secondary"
