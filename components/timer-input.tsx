@@ -122,7 +122,7 @@ export default function TimerInput({
 								ref={inputRef}
 								value={text}
 								onChangeText={handleChangeText}
-								keyboardType="numeric"
+								keyboardType="number-pad"
 								placeholder="00"
 								className="native:h-0 native:w-0 left-[300em] h-0 w-0 border-none opacity-0 outline-none"
 								autoFocus

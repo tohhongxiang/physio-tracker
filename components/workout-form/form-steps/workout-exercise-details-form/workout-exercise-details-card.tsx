@@ -106,7 +106,7 @@ export default function WorkoutExerciseDetailsCard({
 								field: { value, onChange, onBlur }
 							}) => (
 								<Input
-									keyboardType="numeric"
+									keyboardType="number-pad"
 									className={cn(
 										"w-16",
 										errors.exercises?.[index]?.sets &&
@@ -129,7 +129,7 @@ export default function WorkoutExerciseDetailsCard({
 								field: { onChange, onBlur, value }
 							}) => (
 								<Input
-									keyboardType="numeric"
+									keyboardType="number-pad"
 									className={cn(
 										"w-16",
 										errors.exercises?.[index]?.reps &&
