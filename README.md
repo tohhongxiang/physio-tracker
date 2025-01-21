@@ -17,6 +17,16 @@ yarn run dev:ios # Run development for ios
 yarn start # Starting normal development
 ```
 
+# Build
+
+```sh
+eas build --profile preview --platform android # Build for previewing on android
+eas build --profile preview --platform ios # Build for previewing on android
+
+eas build --profile production --platform android # Build for production on android
+eas build --profile production --platform ios # Build for production on ios
+```
+
 # Resources
 
 - https://www.reactnative.express/app/project_structure

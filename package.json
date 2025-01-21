@@ -1,23 +1,21 @@
 {
-	"name": "@rnr/starter-base",
+	"name": "physio-tracker",
 	"main": "expo-router/entry",
 	"version": "1.0.0",
 	"scripts": {
 		"start": "expo start",
-		"start:web": "expo start -c --web",
 		"start:android": "expo start -c --android",
 		"start:ios": "expo start -c --ios",
 		"dev": "expo run:android",
-		"dev:web": "expo run:web",
-		"dev:android": "expo run:android",
-		"android": "expo start -c --android",
-		"ios": "expo start -c --ios",
-		"web": "expo start -c --web",
+		"dev:android": "set \"APP_VARIANT=development\" && npx expo run:android",
+		"dev:ios": "expo run:ios",
 		"clean": "rm -rf .expo node_modules",
 		"postinstall": "npx tailwindcss -i ./global.css -o ./node_modules/.cache/nativewind/global.css",
 		"prepare": "husky",
 		"generate": "npx drizzle-kit generate",
-		"lint": "eslint --config eslint.config.mjs"
+		"lint": "eslint --config eslint.config.mjs",
+		"android": "expo run:android",
+		"ios": "expo run:ios"
 	},
 	"lint-staged": {
 		"**/*.{js,ts,tsx}": [
