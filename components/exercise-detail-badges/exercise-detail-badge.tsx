@@ -32,43 +32,57 @@ export const exerciseDetailBadgeTextVariants = cva("text-lg", {
 	}
 });
 
-type ExerciseDetailBadgeProps = {
-	boldedText: string;
-	text: string;
-	leftIcon?: React.ReactNode;
-	className?: string;
-} & VariantProps<typeof exerciseDetailBadgeVariants>;
+type ExerciseDetailBadgeProps = Prettify<
+	(
+		| {
+				boldedText: string;
+				text: string;
+				children?: never;
+		  }
+		| { children: React.ReactNode; boldedText?: never; text?: never }
+	) & {
+		leftIcon?: React.ReactNode;
+		className?: string;
+	} & VariantProps<typeof exerciseDetailBadgeVariants>
+>;
 
 export default function ExerciseDetailBadge({
 	boldedText,
 	text,
-	variant,
+	children,
 	leftIcon,
-	className
+	className,
+	variant
 }: ExerciseDetailBadgeProps) {
 	return (
 		<View
 			className={cn(exerciseDetailBadgeVariants({ variant }), className)}
 		>
 			{leftIcon}
-			<Text
-				className={cn(
-					"font-semibold",
-					exerciseDetailBadgeTextVariants({ variant }),
-					leftIcon && "ml-2"
-				)}
-			>
-				{boldedText}
-			</Text>
-			<Text
-				className={cn(
-					"text-secondary-foreground",
-					exerciseDetailBadgeTextVariants({ variant })
-				)}
-			>
-				{" "}
-				{text}
-			</Text>
+			{leftIcon ? <View className="ml-2" /> : null}
+			{children ? (
+				children
+			) : (
+				<>
+					<Text
+						className={cn(
+							"font-semibold",
+							exerciseDetailBadgeTextVariants({ variant })
+						)}
+					>
+						{boldedText}
+					</Text>
+					<Text
+						className={cn(
+							"text-secondary-foreground",
+							exerciseDetailBadgeTextVariants({ variant })
+						)}
+					>
+						{" "}
+						{text}
+					</Text>
+				</>
+			)}
 		</View>
 	);
 }
