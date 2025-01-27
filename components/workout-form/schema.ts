@@ -1,7 +1,6 @@
 import { z } from "zod";
 
-const ExerciseFormSchema = z.object({
-	id: z.number().optional(),
+export const ExerciseFormSchema = z.object({
 	name: z
 		.string()
 		.min(1, { message: "Name must be at least 1 character long" })
@@ -21,6 +20,8 @@ const ExerciseFormSchema = z.object({
 	restBetweenRepsSeconds: z.number().safe().min(0).default(0),
 	restBetweenSetsSeconds: z.number().safe().min(0).default(0)
 });
+
+export type ExerciseFormSchemaType = z.infer<typeof ExerciseFormSchema>;
 
 export const WorkoutFormSchema = z.object({
 	id: z.number().optional(),

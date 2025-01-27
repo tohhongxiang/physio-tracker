@@ -8,7 +8,7 @@ export default function AddWorkoutModal() {
 
 	const { createWorkout } = useCreateWorkout({
 		onSuccess: () => {
-			router.push("/(tabs)/workouts");
+			router.replace("/(tabs)/workouts");
 			toast.success("Successfully created workout!");
 		},
 		onError: (error) => {

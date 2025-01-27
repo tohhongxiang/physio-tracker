@@ -1,18 +1,34 @@
 import { View } from "react-native";
 import { Text } from "~/components/ui/text";
-import { Exercise } from "~/types";
+import { CreateExercise, Exercise } from "~/types";
 import ExerciseRepsAndSetsDetails from "./exercise-reps-and-sets-details";
 import ExerciseRestDetails from "./exercise-rest-details";
 import ReadMoreText from "~/components/read-more-text";
+import { cn } from "~/lib/utils";
 
-export default function ExerciseCard({ exercise }: { exercise: Exercise }) {
+export default function ExerciseCard({
+	exercise,
+	className,
+	actions
+}: {
+	exercise: Exercise | CreateExercise;
+	className?: string;
+	actions?: React.ReactNode;
+}) {
 	return (
 		<View
-			key={exercise.id}
-			className="flex flex-col gap-6 rounded-md border border-muted-foreground/30 p-4"
+			className={cn(
+				"flex flex-col gap-6 rounded-md border border-muted-foreground/30 p-4",
+				className
+			)}
 		>
 			<View>
-				<Text className="text-xl font-bold">{exercise.name}</Text>
+				<View className="flex w-full flex-row items-center justify-between gap-4">
+					<Text className="line-clamp-2 shrink text-xl font-bold">
+						{exercise.name}
+					</Text>
+					{actions}
+				</View>
 				{exercise.description.length > 0 ? (
 					<ReadMoreText
 						text={exercise.description}

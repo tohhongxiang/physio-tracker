@@ -19,25 +19,35 @@ export default function useEditWorkout({
 		onSuccess: (editedWorkout) => {
 			queryClient.setQueryData(
 				workoutQueryKeys.list({ ...filters, page: 0 }),
-				({
-					count,
-					data: previousWorkouts
-				}: {
-					count: number;
-					data: Workout[];
-				}) => ({
-					count,
-					data: previousWorkouts.map((workout) =>
-						workout.id === editedWorkout.id
-							? editedWorkout
-							: workout
-					)
-				})
+				(oldData?: { count: number; data: Workout[] }) => {
+					if (!oldData) return oldData;
+
+					const { count, data: previousWorkouts } = oldData;
+					return {
+						count,
+						data: previousWorkouts.map((workout) =>
+							workout.id === editedWorkout.id
+								? editedWorkout
+								: workout
+						)
+					};
+				}
 			);
 
 			queryClient.setQueryData(
 				workoutQueryKeys.detail(editedWorkout.id),
 				editedWorkout
+			);
+
+			queryClient.setQueryData(
+				workoutQueryKeys.today(),
+				(previousWorkoutToday?: Workout) => {
+					if (!previousWorkoutToday) return previousWorkoutToday;
+					if (previousWorkoutToday.id !== editedWorkout.id)
+						return previousWorkoutToday;
+
+					return editedWorkout;
+				}
 			);
 
 			onSuccess?.(editedWorkout);

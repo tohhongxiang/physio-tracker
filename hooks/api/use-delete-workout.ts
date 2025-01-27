@@ -19,18 +19,17 @@ export default function useDeleteWorkout({
 		onSuccess: (deletedWorkout) => {
 			queryClient.setQueryData(
 				workoutQueryKeys.list({ ...filters, page: 0 }),
-				({
-					count,
-					data: previousWorkouts
-				}: {
-					count: number;
-					data: Workout[];
-				}) => ({
-					count: count - 1,
-					data: previousWorkouts.filter(
-						(workouts) => workouts.id !== deletedWorkout.id
-					)
-				})
+				(oldData: { count: number; data: Workout[] }) => {
+					if (!oldData) return oldData;
+
+					const { count, data: previousWorkouts } = oldData;
+					return {
+						count: count - 1,
+						data: previousWorkouts.filter(
+							(workouts) => workouts.id !== deletedWorkout.id
+						)
+					};
+				}
 			);
 
 			queryClient.setQueryData(

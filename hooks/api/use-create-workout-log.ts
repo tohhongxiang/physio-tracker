@@ -22,14 +22,15 @@ export default function useCreateWorkoutLog({
 
 			queryClient.setQueryData(
 				workoutLogQueryKeys.month(yearCompleted, monthCompleted),
-				(previousLogs: WorkoutLog[]) => [...previousLogs, data]
+				(previousLogs: WorkoutLog[] = []) => [...previousLogs, data]
 			);
 
 			// if completed workout is workout of the day, clear it
 			queryClient.setQueryData(
 				workoutQueryKeys.today(),
-				(previousWorkout: Workout) => {
+				(previousWorkout?: Workout) => {
 					if (!previousWorkout) return previousWorkout;
+
 					if (data.workoutId === previousWorkout.id) {
 						return null;
 					}

@@ -13,7 +13,7 @@ export default function ExerciseRepsAndSetsDetails({
 	durationPerRepSeconds?: number;
 }) {
 	return (
-		<View className="flex flex-row flex-wrap gap-1">
+		<View className="flex flex-row flex-wrap items-center gap-1">
 			{sets > 0 ? (
 				<ExerciseDetailBadge
 					boldedText={sets.toString()}

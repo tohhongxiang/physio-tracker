@@ -25,7 +25,7 @@ export default function useDeleteWorkoutLog({
 					workoutYearCompleted,
 					workoutMonthCompleted
 				),
-				(previousLogs: WorkoutLog[]) =>
+				(previousLogs: WorkoutLog[] = []) =>
 					previousLogs.filter(
 						(workoutLogs) => workoutLogs.id !== deletedWorkoutLog.id
 					)
@@ -37,7 +37,7 @@ export default function useDeleteWorkoutLog({
 					workoutMonthCompleted,
 					true
 				),
-				(previousLogs: WorkoutLog[]) =>
+				(previousLogs: WorkoutLog[] = []) =>
 					previousLogs.filter(
 						(workoutLogs) => workoutLogs.id !== deletedWorkoutLog.id
 					)

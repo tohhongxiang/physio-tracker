@@ -20,8 +20,8 @@ export default function EditWorkoutModal() {
 
 	const router = useRouter();
 	const { editWorkout } = useEditWorkout({
-		onSuccess: () => {
-			router.push("/(tabs)/workouts");
+		onSuccess: (data) => {
+			router.dismissTo(`/workouts/${data.id}`);
 			toast.success("Successfully updated workout!");
 		},
 		onError: (error) => {

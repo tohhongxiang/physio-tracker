@@ -20,7 +20,7 @@ import { Text } from "~/components/ui/text";
 
 type AlertOptions<T> = {
 	title?: string;
-	description?: string;
+	description?: string | React.ReactNode;
 	actionText?: string;
 	cancelText?: string;
 	loadingText?: string;
@@ -52,7 +52,7 @@ function DEFAULT_ERROR_HANDLER() {}
 
 type AlertDialogUIState = {
 	title: string;
-	description: string;
+	description: string | React.ReactNode;
 	actionText: string;
 	cancelText: string;
 	loadingText: string;
@@ -145,7 +145,9 @@ export default function AlertDialogProvider({
 				<AlertDialogContent className="w-full">
 					<AlertDialogHeader>
 						<AlertDialogTitle>{state.title}</AlertDialogTitle>
-						<AlertDialogDescription>
+						<AlertDialogDescription
+							asChild={typeof state.description !== "string"}
+						>
 							{state.description}
 						</AlertDialogDescription>
 					</AlertDialogHeader>

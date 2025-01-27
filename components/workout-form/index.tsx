@@ -1,14 +1,16 @@
-import { usePreventRemove } from "@react-navigation/native";
-import { useNavigation } from "expo-router";
-import { useState } from "react";
-import { View } from "react-native";
-import { Button } from "~/components/ui/button";
-import { Text } from "~/components/ui/text";
-import { WorkoutFormSchemaType } from "./schema";
-import useWorkoutForm from "./use-workout-form";
-import { formSteps } from "./form-steps";
 import { Workout } from "~/types";
+import { View } from "react-native";
+import { useNavigation } from "expo-router";
 import { useAlertDialog } from "~/providers/alert-dialog-provider";
+import useWorkoutForm from "./use-workout-form";
+import { useState } from "react";
+import WorkoutInformation from "./workout-information";
+import { usePreventRemove } from "@react-navigation/native";
+import AddExerciseList from "./add-exercise-list";
+import WorkoutDetails from "../workout-details";
+import { Button } from "../ui/button";
+import { Text } from "../ui/text";
+import { WorkoutFormSchemaType } from "./schema";
 
 type WorkoutFormProps =
 	| {
@@ -21,33 +23,34 @@ type WorkoutFormProps =
 	  };
 
 export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
-	const [step, setStep] = useState(0);
-
 	const navigator = useNavigation();
 	const alert = useAlertDialog();
+
 	const form = useWorkoutForm(data);
+	usePreventRemove(
+		form.formState.isDirty && !form.formState.isSubmitting, // when submitting, we can allow redirects
+		({ data }) => {
+			if (step === 1) {
+				return;
+			}
 
-	usePreventRemove(form.formState.isDirty, ({ data }) => {
-		if (step > 0) {
-			setStep((c) => c - 1);
-			return;
+			if (step > 0) {
+				setStep((c) => c - 1);
+				return;
+			}
+
+			alert({
+				title: "Discard Changes?",
+				description:
+					"You have unsaved changes. Discard them and leave the screen?",
+				variant: "destructive",
+				actionText: "Discard",
+				onSuccess: () => navigator.dispatch(data.action)
+			});
 		}
+	);
 
-		if (!form.formState.isDirty) {
-			navigator.dispatch(data.action);
-			return;
-		}
-
-		alert({
-			title: "Discard Changes?",
-			description:
-				"You have unsaved changes. Discard them and leave the screen?",
-			variant: "destructive",
-			actionText: "Discard",
-			onSuccess: () => navigator.dispatch(data.action)
-		});
-	});
-
+	const [step, setStep] = useState(0);
 	function handleGoToPreviousStep() {
 		if (step === 0) {
 			navigator.goBack();
@@ -57,52 +60,58 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 		setStep((current) => current - 1);
 	}
 
-	const [isSubmitting, setIsSubmitting] = useState(false);
-	async function handleGoToNextStep() {
-		if (step === formSteps.length - 1) {
-			// final step, submit
-			form.handleSubmit(async (data) => {
-				setIsSubmitting(true);
-				await onSubmit?.(data as Workout);
-				setIsSubmitting(false);
-			})();
-			return;
-		}
-
-		// if we need to validate from the current step
-		if (formSteps[step].validate) {
-			const isValid = await form.trigger(formSteps[step].validate, {
-				shouldFocus: true
-			});
-
-			if (!isValid) {
-				return;
-			}
-		}
-
-		setStep((current) => current + 1);
+	function handleSubmit() {
+		form.handleSubmit(async (data) => {
+			await onSubmit?.(data as Workout);
+		})();
+		return;
 	}
 
-	const CurrentStepUI = formSteps[step].component;
 	return (
-		<View className="flex flex-1 flex-col p-4">
-			<View className="flex-1">
-				<CurrentStepUI form={form} />
-			</View>
-			<View className="flex shrink-0 flex-row justify-end gap-4 pt-4">
-				<Button variant="secondary" onPress={handleGoToPreviousStep}>
-					<Text>{step === 0 ? "Cancel" : "Previous"}</Text>
-				</Button>
-				<Button onPress={handleGoToNextStep} disabled={isSubmitting}>
-					<Text>
-						{isSubmitting
-							? "Submitting..."
-							: step === formSteps.length - 1
-								? "Finish"
-								: "Next"}
-					</Text>
-				</Button>
-			</View>
+		<View>
+			{step === 0 ? (
+				<WorkoutInformation
+					form={form}
+					onSuccessfulSubmit={() => setStep((c) => c + 1)}
+					onGoToPreviousStep={handleGoToPreviousStep}
+				/>
+			) : null}
+			{step === 1 ? (
+				<AddExerciseList
+					form={form}
+					onSuccessfulSubmit={() => setStep((c) => c + 1)}
+					onGoToPreviousStep={handleGoToPreviousStep}
+				/>
+			) : null}
+			{step === 2 ? (
+				<View className="h-full">
+					<WorkoutDetails
+						workout={form.getValues() as Workout}
+						showTitle
+					/>
+					<View className="flex flex-row gap-4">
+						<Button
+							variant="secondary"
+							className="flex-grow"
+							onPress={handleGoToPreviousStep}
+							disabled={form.formState.isSubmitting}
+						>
+							<Text>Previous</Text>
+						</Button>
+						<Button
+							className="flex-grow"
+							onPress={handleSubmit}
+							disabled={form.formState.isSubmitting}
+						>
+							<Text>
+								{form.formState.isSubmitting
+									? "Loading..."
+									: "Submit"}
+							</Text>
+						</Button>
+					</View>
+				</View>
+			) : null}
 		</View>
 	);
 }
