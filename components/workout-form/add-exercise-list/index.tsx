@@ -173,6 +173,8 @@ export default function AddExerciseList({
 				enablePanDownToClose={true}
 				enableDynamicSizing={false}
 				enableOverDrag={false}
+				keyboardBehavior="interactive"
+				keyboardBlurBehavior="restore"
 			>
 				<BottomSheetView className="flex h-full flex-col gap-4 bg-popover pt-12">
 					{isAddingExercise && (
