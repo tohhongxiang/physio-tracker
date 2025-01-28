@@ -1,13 +1,17 @@
 import { View } from "react-native";
-import { Button } from "../ui/button";
-import { Text } from "../ui/text";
+import { Button } from "../../ui/button";
+import { Text } from "../../ui/text";
 import Animated, { Easing, LinearTransition } from "react-native-reanimated";
 import { useRef, useState } from "react";
-import { useFieldArray, UseFormReturn } from "react-hook-form";
-import { WorkoutFormSchemaType } from "./schema";
+import {
+	FieldArrayWithId,
+	useFieldArray,
+	UseFormReturn
+} from "react-hook-form";
+import { WorkoutFormSchemaType } from "../schema";
 import AddExercise from "./add-exercise";
 import { CreateExercise } from "~/types";
-import ExerciseCard from "../workout-details/exercise-card";
+import ExerciseCard from "../../workout-details/exercise-card";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
 import { useBottomSheet } from "~/hooks/use-bottom-sheet";
 import { usePreventRemove } from "@react-navigation/native";
@@ -77,7 +81,12 @@ export default function AddExerciseList({
 		onSuccessfulSubmit();
 	}
 
-	const scrollViewRef = useRef<Animated.FlatList<unknown> | null>(null);
+	const scrollViewRef =
+		useRef<
+			Animated.FlatList<
+				FieldArrayWithId<WorkoutFormSchemaType, "exercises", "id">
+			>
+		>(null);
 	const previousHeight = useRef(-1);
 	function handleContentSizeChanged(height: number) {
 		if (height > previousHeight.current) {
@@ -127,51 +136,19 @@ export default function AddExerciseList({
 				contentContainerClassName={"min-h-0"}
 				ItemSeparatorComponent={() => <View className="p-2" />}
 				renderItem={({ item, index }) => (
-					<View className="flex w-full flex-row">
-						<ExerciseCard
-							exercise={item}
-							className="shrink"
-							actions={
-								<View className="flex shrink-0 flex-row gap-4">
-									<Button
-										disabled={index === 0}
-										variant="ghost"
-										size="icon"
-										onPress={() => move(index, index - 1)}
-									>
-										<ChevronUp className="text-foreground" />
-									</Button>
-									<Button
-										onPress={() => {
-											setEditingExerciseIndex(index);
-											bottomSheet.open();
-										}}
-										variant="secondary"
-										size="icon"
-									>
-										<Pencil className="text-foreground" />
-									</Button>
-									<Button
-										variant="destructive"
-										size="icon"
-										onPress={() =>
-											handleDeleteExercise(index)
-										}
-									>
-										<Trash className="text-destructive-foreground" />
-									</Button>
-									<Button
-										disabled={index === fields.length - 1}
-										variant="ghost"
-										size="icon"
-										onPress={() => move(index, index + 1)}
-									>
-										<ChevronDown className="text-foreground" />
-									</Button>
-								</View>
-							}
-						/>
-					</View>
+					<Card
+						item={item}
+						index={index}
+						move={move}
+						onEdit={(index) => {
+							setEditingExerciseIndex(index);
+							bottomSheet.open();
+						}}
+						onDelete={(index) => {
+							handleDeleteExercise(index);
+						}}
+						isLastIndex={index === fields.length - 1}
+					/>
 				)}
 			/>
 			<View className="mt-auto flex flex-row gap-4">
@@ -221,6 +198,65 @@ export default function AddExerciseList({
 					)}
 				</BottomSheetView>
 			</BottomSheetModal>
+		</View>
+	);
+}
+
+function Card({
+	item,
+	index,
+	move,
+	onEdit,
+	onDelete,
+	isLastIndex
+}: {
+	item: FieldArrayWithId<WorkoutFormSchemaType, "exercises", "id">;
+	index: number;
+	move: (from: number, to: number) => void;
+	onEdit: (index: number) => void;
+	onDelete: (index: number) => void;
+	isLastIndex: boolean;
+}) {
+	return (
+		<View className="flex w-full flex-row">
+			<ExerciseCard
+				exercise={item}
+				className="shrink"
+				actions={
+					<View className="flex shrink-0 flex-row gap-4">
+						<Button
+							disabled={index === 0}
+							variant="ghost"
+							size="icon"
+							onPress={() => move(index, index - 1)}
+						>
+							<ChevronUp className="text-foreground" />
+						</Button>
+						<Button
+							onPress={() => onEdit(index)}
+							variant="secondary"
+							size="icon"
+						>
+							<Pencil className="text-foreground" />
+						</Button>
+						<Button
+							variant="destructive"
+							size="icon"
+							onPress={() => onDelete(index)}
+						>
+							<Trash className="text-destructive-foreground" />
+						</Button>
+						<Button
+							disabled={isLastIndex}
+							variant="ghost"
+							size="icon"
+							onPress={() => move(index, index + 1)}
+						>
+							<ChevronDown className="text-foreground" />
+						</Button>
+					</View>
+				}
+			/>
 		</View>
 	);
 }

@@ -1,20 +1,21 @@
 import { View } from "react-native";
-import { Text } from "../ui/text";
-import { Label } from "../ui/label";
-import { Input } from "../ui/input";
-import { Textarea } from "../ui/textarea";
-import { Button } from "../ui/button";
-import { Separator } from "../ui/separator";
+import { Text } from "../../ui/text";
+import { Label } from "../../ui/label";
+import { Input } from "../../ui/input";
+import { Textarea } from "../../ui/textarea";
+import { Button } from "../../ui/button";
+import { Separator } from "../../ui/separator";
 import { Plus } from "~/lib/icons/Plus";
 import { Minus } from "~/lib/icons/Minus";
 import { Controller, useForm } from "react-hook-form";
-import { ExerciseFormSchema, ExerciseFormSchemaType } from "./schema";
+import { ExerciseFormSchema, ExerciseFormSchemaType } from "../schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "~/lib/utils";
-import TimerInput from "../timer-input";
+import TimerInput from "../../timer-input";
 import formatDuration from "~/lib/format-duration";
 import { CreateExercise } from "~/types";
 import { X } from "~/lib/icons/X";
+import { useEffect } from "react";
 
 export default function AddExercise({
 	initialData,
@@ -44,6 +45,16 @@ export default function AddExercise({
 	function handleSubmit() {
 		form.handleSubmit(onSubmit)();
 	}
+
+	useEffect(() => {
+		const timeoutHandler = setTimeout(() => {
+			if (initialData) return;
+
+			form.setFocus("name");
+		}, 100);
+
+		return () => clearTimeout(timeoutHandler);
+	}, [form, initialData]);
 
 	return (
 		<View className="flex flex-1 flex-col gap-8 p-4">
