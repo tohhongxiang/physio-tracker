@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { Link, useFocusEffect, useNavigation } from "expo-router";
+import { Link, useNavigation } from "expo-router";
 import { Keyboard, View } from "react-native";
 import getWorkouts from "~/api/get-workouts";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import { Plus } from "~/lib/icons/Plus";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { SlidersHorizontal } from "~/lib/icons/SlidersHorizontal";
 import {
 	BottomSheetBackdrop,
@@ -20,17 +20,9 @@ import usePageParams from "~/hooks/use-page-params";
 import Pagination from "~/components/pagination";
 import WorkoutsList from "~/components/workouts-list";
 import { workoutQueryKeys } from "~/hooks/api/query-keys";
+import { useBottomSheet } from "~/hooks/use-bottom-sheet";
 
 export default function WorkoutList() {
-	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-	const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
-	useFocusEffect(
-		useCallback(() => {
-			// close bottom sheet if leaving page
-			return () => bottomSheetModalRef.current?.close();
-		}, [])
-	);
-
 	const {
 		isSearchFilterModified,
 		filters,
@@ -51,6 +43,7 @@ export default function WorkoutList() {
 		refetchOnMount: false // prevent race condition where workout is created, but exercise is not created
 	});
 
+	const bottomSheet = useBottomSheet();
 	const navigation = useNavigation();
 	useEffect(() => {
 		navigation.setOptions({
@@ -60,9 +53,9 @@ export default function WorkoutList() {
 					size="icon"
 					className="aspect-square p-0"
 					onPress={() =>
-						isBottomSheetOpen
-							? bottomSheetModalRef.current?.close()
-							: bottomSheetModalRef.current?.present()
+						bottomSheet.isOpen
+							? bottomSheet.close()
+							: bottomSheet.open()
 					}
 				>
 					<SlidersHorizontal className={"text-primary"} size={23} />
@@ -75,14 +68,14 @@ export default function WorkoutList() {
 				</Button>
 			)
 		});
-	}, [navigation, filters, isBottomSheetOpen, isSearchFilterModified]);
+	}, [navigation, filters, isSearchFilterModified, bottomSheet]);
 
 	function handleSearchFiltersConfirm(updatedParams: WorkoutFilters) {
 		setSearchParams(updatedParams);
 		setPage(0);
 
 		Keyboard.dismiss();
-		bottomSheetModalRef.current?.close();
+		bottomSheet.close();
 	}
 
 	function handleResetSearchParams() {
@@ -124,10 +117,8 @@ export default function WorkoutList() {
 				}
 			/>
 			<BottomSheetModal
-				ref={bottomSheetModalRef}
-				onChange={(index) =>
-					setIsBottomSheetOpen(index < 0 ? false : true)
-				}
+				ref={bottomSheet.ref}
+				onChange={bottomSheet.setIsOpen}
 				enablePanDownToClose
 				handleComponent={() => (
 					<View className="flex items-center justify-center rounded-t-xl border border-b-0 border-input bg-popover pt-4">

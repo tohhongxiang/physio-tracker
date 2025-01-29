@@ -16,13 +16,11 @@ export function useBottomSheet() {
 	const open = useCallback(() => {
 		setIsBottomSheetOpen(true);
 		bottomSheetModalRef.current?.present();
-		bottomSheetModalRef.current?.expand();
 	}, []);
 
 	const close = useCallback(() => {
 		setIsBottomSheetOpen(false);
-		bottomSheetModalRef.current?.forceClose();
-		bottomSheetModalRef.current?.dismiss();
+		bottomSheetModalRef.current?.close();
 	}, []);
 
 	return {
