@@ -18,16 +18,14 @@ import { X } from "~/lib/icons/X";
 import { useEffect } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 
-export default function AddExercise({
+export default function SingleExerciseForm({
 	initialData,
 	onCancel,
-	onSubmit,
-	mode = "update"
+	onSubmit
 }: {
-	initialData?: CreateExercise;
+	initialData?: CreateExercise | null | undefined;
 	onCancel: () => void;
 	onSubmit: (createdExercise: CreateExercise) => void;
-	mode?: "update" | "add";
 }) {
 	const form = useForm<ExerciseFormSchemaType>({
 		resolver: zodResolver(ExerciseFormSchema),
@@ -61,7 +59,7 @@ export default function AddExercise({
 		<View className="flex h-full flex-col">
 			<View className="flex flex-row items-center justify-between p-4">
 				<Text className="text-2xl font-bold">
-					{mode === "update" ? "Update Exercise" : "New Exercise"}
+					{initialData ? "Update Exercise" : "New Exercise"}
 				</Text>
 				<Button variant="ghost" onPress={onCancel}>
 					<X className="text-foreground" />
@@ -503,7 +501,7 @@ export default function AddExercise({
 				</Button>
 				<Button className="flex-grow" onPress={handleSubmit}>
 					<Text>
-						{mode === "update" ? "Update Exercise" : "Add Exercise"}
+						{initialData ? "Update Exercise" : "Add Exercise"}
 					</Text>
 				</Button>
 			</View>

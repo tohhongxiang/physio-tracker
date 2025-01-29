@@ -6,7 +6,7 @@ import useWorkoutForm from "./use-workout-form";
 import { useState } from "react";
 import WorkoutInformation from "./workout-information";
 import { usePreventRemove } from "@react-navigation/native";
-import AddExerciseList from "./add-exercise-list";
+import WorkoutExercises from "./workout-exercises";
 import WorkoutDetails from "../workout-details";
 import { Button } from "../ui/button";
 import { Text } from "../ui/text";
@@ -42,7 +42,7 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 			alert({
 				title: "Discard Changes?",
 				description:
-					"You have unsaved changes. Discard them and leave the screen?",
+					"You have unsaved changes. Discard them and leave?",
 				variant: "destructive",
 				actionText: "Discard",
 				onSuccess: () => navigator.dispatch(data.action)
@@ -77,7 +77,7 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 				/>
 			) : null}
 			{step === 1 ? (
-				<AddExerciseList
+				<WorkoutExercises
 					form={form}
 					onSuccessfulSubmit={() => setStep((c) => c + 1)}
 					onGoToPreviousStep={handleGoToPreviousStep}
