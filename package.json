@@ -51,7 +51,6 @@
 		"clsx": "^2.1.0",
 		"date-fns": "^4.1.0",
 		"drizzle-orm": "^0.37.0",
-		"eas-cli": "^13.4.2",
 		"expo": "^52.0.7",
 		"expo-av": "~15.0.1",
 		"expo-constants": "~17.0.3",

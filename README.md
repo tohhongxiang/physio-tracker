@@ -19,6 +19,14 @@ yarn start # Starting normal development
 
 # Build
 
+Make sure `eas` is installed.
+
+```sh
+npm install -g eas-cli
+```
+
+Then build the app for the correct `profile` and `platform`. Check `eas.json` for more details regarding each profile.
+
 ```sh
 eas build --profile preview --platform android # Build for previewing on android
 eas build --profile preview --platform ios # Build for previewing on android
