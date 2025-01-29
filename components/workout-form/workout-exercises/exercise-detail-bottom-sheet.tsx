@@ -1,4 +1,4 @@
-import { forwardRef, useCallback, useEffect, useState } from "react";
+import { forwardRef, useCallback, useState } from "react";
 import { useBottomSheet } from "~/hooks/use-bottom-sheet";
 import SingleExerciseForm from "./single-exercise-form";
 import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
@@ -78,6 +78,7 @@ type ExerciseDetailBottomSheetProps = {
 };
 
 // ExerciseDetailBottomSheet should be used with useExerciseDetailBottomSheet
+const snapPoints = ["100%"];
 const ExerciseDetailBottomSheet = forwardRef<
 	BottomSheetModal<CreateExercise>,
 	ExerciseDetailBottomSheetProps
@@ -91,18 +92,12 @@ const ExerciseDetailBottomSheet = forwardRef<
 	}: ExerciseDetailBottomSheetProps,
 	ref
 ) {
-	useEffect(() => {
-		if (!isOpen) {
-			onCancel();
-		}
-	}, [isOpen, onCancel]);
-
 	return (
 		<BottomSheetModal
 			ref={ref}
-			onChange={(index) => setIsOpen(index)}
+			onChange={setIsOpen}
 			handleComponent={null}
-			snapPoints={["100%"]}
+			snapPoints={snapPoints}
 			backgroundComponent={null}
 			backdropComponent={null}
 			enablePanDownToClose={true}
@@ -110,9 +105,11 @@ const ExerciseDetailBottomSheet = forwardRef<
 			enableOverDrag={false}
 			keyboardBehavior="interactive"
 			keyboardBlurBehavior="restore"
+			enableDismissOnClose
 		>
 			<BottomSheetView className="flex h-full flex-col gap-4 bg-popover pt-12">
 				<SingleExerciseForm
+					isOpen={isOpen}
 					onCancel={onCancel}
 					onSubmit={onSubmit}
 					initialData={initialData}

@@ -19,10 +19,12 @@ import { useEffect } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 
 export default function SingleExerciseForm({
+	isOpen,
 	initialData,
 	onCancel,
 	onSubmit
 }: {
+	isOpen?: boolean;
 	initialData?: CreateExercise | null | undefined;
 	onCancel: () => void;
 	onSubmit: (createdExercise: CreateExercise) => void;
@@ -46,14 +48,14 @@ export default function SingleExerciseForm({
 	}
 
 	useEffect(() => {
+		if (initialData || !isOpen) return;
+
 		const timeoutHandler = setTimeout(() => {
-			if (initialData) return;
-
 			form.setFocus("name");
-		}, 100);
+		}, 0);
 
-		return () => clearTimeout(timeoutHandler);
-	}, [form, initialData]);
+		return () => timeoutHandler && clearTimeout(timeoutHandler);
+	}, [form, initialData, isOpen]);
 
 	return (
 		<View className="flex h-full flex-col">
