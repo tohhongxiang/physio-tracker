@@ -1,15 +1,15 @@
 import { View } from "react-native";
 import hasDurationPerRep from "~/lib/has-duration-per-rep";
-import CounterDisplay from "../counter-display";
+import CounterDisplay from "./counter-display";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
-import { Button } from "../../ui/button";
+import { Button } from "~/components/ui/button";
 import { Info } from "~/lib/icons/Info";
-import DescriptionDialog from "../description-dialog";
+import DescriptionDialog from "./description-dialog";
 import { cn } from "~/lib/utils";
-import { useLayoutEffect, useRef, useState } from "react";
+import { memo, useLayoutEffect, useRef, useState } from "react";
 import { Exercise } from "~/types";
 
-export default function CounterContainer({
+export default memo(function CounterContainer({
 	exercise,
 	currentRep,
 	currentSet
@@ -49,10 +49,10 @@ export default function CounterContainer({
 	return (
 		<View
 			className={cn(
-				"flex w-full flex-row items-center gap-4 py-4",
+				"flex items-center py-4",
 				widths.setsCounter + widths.repsCounter > widths.parent
-					? "flex-col justify-center"
-					: "flex-row flex-wrap justify-around"
+					? "flex-col justify-center gap-4"
+					: "flex-row justify-around gap-8"
 			)}
 			ref={parentContainerRef}
 		>
@@ -80,4 +80,4 @@ export default function CounterContainer({
 			/>
 		</View>
 	);
-}
+});

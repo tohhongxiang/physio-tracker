@@ -7,8 +7,9 @@ import { Pause } from "~/lib/icons/Pause";
 import { Play } from "~/lib/icons/Play";
 import { ChevronRight } from "~/lib/icons/ChevronRight";
 import { ChevronsRight } from "~/lib/icons/ChevronsRight";
+import { memo } from "react";
 
-export default function BottomControls({
+export default memo(function BottomControls({
 	currentSet,
 	currentRep,
 	totalSets,
@@ -95,4 +96,4 @@ export default function BottomControls({
 			</Button>
 		</View>
 	);
-}
+});

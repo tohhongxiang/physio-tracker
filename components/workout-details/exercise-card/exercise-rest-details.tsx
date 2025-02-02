@@ -2,8 +2,9 @@ import { View } from "react-native";
 import { Text } from "~/components/ui/text";
 import formatDuration from "~/lib/format-duration";
 import ExerciseDetailBadge from "~/components/exercise-detail-badges/exercise-detail-badge";
+import { memo } from "react";
 
-export default function ExerciseRestDetails({
+export default memo(function ExerciseRestDetails({
 	restBetweenRepsSeconds = 0,
 	restBetweenSetsSeconds = 0
 }: {
@@ -36,4 +37,4 @@ export default function ExerciseRestDetails({
 			)}
 		</View>
 	);
-}
+});

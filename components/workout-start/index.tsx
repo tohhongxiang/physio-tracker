@@ -1,78 +1,164 @@
-import { useState } from "react";
-import { View } from "react-native";
-import { Button } from "~/components/ui/button";
-import { Text } from "~/components/ui/text";
-import { ChevronLeft } from "~/lib/icons/ChevronLeft";
-import { ChevronRight } from "~/lib/icons/ChevronRight";
-import { Workout } from "~/types";
+import { Dimensions, View } from "react-native";
+import { Exercise, Workout } from "~/types";
+import LoadingWorkoutPage from "./loading";
+import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
+import BottomControls from "./bottom-controls";
+import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import ExerciseStateDisplay from "./exercise-state-display";
+import useExerciseControls, { STATES } from "./use-exercise-controls";
+import WorkoutProgressIndicator from "./workout-progress-indicator";
+import ExerciseListNavigation from "./exercise-list-navigation";
 import useSound from "~/hooks/use-sound";
 import goSound from "~/assets/audio/go.mp3";
 import readySound from "~/assets/audio/ready.mp3";
-import LoadingWorkoutPage from "./loading";
 import { useRouter } from "expo-router";
-import { Progress } from "../ui/progress";
 
-export default function WorkoutStartPage({ workout }: { workout: Workout }) {
+const width = Dimensions.get("window").width;
+export default function WorkoutStartPage({
+	workout: { id: workoutId, exercises }
+}: {
+	workout: Workout;
+}) {
+	const [areArrowsDisabled, setAreArrowsDisabled] = useState(false);
+	const ref = useRef<ICarouselInstance>(null);
+
 	const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
-	const { exercises } = workout;
+	const currentExercise = useMemo(() => {
+		return exercises[currentExerciseIndex];
+	}, [exercises, currentExerciseIndex]);
+
+	const handleGoToPreviousExercise = useCallback(
+		() =>
+			ref.current?.scrollTo({
+				index: currentExerciseIndex - 1,
+				animated: true
+			}),
+		[currentExerciseIndex]
+	);
+
+	const router = useRouter();
+	const handleGoToNextExercise = useCallback(() => {
+		if (currentExerciseIndex === exercises.length - 1) {
+			return router.push(`/workouts/${workoutId}/complete`);
+		}
+		ref.current?.scrollTo({
+			index: currentExerciseIndex + 1,
+			animated: true
+		});
+	}, [currentExerciseIndex, exercises.length, router, workoutId]);
 
 	const goSoundPlayer = useSound(goSound);
 	const readySoundPlayer = useSound(readySound);
 
-	const router = useRouter();
-	function handleExerciseComplete() {
-		if (currentExerciseIndex === workout.exercises.length - 1) {
-			return router.push(`/workouts/${workout.id}/complete`);
+	const handleTimerUpdate = useCallback(
+		({
+			remainingTimeMs,
+			totalDurationMs
+		}: {
+			remainingTimeMs: number;
+			totalDurationMs: number;
+		}) => {
+			if (
+				remainingTimeMs < Math.min(3000, totalDurationMs - 1000) // make sure readySound and goSound do not play at the same time
+			) {
+				readySoundPlayer.play();
+			}
+		},
+		[readySoundPlayer]
+	);
+
+	const {
+		state,
+		currentRep,
+		currentSet,
+		isTimerRunning,
+		changeRep,
+		changeSet,
+		toggleTimer,
+		remainingTimeMs,
+		restart
+	} = useExerciseControls({
+		exercise: currentExercise,
+		onTimerComplete: goSoundPlayer.play,
+		onTimerUpdate: handleTimerUpdate,
+		onExerciseComplete: handleGoToNextExercise
+	});
+
+	const previousExerciseIndex = useRef(0);
+	useLayoutEffect(() => {
+		// only restart if currentExerciseIndex changes
+		if (previousExerciseIndex.current !== currentExerciseIndex) {
+			restart();
 		}
 
-		setCurrentExerciseIndex((c) => c + 1);
-	}
+		previousExerciseIndex.current = currentExerciseIndex;
+	}, [currentExerciseIndex, restart]);
 
-	const currentExercise = exercises[currentExerciseIndex];
+	const renderItem = useCallback(
+		({ item: exercise, index }: { item: Exercise; index: number }) => {
+			const isActiveExercise = index === currentExerciseIndex;
+			return (
+				<ExerciseStateDisplay
+					key={exercise.id}
+					exercise={exercise}
+					isRunning={isActiveExercise ? isTimerRunning : false}
+					remainingTimeMs={isActiveExercise ? remainingTimeMs : 10000}
+					state={isActiveExercise ? state : STATES.READY}
+					currentRep={isActiveExercise ? currentRep : 1}
+					currentSet={isActiveExercise ? currentSet : 1}
+				/>
+			);
+		},
+		[
+			currentExerciseIndex,
+			currentRep,
+			currentSet,
+			isTimerRunning,
+			remainingTimeMs,
+			state
+		]
+	);
+
 	return (
 		<View className="flex flex-1 flex-col items-center justify-between">
-			<View className="flex w-full px-4 py-2">
-				<Progress
-					className="h-2"
-					value={
-						(currentExerciseIndex / (exercises.length - 1)) * 100
-					}
-				/>
-			</View>
-			<View className="flex w-full flex-row items-center justify-between p-8 pt-4">
-				<Button
-					variant="ghost"
-					size="icon"
-					disabled={currentExerciseIndex === 0}
-					onPress={() => setCurrentExerciseIndex((c) => c - 1)}
-				>
-					<ChevronLeft className="text-foreground" />
-				</Button>
-				<Text className="text-center text-2xl font-semibold">
-					{currentExercise.name}
-				</Text>
-				<Button
-					variant="ghost"
-					size="icon"
-					disabled={currentExerciseIndex === exercises.length - 1}
-					onPress={() => setCurrentExerciseIndex((c) => c + 1)}
-				>
-					<ChevronRight className="text-foreground" />
-				</Button>
-			</View>
-			<ExerciseStateDisplay
-				exercise={currentExercise}
-				key={currentExercise.id} // reset all state when moving to a new exercise
-				onExerciseComplete={handleExerciseComplete}
-				onTimerComplete={goSoundPlayer.play}
-				onTimerUpdate={({ remainingTimeMs, totalDurationMs }) => {
-					if (
-						remainingTimeMs < Math.min(3000, totalDurationMs - 1000) // make sure readySound and goSound do not play at the same time
-					) {
-						readySoundPlayer.play();
-					}
-				}}
+			<WorkoutProgressIndicator
+				totalExercises={exercises.length}
+				currentExerciseIndex={currentExerciseIndex}
+			/>
+			<ExerciseListNavigation
+				currentExerciseName={currentExercise.name}
+				previousButtonDisabled={
+					currentExerciseIndex === 0 || areArrowsDisabled
+				}
+				onGoToPrevious={handleGoToPreviousExercise}
+				nextButtonDisabled={
+					currentExerciseIndex === exercises.length - 1 ||
+					areArrowsDisabled
+				}
+				onGoToNext={handleGoToNextExercise}
+			/>
+			<Carousel
+				ref={ref}
+				width={width}
+				data={exercises}
+				onScrollStart={() => setAreArrowsDisabled(true)}
+				onScrollEnd={() => setAreArrowsDisabled(false)}
+				onProgressChange={(_, absoluteProgress) =>
+					setCurrentExerciseIndex(Math.round(absoluteProgress))
+				}
+				height={500}
+				loop={false}
+				renderItem={renderItem}
+			/>
+			<BottomControls
+				currentSet={currentSet}
+				currentRep={currentRep}
+				totalReps={currentExercise.reps}
+				totalSets={currentExercise.sets}
+				isTimerRunning={isTimerRunning}
+				onSetChange={changeSet}
+				onRepChange={changeRep}
+				onStart={toggleTimer}
 			/>
 		</View>
 	);

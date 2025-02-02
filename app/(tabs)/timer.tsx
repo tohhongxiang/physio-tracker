@@ -4,7 +4,7 @@ import goSound from "~/assets/audio/go.mp3";
 import readySound from "~/assets/audio/ready.mp3";
 import useCountdownTimer from "~/hooks/use-countdown-timer";
 import { useCallback, useState } from "react";
-import TimerDisplay from "~/components/workout-start/time-display";
+import TimerDisplay from "~/components/workout-start/timer-display";
 import { Button } from "~/components/ui/button";
 import { Play } from "~/lib/icons/Play";
 import { Pause } from "~/lib/icons/Pause";

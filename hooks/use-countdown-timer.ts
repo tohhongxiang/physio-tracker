@@ -28,7 +28,7 @@ export default function useCountdownTimer({
 	const [remainingTimeMs, setRemainingTimeMs] = useState(durationMs);
 	useEffect(() => {
 		setRemainingTimeMs(durationMs);
-	}, [durationMs]);
+	}, [durationMs, key]);
 
 	const lastAnimationFrameID = useRef<number | null>(null);
 	const lastUpdatedTime = useRef<number | null>();

@@ -11,8 +11,9 @@ import {
 	DialogTrigger
 } from "../ui/dialog";
 import { Text } from "../ui/text";
+import { memo } from "react";
 
-export default function DescriptionAlertDialog({
+export default memo(function DescriptionAlertDialog({
 	title = "Description",
 	text,
 	children
@@ -46,4 +47,4 @@ export default function DescriptionAlertDialog({
 			</DialogContent>
 		</Dialog>
 	);
-}
+});

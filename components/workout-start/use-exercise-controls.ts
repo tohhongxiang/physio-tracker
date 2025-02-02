@@ -132,6 +132,11 @@ export default function useExerciseControls({
 			case STATES.RESTING_REP: {
 				if (exercise.durationPerRepSeconds > 0) {
 					setState(STATES.RUNNING);
+				} else if (
+					currentRep === exercise.reps &&
+					currentSet === exercise.sets
+				) {
+					handleExerciseComplete();
 				} else if (currentRep === exercise.reps) {
 					handleSetComplete();
 				} else {
@@ -143,11 +148,27 @@ export default function useExerciseControls({
 			case STATES.RESTING_SET: {
 				if (exercise.durationPerRepSeconds > 0) {
 					setState(STATES.RUNNING);
-				} else if (currentSet === exercise.sets) {
+				} else if (
+					currentSet === exercise.sets &&
+					(currentRep === exercise.reps ||
+						exercise.restBetweenRepsSeconds === 0)
+				) {
 					handleExerciseComplete();
 				} else {
+					console.log("Resting set");
 					setIsRunning(false);
-					setCurrentSet((c) => c + 1);
+					if (exercise.restBetweenRepsSeconds > 0) {
+						setState(STATES.RESTING_REP);
+					} else if (exercise.restBetweenSetsSeconds > 0) {
+						setState(STATES.RESTING_SET);
+					}
+
+					if (
+						exercise.restBetweenRepsSeconds === 0 ||
+						currentRep === exercise.reps
+					) {
+						setCurrentSet((c) => c + 1);
+					}
 				}
 				break;
 			}
@@ -167,6 +188,8 @@ export default function useExerciseControls({
 		durationSeconds,
 		exercise.durationPerRepSeconds,
 		exercise.reps,
+		exercise.restBetweenRepsSeconds,
+		exercise.restBetweenSetsSeconds,
 		exercise.sets,
 		handleExerciseComplete,
 		handleRepComplete,
@@ -177,16 +200,20 @@ export default function useExerciseControls({
 	]);
 
 	const [timerKey, setTimerKey] = useState(0);
-	const timer = useCountdownTimer({
-		isPlaying: isRunning,
-		durationMs: durationSeconds * 1000,
-		onTimerComplete: handleTimerComplete,
-		onTimerUpdate: ({ remainingTimeMs }) => {
+	const handleTimerUpdate = useCallback(
+		({ remainingTimeMs }: { remainingTimeMs: number }) => {
 			return onTimerUpdate?.({
 				remainingTimeMs,
 				totalDurationMs: durationSeconds * 1000
 			});
 		},
+		[durationSeconds, onTimerUpdate]
+	);
+	const { restart, remainingTimeMs } = useCountdownTimer({
+		isPlaying: isRunning,
+		durationMs: durationSeconds * 1000,
+		onTimerComplete: handleTimerComplete,
+		onTimerUpdate: handleTimerUpdate,
 		key: timerKey
 	});
 
@@ -245,19 +272,29 @@ export default function useExerciseControls({
 		[exercise.sets]
 	);
 
+	const restartEverything = useCallback(() => {
+		setCurrentRep(1);
+		setCurrentSet(1);
+		setIsRunning(false);
+		setState(STATES.READY);
+		setTimerKey((c) => c + 1);
+		restart();
+	}, [restart]);
+
 	return {
 		state,
-		remainingTimeMs: timer.remainingTimeMs,
+		remainingTimeMs,
 		currentRep,
 		currentSet,
 		isTimerRunning: isRunning,
 		changeRep: handleRepChange,
 		changeSet: handleSetChange,
-		toggleTimer: handleStartButtonClicked
+		toggleTimer: handleStartButtonClicked,
+		restart: restartEverything
 	};
 }
 
-const STARTING_TIME = 10;
+const STARTING_TIME_SECONDS = 10;
 function getDurationForTimer(exercise: Exercise, state: keyof typeof STATES) {
 	if (
 		(exercise.restBetweenRepsSeconds ?? 0) === 0 &&
@@ -276,7 +313,7 @@ function getDurationForTimer(exercise: Exercise, state: keyof typeof STATES) {
 			}
 		}
 
-		return STARTING_TIME;
+		return STARTING_TIME_SECONDS;
 	}
 
 	if (state === STATES.RUNNING) {

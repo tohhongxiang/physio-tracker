@@ -10,6 +10,15 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import AlertDialogProvider from "~/providers/alert-dialog-provider";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import {
+	configureReanimatedLogger,
+	ReanimatedLogLevel
+} from "react-native-reanimated";
+
+configureReanimatedLogger({
+	level: ReanimatedLogLevel.warn,
+	strict: false // Disable warnings due to react-native-reanimated-carousel
+});
 
 export {
 	// Catch any errors thrown by the Layout component.
