@@ -155,7 +155,6 @@ export default function useExerciseControls({
 				) {
 					handleExerciseComplete();
 				} else {
-					console.log("Resting set");
 					setIsRunning(false);
 					if (exercise.restBetweenRepsSeconds > 0) {
 						setState(STATES.RESTING_REP);
@@ -177,7 +176,11 @@ export default function useExerciseControls({
 			}
 		}
 
-		onTimerComplete?.();
+		if (isRunning) {
+			// only call onTimerComplete if the timer actually ran
+			onTimerComplete?.();
+		}
+
 		return {
 			shouldRepeat: isRunning,
 			newDurationMs: durationSeconds * 1000

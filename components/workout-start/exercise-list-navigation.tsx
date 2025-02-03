@@ -20,7 +20,7 @@ export default memo(function ExerciseListNavigation({
 }) {
 	// not sure why: Without `border`, sometimes the text overflows
 	return (
-		<View className="flex w-full flex-row items-center justify-between border p-8 pt-4">
+		<View className="flex w-full flex-row items-center justify-between gap-4 px-4">
 			<Button
 				variant="ghost"
 				size="icon"
@@ -30,7 +30,7 @@ export default memo(function ExerciseListNavigation({
 			>
 				<ChevronLeft className="text-foreground" />
 			</Button>
-			<Text className="line-clamp-2 grow text-center text-2xl font-semibold">
+			<Text className="line-clamp-2 flex shrink text-center text-2xl font-semibold">
 				{currentExerciseName}
 			</Text>
 			<Button
