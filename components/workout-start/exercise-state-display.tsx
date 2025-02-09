@@ -53,6 +53,7 @@ export default memo(function ExerciseStateDisplay({
 					exercise={exercise}
 					currentRep={currentRep}
 					currentSet={currentSet}
+					description={exercise.description}
 				/>
 				<View className="mb-8 flex flex-col items-center justify-center gap-4">
 					<ExerciseRepsAndSetsDetails

@@ -1,5 +1,5 @@
 import { Dimensions, View } from "react-native";
-import { Exercise, Workout } from "~/types";
+import { Workout } from "~/types";
 import LoadingWorkoutPage from "./loading";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import BottomControls from "./bottom-controls";
@@ -19,14 +19,12 @@ export default function WorkoutStartPage({
 }: {
 	workout: Workout;
 }) {
-	const [areArrowsDisabled, setAreArrowsDisabled] = useState(false);
-	const ref = useRef<ICarouselInstance>(null);
-
 	const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
 	const currentExercise = useMemo(() => {
 		return exercises[currentExerciseIndex];
 	}, [exercises, currentExerciseIndex]);
 
+	const ref = useRef<ICarouselInstance>(null);
 	const handleGoToPreviousExercise = useCallback(
 		() =>
 			ref.current?.scrollTo({
@@ -94,31 +92,7 @@ export default function WorkoutStartPage({
 		previousExerciseIndex.current = currentExerciseIndex;
 	}, [currentExerciseIndex, restart]);
 
-	const renderItem = useCallback(
-		({ item: exercise, index }: { item: Exercise; index: number }) => {
-			const isActiveExercise = index === currentExerciseIndex;
-			return (
-				<ExerciseStateDisplay
-					key={exercise.id}
-					exercise={exercise}
-					isRunning={isActiveExercise ? isTimerRunning : false}
-					remainingTimeMs={isActiveExercise ? remainingTimeMs : 10000}
-					state={isActiveExercise ? state : STATES.READY}
-					currentRep={isActiveExercise ? currentRep : 1}
-					currentSet={isActiveExercise ? currentSet : 1}
-				/>
-			);
-		},
-		[
-			currentExerciseIndex,
-			currentRep,
-			currentSet,
-			isTimerRunning,
-			remainingTimeMs,
-			state
-		]
-	);
-
+	const [areArrowsDisabled, setAreArrowsDisabled] = useState(false);
 	return (
 		<View className="flex flex-1 flex-col items-center justify-between">
 			<WorkoutProgressIndicator
@@ -148,7 +122,24 @@ export default function WorkoutStartPage({
 				}
 				height={500}
 				loop={false}
-				renderItem={renderItem}
+				renderItem={({ item: exercise, index }) => {
+					const isActiveExercise = index === currentExerciseIndex;
+					return (
+						<ExerciseStateDisplay
+							key={exercise.id}
+							exercise={exercise}
+							isRunning={
+								isActiveExercise ? isTimerRunning : false
+							}
+							remainingTimeMs={
+								isActiveExercise ? remainingTimeMs : 10000
+							}
+							state={isActiveExercise ? state : STATES.READY}
+							currentRep={isActiveExercise ? currentRep : 1}
+							currentSet={isActiveExercise ? currentSet : 1}
+						/>
+					);
+				}}
 			/>
 			<BottomControls
 				currentSet={currentSet}
