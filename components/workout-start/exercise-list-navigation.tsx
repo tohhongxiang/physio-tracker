@@ -30,7 +30,7 @@ export default memo(function ExerciseListNavigation({
 			>
 				<ChevronLeft className="text-foreground" />
 			</Button>
-			<Text className="line-clamp-2 flex shrink text-center text-2xl font-semibold">
+			<Text className="line-clamp-1 flex shrink text-center text-2xl font-semibold">
 				{currentExerciseName}
 			</Text>
 			<Button
