@@ -298,7 +298,10 @@ export default function useExerciseControls({
 }
 
 const STARTING_TIME_SECONDS = 10;
-function getDurationForTimer(exercise: Exercise, state: keyof typeof STATES) {
+export function getDurationForTimer(
+	exercise: Exercise,
+	state: keyof typeof STATES
+) {
 	if (
 		(exercise.restBetweenRepsSeconds ?? 0) === 0 &&
 		(exercise.restBetweenSetsSeconds ?? 0) === 0 &&
@@ -331,7 +334,7 @@ function getDurationForTimer(exercise: Exercise, state: keyof typeof STATES) {
 		return exercise.restBetweenSetsSeconds;
 	}
 
-	return -1;
+	return 0;
 }
 
 function noTimerForExercise(exercise: Exercise) {

@@ -5,7 +5,10 @@ import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import BottomControls from "./bottom-controls";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import ExerciseStateDisplay from "./exercise-state-display";
-import useExerciseControls, { STATES } from "./use-exercise-controls";
+import useExerciseControls, {
+	getDurationForTimer,
+	STATES
+} from "./use-exercise-controls";
 import WorkoutProgressIndicator from "./workout-progress-indicator";
 import ExerciseListNavigation from "./exercise-list-navigation";
 import useSound from "~/hooks/use-sound";
@@ -115,13 +118,13 @@ export default function WorkoutStartPage({
 				ref={ref}
 				width={width}
 				data={exercises}
+				scrollAnimationDuration={150}
 				onScrollStart={() => setAreArrowsDisabled(true)}
 				onScrollEnd={() => setAreArrowsDisabled(false)}
-				onProgressChange={(_, absoluteProgress) =>
-					setCurrentExerciseIndex(Math.round(absoluteProgress))
-				}
+				onSnapToItem={(index) => setCurrentExerciseIndex(index)}
 				height={500}
 				loop={false}
+				windowSize={3}
 				renderItem={({ item: exercise, index }) => {
 					const isActiveExercise = index === currentExerciseIndex;
 					return (
@@ -132,7 +135,12 @@ export default function WorkoutStartPage({
 								isActiveExercise ? isTimerRunning : false
 							}
 							remainingTimeMs={
-								isActiveExercise ? remainingTimeMs : 10000
+								isActiveExercise
+									? remainingTimeMs
+									: getDurationForTimer(
+											exercise,
+											STATES.READY
+										) * 1000
 							}
 							state={isActiveExercise ? state : STATES.READY}
 							currentRep={isActiveExercise ? currentRep : 1}
