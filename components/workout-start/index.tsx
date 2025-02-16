@@ -121,7 +121,7 @@ export default function WorkoutStartPage({
 				scrollAnimationDuration={150}
 				onScrollStart={() => setAreArrowsDisabled(true)}
 				onScrollEnd={() => setAreArrowsDisabled(false)}
-				onSnapToItem={(index) => setCurrentExerciseIndex(index)}
+				onSnapToItem={setCurrentExerciseIndex}
 				height={500}
 				loop={false}
 				windowSize={3}
