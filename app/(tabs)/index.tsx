@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { Text } from "~/components/ui/text";
 import { useQuery } from "@tanstack/react-query";
 import getWorkoutToday from "~/api/get-workout-today";
@@ -22,7 +22,7 @@ export default function IndexPage() {
 		});
 
 	return (
-		<View className="flex flex-1 flex-col gap-8 p-4">
+		<ScrollView contentContainerClassName="flex flex-col gap-6 p-4">
 			<View>
 				<WorkoutCalendar
 					currentDate={currentDate}
@@ -61,6 +61,6 @@ export default function IndexPage() {
 					</View>
 				)}
 			</View>
-		</View>
+		</ScrollView>
 	);
 }
