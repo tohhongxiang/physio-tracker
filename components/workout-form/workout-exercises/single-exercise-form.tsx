@@ -39,6 +39,7 @@ export default function SingleExerciseForm({
 			reps: 1,
 			durationPerRepSeconds: 0,
 			restBetweenRepsSeconds: 0,
+			weight: 0,
 			...initialData
 		}
 	});
@@ -456,6 +457,47 @@ export default function SingleExerciseForm({
 											form.formState.errors
 												.restBetweenRepsSeconds.message
 										}
+									</Text>
+								</View>
+							)}
+						</View>
+						<View>
+							<View className="flex flex-row items-center justify-between gap-1">
+								<Text
+									className={cn(
+										"text-lg font-medium",
+										form.formState.errors.weight &&
+											"text-destructive"
+									)}
+									id="weight"
+								>
+									Weight (kg)
+								</Text>
+								<Controller
+									control={form.control}
+									name="weight"
+									render={({
+										field: { onChange, value, ...field }
+									}) => (
+										<Input
+											aria-labelledby="weight"
+											keyboardType="number-pad"
+											className={cn(
+												"w-52 text-center",
+												form.formState.errors.weight &&
+													"border-destructive"
+											)}
+											value={value.toString()}
+											onChangeText={onChange}
+											{...field}
+										/>
+									)}
+								/>
+							</View>
+							{form.formState.errors.weight && (
+								<View className="ml-auto w-52">
+									<Text className="text-center text-destructive">
+										{form.formState.errors.weight.message}
 									</Text>
 								</View>
 							)}

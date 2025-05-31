@@ -11,24 +11,36 @@ export const exerciseDetailBadgeVariants = cva(
 				primary: "bg-primary",
 				secondary: "bg-secondary",
 				ghost: ""
+			},
+			size: {
+				small: "h-4",
+				medium: "h-6",
+				large: "h-8"
 			}
 		},
 		defaultVariants: {
-			variant: "primary"
+			variant: "primary",
+			size: "medium"
 		}
 	}
 );
 
-export const exerciseDetailBadgeTextVariants = cva("text-lg", {
+export const exerciseDetailBadgeTextVariants = cva("", {
 	variants: {
 		variant: {
 			primary: "text-primary-foreground",
 			secondary: "text-secondary-foreground",
 			ghost: "text-foreground"
+		},
+		size: {
+			small: "text-xs",
+			medium: "text-md",
+			large: "text-lg"
 		}
 	},
 	defaultVariants: {
-		variant: "primary"
+		variant: "primary",
+		size: "medium"
 	}
 });
 
@@ -52,11 +64,15 @@ export default function ExerciseDetailBadge({
 	children,
 	leftIcon,
 	className,
-	variant
+	variant,
+	size
 }: ExerciseDetailBadgeProps) {
 	return (
 		<View
-			className={cn(exerciseDetailBadgeVariants({ variant }), className)}
+			className={cn(
+				exerciseDetailBadgeVariants({ variant, size }),
+				className
+			)}
 		>
 			{leftIcon}
 			{leftIcon ? <View className="ml-2" /> : null}
@@ -67,7 +83,7 @@ export default function ExerciseDetailBadge({
 					<Text
 						className={cn(
 							"font-semibold",
-							exerciseDetailBadgeTextVariants({ variant })
+							exerciseDetailBadgeTextVariants({ variant, size })
 						)}
 					>
 						{boldedText}
@@ -75,7 +91,7 @@ export default function ExerciseDetailBadge({
 					<Text
 						className={cn(
 							"text-secondary-foreground",
-							exerciseDetailBadgeTextVariants({ variant })
+							exerciseDetailBadgeTextVariants({ variant, size })
 						)}
 					>
 						{" "}

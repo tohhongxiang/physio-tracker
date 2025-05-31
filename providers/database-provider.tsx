@@ -21,9 +21,15 @@ export default function DatabaseProvider({
 	}, [success]);
 
 	if (error) {
+		console.error("Migration error", error);
 		return (
-			<View>
-				<Text>Migration error: {error.message}</Text>
+			<View className="flex h-full w-full items-center justify-center border bg-white">
+				<View className="px-8 py-32">
+					<Text className="text-xl font-bold text-black">
+						Migration error:
+					</Text>
+					<Text className="text-black">{error.message}</Text>
+				</View>
 			</View>
 		);
 	}

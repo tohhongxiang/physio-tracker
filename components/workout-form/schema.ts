@@ -16,6 +16,10 @@ export const ExerciseFormSchema = z.object({
 		.int({ message: "Reps must be a whole number" })
 		.min(1, { message: "There must be at least 1 rep" })
 		.safe(),
+	weight: z.coerce
+		.number({ message: "Weight must be a valid number" })
+		.min(0, { message: "Weight must be at least 0" })
+		.safe(),
 	durationPerRepSeconds: z.number().safe().min(0).default(0),
 	restBetweenRepsSeconds: z.number().safe().min(0).default(0),
 	restBetweenSetsSeconds: z.number().safe().min(0).default(0)

@@ -1,7 +1,7 @@
 import { View } from "react-native";
 import { Text } from "~/components/ui/text";
 import { CreateExercise, Exercise } from "~/types";
-import ExerciseRepsAndSetsDetails from "./exercise-reps-and-sets-details";
+import ExerciseEffortDetails from "./exercise-effort-details";
 import ExerciseRestDetails from "./exercise-rest-details";
 import ReadMoreText from "~/components/read-more-text";
 import { cn } from "~/lib/utils";
@@ -37,9 +37,10 @@ export default function ExerciseCard({
 				) : null}
 			</View>
 			<View className="flex flex-col gap-2">
-				<ExerciseRepsAndSetsDetails
+				<ExerciseEffortDetails
 					reps={exercise.reps}
 					sets={exercise.sets}
+					weight={exercise.weight}
 					durationPerRepSeconds={exercise.durationPerRepSeconds}
 				/>
 				<ExerciseRestDetails

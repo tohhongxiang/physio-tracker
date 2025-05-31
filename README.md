@@ -17,6 +17,14 @@ yarn run dev:ios # Run development for ios
 yarn start # Starting normal development
 ```
 
+## Applying Database Changes
+
+Run this command before starting the application in development mode:
+
+```sh
+npx drizzle-kit generate
+```
+
 # Build
 
 Make sure `eas` is installed.
@@ -42,5 +50,6 @@ eas build --profile production --platform ios # Build for production on ios
 - https://medium.com/@rutikpanchal121/building-a-robust-form-in-react-native-with-react-hook-form-and-zod-for-validation-7583678970c3
 - https://rnr-docs.vercel.app/getting-started/introduction/
 - https://github.com/drizzle-team/drizzle-studio-expo
+- https://orm.drizzle.team/docs/connect-expo-sqlite
 - https://gunnartorfis.github.io/sonner-native/toast
 - https://stackoverflow.com/questions/52817922/typescript-return-type-depending-on-parameter

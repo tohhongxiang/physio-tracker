@@ -8,7 +8,7 @@ import hasRestBetweenReps from "~/lib/has-rest-between-reps";
 import hasRestBetweenSets from "~/lib/has-rest-between-sets";
 import CounterContainer from "./counter-container";
 import ExerciseRestDetails from "~/components/workout-details/exercise-card/exercise-rest-details";
-import ExerciseRepsAndSetsDetails from "~/components/workout-details/exercise-card/exercise-reps-and-sets-details";
+import ExerciseEffortDetails from "~/components/workout-details/exercise-card/exercise-effort-details";
 import { memo } from "react";
 
 const STATES_TO_MESSAGE: Record<keyof typeof STATES, string> = {
@@ -56,7 +56,8 @@ export default memo(function ExerciseStateDisplay({
 					description={exercise.description}
 				/>
 				<View className="mb-8 flex flex-col items-center justify-center gap-4">
-					<ExerciseRepsAndSetsDetails
+					<ExerciseEffortDetails
+						weight={exercise.weight}
 						durationPerRepSeconds={exercise.durationPerRepSeconds}
 					/>
 					<ExerciseRestDetails

@@ -17,7 +17,7 @@ export default memo(function ExerciseRestDetails({
 
 	return (
 		<View className="flex flex-row">
-			<Text className="text-lg">Rest </Text>
+			<Text className="text-md">Rest </Text>
 			{restBetweenRepsSeconds > 0 && (
 				<ExerciseDetailBadge
 					boldedText={formatDuration(restBetweenRepsSeconds * 1000)}
@@ -26,7 +26,7 @@ export default memo(function ExerciseRestDetails({
 				/>
 			)}
 			{restBetweenRepsSeconds > 0 && restBetweenSetsSeconds > 0 && (
-				<Text className="text-lg text-secondary-foreground"> , </Text>
+				<Text className="text-md text-secondary-foreground"> , </Text>
 			)}
 			{restBetweenSetsSeconds > 0 && (
 				<ExerciseDetailBadge

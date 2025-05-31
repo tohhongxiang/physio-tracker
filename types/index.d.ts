@@ -17,6 +17,7 @@ export type Exercise = {
 	description: string;
 	sets: number;
 	reps: number;
+	weight: number;
 	durationPerRepSeconds: number;
 	restBetweenRepsSeconds: number;
 	restBetweenSetsSeconds: number;

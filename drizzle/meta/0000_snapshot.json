@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "b7bc6e2f-81d8-4740-8bff-14ca54708a65",
+  "id": "4f13f7da-3fac-4189-b7c3-44e98138f689",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "exercises": {
@@ -45,6 +45,14 @@
           "autoincrement": false,
           "default": 1
         },
+        "weight": {
+          "name": "weight",
+          "type": "real",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
+        },
         "duration_per_rep_seconds": {
           "name": "duration_per_rep_seconds",
           "type": "integer",
@@ -82,6 +90,51 @@
         "exercises_workout_id_workouts_id_fk": {
           "name": "exercises_workout_id_workouts_id_fk",
           "tableFrom": "exercises",
+          "tableTo": "workouts",
+          "columnsFrom": [
+            "workout_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "workout_logs": {
+      "name": "workout_logs",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "workout_id": {
+          "name": "workout_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "completed_at": {
+          "name": "completed_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "workout_logs_workout_id_workouts_id_fk": {
+          "name": "workout_logs_workout_id_workouts_id_fk",
+          "tableFrom": "workout_logs",
           "tableTo": "workouts",
           "columnsFrom": [
             "workout_id"
