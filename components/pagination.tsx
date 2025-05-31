@@ -65,7 +65,7 @@ export default function Pagination({
 			<Text className="text-center text-sm text-muted-foreground">
 				{currentPage * pageLimit + 1} -{" "}
 				{Math.min((currentPage + 1) * pageLimit, dataCount)} of{" "}
-				{dataCount} items
+				{dataCount} {dataCount === 1 ? "item" : "items"}
 			</Text>
 		</View>
 	);
