@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+const MAX_NUM = 10000;
 export const ExerciseFormSchema = z.object({
 	name: z
 		.string()
@@ -10,16 +11,16 @@ export const ExerciseFormSchema = z.object({
 		.number({ message: "Sets must be a valid number" })
 		.int({ message: "Sets must be a whole number" })
 		.min(1, { message: "There must be at least 1 set" })
-		.safe(),
+		.max(MAX_NUM, { message: `Sets must be less than ${MAX_NUM}` }),
 	reps: z.coerce
 		.number({ message: "Reps must be a valid number" })
 		.int({ message: "Reps must be a whole number" })
 		.min(1, { message: "There must be at least 1 rep" })
-		.safe(),
+		.max(MAX_NUM, { message: `Reps must be less than ${MAX_NUM}` }),
 	weight: z.coerce
 		.number({ message: "Weight must be a valid number" })
 		.min(0, { message: "Weight must be at least 0" })
-		.safe(),
+		.max(MAX_NUM, { message: `Weight must be below ${MAX_NUM}` }),
 	durationPerRepSeconds: z.number().safe().min(0).default(0),
 	restBetweenRepsSeconds: z.number().safe().min(0).default(0),
 	restBetweenSetsSeconds: z.number().safe().min(0).default(0)

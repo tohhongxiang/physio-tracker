@@ -96,7 +96,7 @@ export default function SingleExerciseForm({
 							)}
 						/>
 						{form.formState.errors.name && (
-							<Text className="text-destructive">
+							<Text className="text-sm text-destructive">
 								{form.formState.errors.name?.message}
 							</Text>
 						)}
@@ -104,7 +104,7 @@ export default function SingleExerciseForm({
 				</View>
 				<View className="flex flex-col gap-6">
 					<View className="flex flex-col gap-4">
-						<View>
+						<View className="flex flex-col gap-1">
 							<View className="flex flex-row items-center justify-between gap-1">
 								<Label
 									nativeID="sets"
@@ -182,13 +182,13 @@ export default function SingleExerciseForm({
 							</View>
 							{form.formState.errors.sets && (
 								<View className="ml-auto w-52">
-									<Text className="text-center text-destructive">
+									<Text className="text-center text-sm text-destructive">
 										{form.formState.errors.sets.message}
 									</Text>
 								</View>
 							)}
 						</View>
-						<View>
+						<View className="flex flex-col gap-1">
 							<View className="flex flex-row items-center justify-between gap-1">
 								<Text
 									className={cn(
@@ -241,7 +241,7 @@ export default function SingleExerciseForm({
 							</View>
 							{form.formState.errors.restBetweenSetsSeconds && (
 								<View className="ml-auto w-52">
-									<Text className="text-center text-destructive">
+									<Text className="text-center text-sm text-destructive">
 										{
 											form.formState.errors
 												.restBetweenSetsSeconds.message
@@ -253,7 +253,7 @@ export default function SingleExerciseForm({
 					</View>
 					<Separator />
 					<View className="flex flex-col gap-4">
-						<View>
+						<View className="flex flex-col gap-1">
 							<View className="flex flex-row items-center justify-between gap-1">
 								<Label
 									nativeID="reps"
@@ -331,13 +331,13 @@ export default function SingleExerciseForm({
 							</View>
 							{form.formState.errors.reps && (
 								<View className="ml-auto w-52">
-									<Text className="text-center text-destructive">
+									<Text className="text-center text-sm text-destructive">
 										{form.formState.errors.reps.message}
 									</Text>
 								</View>
 							)}
 						</View>
-						<View>
+						<View className="flex flex-col gap-1">
 							<View className="flex flex-row items-center justify-between gap-1">
 								<Text
 									className={cn(
@@ -390,7 +390,7 @@ export default function SingleExerciseForm({
 							</View>
 							{form.formState.errors.durationPerRepSeconds && (
 								<View className="ml-auto w-52">
-									<Text className="text-center text-destructive">
+									<Text className="text-center text-sm text-destructive">
 										{
 											form.formState.errors
 												.durationPerRepSeconds.message
@@ -399,7 +399,7 @@ export default function SingleExerciseForm({
 								</View>
 							)}
 						</View>
-						<View>
+						<View className="flex flex-col gap-1">
 							<View className="flex flex-row items-center justify-between gap-1">
 								<Text
 									className={cn(
@@ -452,7 +452,7 @@ export default function SingleExerciseForm({
 							</View>
 							{form.formState.errors.restBetweenRepsSeconds && (
 								<View className="ml-auto w-52">
-									<Text className="text-center text-destructive">
+									<Text className="text-center text-sm text-destructive">
 										{
 											form.formState.errors
 												.restBetweenRepsSeconds.message
@@ -461,7 +461,7 @@ export default function SingleExerciseForm({
 								</View>
 							)}
 						</View>
-						<View>
+						<View className="flex flex-col gap-1">
 							<View className="flex flex-row items-center justify-between gap-1">
 								<Text
 									className={cn(
@@ -488,7 +488,19 @@ export default function SingleExerciseForm({
 													"border-destructive"
 											)}
 											value={value.toString()}
-											onChangeText={onChange}
+											onChangeText={(text) => {
+												const parsedValue =
+													Number(text);
+												if (
+													text.startsWith("0") &&
+													!text.includes(".") &&
+													!Number.isNaN(parsedValue)
+												) {
+													onChange(parsedValue);
+												} else {
+													onChange(text);
+												}
+											}}
 											{...field}
 										/>
 									)}
@@ -496,7 +508,7 @@ export default function SingleExerciseForm({
 							</View>
 							{form.formState.errors.weight && (
 								<View className="ml-auto w-52">
-									<Text className="text-center text-destructive">
+									<Text className="text-center text-sm text-destructive">
 										{form.formState.errors.weight.message}
 									</Text>
 								</View>
