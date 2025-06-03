@@ -21,51 +21,56 @@ interface WorkoutCardProps extends ViewProps {
 
 export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
 	return (
-		<Card className="w-full max-w-md" {...props}>
-			<CardHeader className="flex w-full flex-row items-center justify-between gap-4">
-				<CardTitle className="flex-1" numberOfLines={1}>
-					{workout.name}
-				</CardTitle>
-				<Link
-					href={`/workouts/${workout.id}`}
-					asChild
-					className="shrink-0"
-				>
-					<Button variant="secondary">
-						<Eye size={16} className="text-secondary-foreground" />
-					</Button>
-				</Link>
-			</CardHeader>
-			<CardContent className="flex flex-col gap-4">
-				{workout.description && (
-					<Text className="line-clamp-2 text-lg text-muted-foreground">
-						{workout.description}
-					</Text>
-				)}
-				<View className="flex flex-row justify-between">
-					<NumberOfExercisesBadge
-						number={workout.exercises.length}
-						variant="ghost"
-						className="px-0"
-					/>
-					<WorkoutDurationBadge
-						workout={workout}
-						variant="ghost"
-						className="px-0"
-					/>
-				</View>
-			</CardContent>
-			<CardFooter>
-				<Link href={`/workouts/${workout.id}/start`} asChild>
-					<Button
-						className="w-full"
-						disabled={workout.exercises.length === 0}
+		<Link href={`/workouts/${workout.id}`}>
+			<Card className="w-full max-w-md" {...props}>
+				<CardHeader className="flex w-full flex-row items-center justify-between gap-4">
+					<CardTitle className="flex-1" numberOfLines={1}>
+						{workout.name}
+					</CardTitle>
+					<Link
+						href={`/workouts/${workout.id}`}
+						asChild
+						className="shrink-0"
 					>
-						<Text>Start</Text>
-					</Button>
-				</Link>
-			</CardFooter>
-		</Card>
+						<Button variant="secondary">
+							<Eye
+								size={16}
+								className="text-secondary-foreground"
+							/>
+						</Button>
+					</Link>
+				</CardHeader>
+				<CardContent className="flex flex-col gap-4">
+					{workout.description && (
+						<Text className="line-clamp-2 text-lg text-muted-foreground">
+							{workout.description}
+						</Text>
+					)}
+					<View className="flex flex-row justify-between">
+						<NumberOfExercisesBadge
+							number={workout.exercises.length}
+							variant="ghost"
+							className="px-0"
+						/>
+						<WorkoutDurationBadge
+							workout={workout}
+							variant="ghost"
+							className="px-0"
+						/>
+					</View>
+				</CardContent>
+				<CardFooter>
+					<Link href={`/workouts/${workout.id}/start`} asChild>
+						<Button
+							className="w-full"
+							disabled={workout.exercises.length === 0}
+						>
+							<Text>Start</Text>
+						</Button>
+					</Link>
+				</CardFooter>
+			</Card>
+		</Link>
 	);
 }
 
