@@ -19,7 +19,7 @@ yarn start # Starting normal development
 
 ## Applying Database Changes
 
-Run this command before starting the application in development mode:
+When changing the database schema, run this command before starting the application in development mode:
 
 ```sh
 npx drizzle-kit generate
