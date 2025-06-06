@@ -25,18 +25,18 @@ export default function WorkoutDurationBadge({
 		estimatedWorkoutDurationMinutes
 	);
 
-	return (
-		<ExerciseDetailBadge
-			variant={variant}
-			leftIcon={
-				<Clock
-					className={exerciseDetailBadgeTextVariants({ variant })}
-					size={16}
-				/>
-			}
-			className={className}
-		>
-			{days > 0 ? (
+	if (days > 0) {
+		return (
+			<ExerciseDetailBadge
+				variant={variant}
+				leftIcon={
+					<Clock
+						className={exerciseDetailBadgeTextVariants({ variant })}
+						size={16}
+					/>
+				}
+				className={className}
+			>
 				<>
 					<Text
 						className={cn(
@@ -48,8 +48,21 @@ export default function WorkoutDurationBadge({
 					</Text>
 					<Text> {days === 1 ? "day" : "days"}</Text>
 				</>
-			) : null}
-			{days > 0 && (hours > 0 || minutes > 0) ? <Text> </Text> : null}
+			</ExerciseDetailBadge>
+		);
+	}
+
+	return (
+		<ExerciseDetailBadge
+			variant={variant}
+			leftIcon={
+				<Clock
+					className={exerciseDetailBadgeTextVariants({ variant })}
+					size={16}
+				/>
+			}
+			className={className}
+		>
 			{hours > 0 ? (
 				<>
 					<Text
