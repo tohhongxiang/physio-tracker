@@ -1,165 +1,158 @@
-import {
-	Calendar,
-	CalendarTheme,
-	toDateId,
-	useCalendar
-} from "@marceloterreiro/flash-calendar";
-import { Text } from "./ui/text";
-import { Button } from "./ui/button";
-import { ChevronLeft } from "~/lib/icons/ChevronLeft";
-import { ChevronRight } from "~/lib/icons/ChevronRight";
-import { addMonths, getMonth, getYear, subMonths } from "date-fns";
+import { addMonths, format, subMonths } from "date-fns";
 import { View } from "react-native";
+import { useQuery } from "@tanstack/react-query";
+import { workoutLogQueryKeys } from "~/hooks/api/query-keys";
+import { useCallback, useMemo, useRef } from "react";
+import Calendar, { CalendarImperativeApi } from "react-native-swipe-calendar";
 import { cn } from "~/lib/utils";
 import { CircleCheckBig } from "~/lib/icons/CircleCheckBig";
-import { useQuery } from "@tanstack/react-query";
-import getWorkoutsDoneByYearMonth from "~/api/get-done-workouts-by-month-year";
-import { workoutLogQueryKeys } from "~/hooks/api/query-keys";
-
-const WEEK_DAYS_HEIGHT = 48;
-const DAY_HEIGHT = 52;
-const DAY_SPACING = 0;
-
-const theme: CalendarTheme = {
-	itemDay: {
-		base: () => ({
-			container: {
-				paddingHorizontal: 8,
-				paddingVertical: 8,
-				borderRadius: "100%"
-			}
-		}),
-		today: () => ({
-			container: {
-				borderWidth: 0
-			}
-		})
-	}
-};
+import { Text } from "./ui/text";
+import { ChevronLeft } from "~/lib/icons/ChevronLeft";
+import { ChevronRight } from "~/lib/icons/ChevronRight";
+import { Button } from "./ui/button";
+import getWorkoutLogs from "~/api/get-workout-logs";
 
 type WorkoutCalendarProps = {
 	currentDate: Date;
 	onDateChange: (date: Date) => void;
 };
 
+function toDateId(date: Date) {
+	return format(date, "yyyy-MM-dd");
+}
+
 export default function WorkoutCalendar({
 	currentDate,
 	onDateChange
 }: WorkoutCalendarProps) {
 	const { data: completedWorkouts = [] } = useQuery({
-		queryKey: workoutLogQueryKeys.month(
-			getYear(currentDate),
-			getMonth(currentDate) + 1
-		),
-		queryFn: ({ queryKey }) =>
-			getWorkoutsDoneByYearMonth(queryKey[1], queryKey[2])
+		queryKey: workoutLogQueryKeys.all,
+		queryFn: getWorkoutLogs
 	});
 
-	const { calendarRowMonth, weekDaysList, weeksList } = useCalendar({
-		calendarMonthId: toDateId(currentDate)
-	});
+	const markedDates = useMemo(
+		() =>
+			new Set(
+				completedWorkouts.map((completedWorkouts) =>
+					toDateId(new Date(completedWorkouts.completedAt))
+				)
+			),
+		[completedWorkouts]
+	);
+	const renderDayComponent = useCallback(
+		({
+			date,
+			isToday,
+			isInDisplayedMonth
+		}: {
+			date: Date;
+			isToday: boolean;
+			isInDisplayedMonth: boolean;
+		}) => {
+			return (
+				<View
+					className={cn(
+						"flex h-16 w-16 flex-1 items-center justify-center rounded-full",
+						isToday && isInDisplayedMonth
+							? markedDates.has(toDateId(date))
+								? "bg-secondary"
+								: "bg-primary"
+							: ""
+					)}
+				>
+					{isInDisplayedMonth ? (
+						<View className="flex flex-col items-center justify-center">
+							{markedDates.has(toDateId(date)) ? (
+								<CircleCheckBig className="text-green-500" />
+							) : (
+								<Text
+									className={cn(
+										"text-center text-lg font-bold",
+										!isInDisplayedMonth &&
+											"text-muted-foreground opacity-50",
+										isToday && "text-secondary"
+									)}
+								>
+									{date.getDate()}
+								</Text>
+							)}
+						</View>
+					) : (
+						<View />
+					)}
+				</View>
+			);
+		},
+		[markedDates]
+	);
 
-	function onCalendarDayPress(id: string) {
-		console.log(id);
-	}
+	const ref = useRef<CalendarImperativeApi>(null);
 
 	function onGoToPreviousMonth() {
+		ref.current?.decrementPage();
 		onDateChange(subMonths(currentDate, 1));
 	}
 
 	function onGoToNextMonth() {
+		ref.current?.incrementPage();
 		onDateChange(addMonths(currentDate, 1));
 	}
 
-	const markedDates = new Set(
-		completedWorkouts.map((completedWorkouts) =>
-			toDateId(new Date(completedWorkouts.completedAt))
-		)
-	);
-
 	return (
 		<View>
-			<Calendar.VStack>
-				<Calendar.HStack
-					alignItems="center"
-					justifyContent="space-between"
-					width="100%"
-				>
-					<Button variant="ghost" onPress={onGoToPreviousMonth}>
-						<ChevronLeft className="text-foreground" />
-					</Button>
-					<Text className="text-lg font-bold">
-						{calendarRowMonth}
-					</Text>
-					<Button variant="ghost" onPress={onGoToNextMonth}>
-						<ChevronRight className="text-foreground" />
-					</Button>
-				</Calendar.HStack>
-				<Calendar.Row.Week>
-					{weekDaysList.map((day, i) => (
-						<Calendar.Item.WeekName
-							height={WEEK_DAYS_HEIGHT}
-							key={i}
-						>
-							<Text className="text-muted-foreground">{day}</Text>
-						</Calendar.Item.WeekName>
-					))}
-				</Calendar.Row.Week>
-				{weeksList.map((week, i) => (
-					<Calendar.Row.Week key={i}>
-						{week.map((day) => (
-							<Calendar.Item.Day.Container
-								dayHeight={DAY_HEIGHT}
-								daySpacing={DAY_SPACING}
-								isStartOfWeek={day.isStartOfWeek}
-								key={day.id}
-							>
-								<View
-									className={cn(
-										"flex-1 rounded-full",
-										day.isToday && !day.isDifferentMonth
-											? markedDates.has(day.id)
-												? "bg-secondary"
-												: "bg-primary"
-											: ""
-									)}
-								>
-									{day.isDifferentMonth ? (
-										<Calendar.Item.Empty
-											height={DAY_HEIGHT}
-										/>
-									) : (
-										<Calendar.Item.Day
-											height={DAY_HEIGHT}
-											metadata={day}
-											onPress={onCalendarDayPress}
-											theme={theme.itemDay}
-										>
-											<View className="flex flex-col items-center justify-center">
-												{markedDates.has(day.id) ? (
-													<CircleCheckBig className="text-green-500" />
-												) : (
-													<Text
-														className={cn(
-															"text-center text-lg font-bold",
-															day.isDifferentMonth &&
-																"text-muted-foreground opacity-50",
-															day.isToday &&
-																"text-secondary"
-														)}
-													>
-														{day.displayLabel}
-													</Text>
-												)}
-											</View>
-										</Calendar.Item.Day>
-									)}
-								</View>
-							</Calendar.Item.Day.Container>
-						))}
-					</Calendar.Row.Week>
-				))}
-			</Calendar.VStack>
+			<Calendar
+				ref={ref}
+				onPageChange={onDateChange}
+				HeaderComponent={({ startDate }) => (
+					<HeaderComponent
+						title={`${startDate.toLocaleString("default", {
+							month: "long"
+						})} ${startDate.toLocaleString("default", {
+							year: "numeric"
+						})}`}
+						onGoToNextMonth={onGoToNextMonth}
+						onGoToPreviousMonth={onGoToPreviousMonth}
+					/>
+				)}
+				DayLabelComponent={DayLabelComponent}
+				DayComponent={renderDayComponent}
+			/>
+		</View>
+	);
+}
+
+function DayLabelComponent({ date }: { date: Date }) {
+	return (
+		<View className="flex flex-1 items-center justify-center">
+			<Text className="text-muted-foreground">
+				{
+					date.toLocaleDateString("default", {
+						weekday: "short"
+					})[0]
+				}
+			</Text>
+		</View>
+	);
+}
+
+function HeaderComponent({
+	title,
+	onGoToNextMonth,
+	onGoToPreviousMonth
+}: {
+	title: string;
+	onGoToNextMonth: () => void;
+	onGoToPreviousMonth: () => void;
+}) {
+	return (
+		<View className="relative flex flex-row items-center justify-between">
+			<Button variant="ghost" onPress={onGoToPreviousMonth}>
+				<ChevronLeft className="text-foreground" />
+			</Button>
+			<Text className="text-lg font-bold">{title}</Text>
+			<Button variant="ghost" onPress={onGoToNextMonth}>
+				<ChevronRight className="text-foreground" />
+			</Button>
 		</View>
 	);
 }
