@@ -45,7 +45,11 @@ export default function RootLayout() {
 											options={{
 												presentation: "modal",
 												headerShown: true,
-												title: "Add New Workout"
+												title: "Add New Workout",
+												contentStyle: {
+													marginBottom: 48,
+													flex: 1
+												}
 											}}
 										/>
 									</Stack>

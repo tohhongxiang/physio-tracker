@@ -7,10 +7,8 @@ import { useState } from "react";
 import WorkoutInformation from "./workout-information";
 import { usePreventRemove } from "@react-navigation/native";
 import WorkoutExercises from "./workout-exercises";
-import WorkoutDetails from "../workout-details";
-import { Button } from "../ui/button";
-import { Text } from "../ui/text";
 import { WorkoutFormSchemaType } from "./schema";
+import ConfirmWorkout from "./confirm-workout";
 
 type WorkoutFormProps =
 	| {
@@ -84,33 +82,12 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 				/>
 			) : null}
 			{step === 2 ? (
-				<View className="h-full">
-					<WorkoutDetails
-						workout={form.getValues() as Workout}
-						showTitle
-					/>
-					<View className="flex flex-row gap-4">
-						<Button
-							variant="secondary"
-							className="flex-grow"
-							onPress={handleGoToPreviousStep}
-							disabled={form.formState.isSubmitting}
-						>
-							<Text>Previous</Text>
-						</Button>
-						<Button
-							className="flex-grow"
-							onPress={handleSubmit}
-							disabled={form.formState.isSubmitting}
-						>
-							<Text>
-								{form.formState.isSubmitting
-									? "Loading..."
-									: "Submit"}
-							</Text>
-						</Button>
-					</View>
-				</View>
+				<ConfirmWorkout
+					workout={form.getValues() as Workout}
+					onGoToPreviousStep={handleGoToPreviousStep}
+					onSuccessfulSubmit={handleSubmit}
+					isSubmitting={form.formState.isSubmitting}
+				/>
 			) : null}
 		</View>
 	);
