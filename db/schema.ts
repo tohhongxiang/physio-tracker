@@ -31,7 +31,7 @@ export const workoutLogs = sqliteTable("workout_logs", {
 	workoutId: int("workout_id")
 		.references(() => workouts.id, { onDelete: "cascade" })
 		.notNull(),
-	completedAt: text("completed_at").notNull() // Store dates as 'YYYY-MM-DD'
+	completedAt: text("completed_at").notNull() // Store dates as ISO string e.g. '2025-05-31T16:00:00.000Z'
 });
 
 export const workoutsRelations = relations(workouts, ({ many }) => ({
