@@ -8,11 +8,13 @@ export default memo(function ExerciseEffortDetails({
 	reps = 0,
 	sets = 0,
 	weight = 0,
+	weightUnit = "kg",
 	durationPerRepSeconds = 0
 }: {
 	reps?: number;
 	sets?: number;
 	weight?: number;
+	weightUnit?: "kg" | "lbs" | "%BW";
 	durationPerRepSeconds?: number;
 }) {
 	return (
@@ -34,7 +36,10 @@ export default memo(function ExerciseEffortDetails({
 				<Text className="text-lg"> × </Text>
 			) : null}
 			{weight > 0 ? (
-				<ExerciseDetailBadge boldedText={weight.toString()} text="kg" />
+				<ExerciseDetailBadge
+					boldedText={weight.toString()}
+					text={weightUnit}
+				/>
 			) : null}
 			{(sets > 0 || reps > 0 || weight > 0) &&
 			durationPerRepSeconds > 0 ? (

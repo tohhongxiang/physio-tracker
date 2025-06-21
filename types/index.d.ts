@@ -18,6 +18,7 @@ export type Exercise = {
 	sets: number;
 	reps: number;
 	weight: number;
+	weightUnit: "kg" | "lbs" | "%BW";
 	durationPerRepSeconds: number;
 	restBetweenRepsSeconds: number;
 	restBetweenSetsSeconds: number;

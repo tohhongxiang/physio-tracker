@@ -75,7 +75,8 @@ const SelectTrigger = React.forwardRef<
 	<SelectPrimitive.Trigger
 		ref={ref}
 		className={cn(
-			"native:h-12 flex h-10 flex-row items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground web:ring-offset-background web:focus:outline-none web:focus:ring-2 web:focus:ring-ring web:focus:ring-offset-2 [&>span]:line-clamp-1",
+			// select seems to have 0.05rem less height than standard input
+			"native:h-[3.05rem] native:text-lg native:leading-[1.25] flex h-10 flex-row items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground web:ring-offset-background web:focus:outline-none web:focus:ring-2 web:focus:ring-ring web:focus:ring-offset-2 [&>span]:line-clamp-1",
 			props.disabled && "opacity-50 web:cursor-not-allowed",
 			className
 		)}

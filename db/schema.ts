@@ -14,6 +14,9 @@ export const exercises = sqliteTable("exercises", {
 	sets: int().notNull().default(1),
 	reps: int().notNull().default(1),
 	weight: real().notNull().default(0),
+	weightUnit: text("weight_unit", { enum: ["kg", "lbs", "%BW"] })
+		.notNull()
+		.default("kg"),
 	durationPerRepSeconds: int("duration_per_rep_seconds").notNull().default(0),
 	restBetweenRepsSeconds: int("rest_between_reps_seconds")
 		.notNull()

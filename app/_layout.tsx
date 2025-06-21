@@ -40,7 +40,7 @@ export default function RootLayout() {
 										<Stack.Screen name="(tabs)" />
 										<Stack.Screen name="+not-found" />
 										<Stack.Screen name="workouts/[id]" />
-										<Stack.Screen
+										<Stack.Screen // we put the add workout here to show it in front of the tabs
 											name="(modals)/workouts/add"
 											options={{
 												presentation: "modal",

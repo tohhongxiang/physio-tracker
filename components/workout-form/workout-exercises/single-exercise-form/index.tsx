@@ -4,7 +4,7 @@ import { Input } from "../../../ui/input";
 import { Textarea } from "../../../ui/textarea";
 import { Button } from "../../../ui/button";
 import { Separator } from "../../../ui/separator";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { ExerciseFormSchema, ExerciseFormSchemaType } from "../../schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "~/lib/utils";
@@ -17,6 +17,20 @@ import { ScrollView } from "react-native-gesture-handler";
 import FullWidthInput from "./full-width-input";
 import IntegerInput from "./integer-input";
 import SingleLineInput from "./single-line-input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue
+} from "~/components/ui/select";
+import { Label } from "~/components/ui/label";
+
+const WEIGHT_UNIT_OPTIONS = [
+	{ label: "kg", value: "kg" },
+	{ label: "lbs", value: "lbs" },
+	{ label: "%BW", value: "%BW" }
+];
 
 export default function SingleExerciseForm({
 	isOpen,
@@ -221,41 +235,120 @@ export default function SingleExerciseForm({
 								</TimerInput>
 							)}
 						/>
-						<SingleLineInput
-							control={form.control}
-							errorMessage={form.formState.errors.weight?.message}
-							name="weight"
-							label="Weight (kg)"
-							render={({
-								field: { onChange, value, ...field }
-							}) => (
-								<Input
-									aria-labelledby="weight"
-									keyboardType="number-pad"
-									className={cn(
-										"text-center",
-										form.formState.errors.weight &&
-											"border-destructive"
-									)}
-									value={value.toString()}
-									onChangeText={(text) => {
-										const parsedValue = Number(text);
-										if (
-											text.startsWith("0") &&
-											!text.includes(".") &&
-											!Number.isNaN(parsedValue)
-										) {
-											onChange(parsedValue);
-										} else {
-											onChange(text);
-										}
-									}}
-									{...field}
-								/>
-							)}
-						/>
 					</View>
 				</View>
+				<Separator />
+				<View className="flex flex-col gap-1">
+					<View className="flex flex-row items-center justify-between">
+						<Label
+							className={cn(
+								"native:text-lg font-semibold",
+								(form.formState.errors.weight ||
+									form.formState.errors.weightUnit) &&
+									"text-destructive"
+							)}
+						>
+							Weight
+						</Label>
+						<View className="flex w-52 flex-row">
+							<Controller
+								control={form.control}
+								name="weight"
+								render={({
+									field: { onChange, value, ...field }
+								}) => (
+									<Input
+										aria-labelledby="weight"
+										keyboardType="number-pad"
+										className={cn(
+											"flex-1 rounded-r-none text-center",
+											(form.formState.errors.weight ||
+												form.formState.errors
+													.weightUnit) &&
+												"border-destructive"
+										)}
+										value={value.toString()}
+										onChangeText={(text) => {
+											const parsedValue = Number(text);
+											if (
+												text.startsWith("0") &&
+												!text.includes(".") &&
+												!Number.isNaN(parsedValue)
+											) {
+												onChange(parsedValue);
+											} else {
+												onChange(text);
+											}
+										}}
+										{...field}
+									/>
+								)}
+							/>
+							<Controller
+								control={form.control}
+								name="weightUnit"
+								render={({
+									field: {
+										onChange,
+										value: currentValue,
+										...field
+									}
+								}) => (
+									<Select
+										className="flex-1"
+										value={WEIGHT_UNIT_OPTIONS.find(
+											({ value }) =>
+												value === currentValue
+										)}
+										defaultValue={WEIGHT_UNIT_OPTIONS[0]}
+										onValueChange={(option) =>
+											onChange(option?.value)
+										}
+										{...field}
+									>
+										<SelectTrigger
+											className={cn(
+												"w-full flex-1 rounded-l-none",
+												(form.formState.errors.weight ||
+													form.formState.errors
+														.weightUnit) &&
+													"border-destructive"
+											)}
+										>
+											<SelectValue
+												className="native:text-lg text-foreground"
+												placeholder=""
+											/>
+										</SelectTrigger>
+										<SelectContent className="border-none">
+											{WEIGHT_UNIT_OPTIONS.map(
+												({ label, value }) => (
+													<SelectItem
+														label={label}
+														value={value}
+														key={value}
+													>
+														{label}
+													</SelectItem>
+												)
+											)}
+										</SelectContent>
+									</Select>
+								)}
+							/>
+						</View>
+					</View>
+					{(form.formState.errors.weight?.message ||
+						form.formState.errors.weightUnit?.message) && (
+						<View className="ml-auto w-52">
+							<Text className="text-center text-sm text-destructive">
+								{form.formState.errors.weight?.message ??
+									form.formState.errors.weightUnit?.message}
+							</Text>
+						</View>
+					)}
+				</View>
+				<Separator />
 				<View>
 					<FullWidthInput
 						control={form.control}
@@ -271,6 +364,7 @@ export default function SingleExerciseForm({
 							<Textarea
 								aria-labelledby={name}
 								onChangeText={onChange}
+								placeholder="Describe the exercise technique, or any special notes..."
 								className={
 									formState.errors[name]?.message &&
 									"border-destructive"

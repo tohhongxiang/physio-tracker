@@ -21,6 +21,7 @@ export const ExerciseFormSchema = z.object({
 		.number({ message: "Weight must be a valid number" })
 		.min(0, { message: "Weight must be at least 0" })
 		.max(MAX_NUM, { message: `Weight must be below ${MAX_NUM}` }),
+	weightUnit: z.enum(["kg", "lbs", "%BW"]).default("kg"),
 	durationPerRepSeconds: z.number().safe().min(0).default(0),
 	restBetweenRepsSeconds: z.number().safe().min(0).default(0),
 	restBetweenSetsSeconds: z.number().safe().min(0).default(0)

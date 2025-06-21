@@ -58,6 +58,7 @@ export default memo(function ExerciseStateDisplay({
 				<View className="mb-8 flex flex-col items-center justify-center gap-4">
 					<ExerciseEffortDetails
 						weight={exercise.weight}
+						weightUnit={exercise.weightUnit}
 						durationPerRepSeconds={exercise.durationPerRepSeconds}
 					/>
 					<ExerciseRestDetails

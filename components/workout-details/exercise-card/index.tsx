@@ -41,6 +41,7 @@ export default function ExerciseCard({
 					reps={exercise.reps}
 					sets={exercise.sets}
 					weight={exercise.weight}
+					weightUnit={exercise.weightUnit}
 					durationPerRepSeconds={exercise.durationPerRepSeconds}
 				/>
 				<ExerciseRestDetails
