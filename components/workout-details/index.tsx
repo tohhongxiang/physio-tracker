@@ -48,7 +48,7 @@ export default function WorkoutDetails({
 					) => (
 						<ExerciseCard
 							exercise={exercise}
-							key={exercise.id ?? index}
+							key={exercise.id ?? `index-${index}`}
 						/>
 					)
 				)}

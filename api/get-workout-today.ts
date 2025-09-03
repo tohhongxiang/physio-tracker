@@ -14,7 +14,14 @@ export default async function getWorkoutToday() {
 
 	const randomWorkout = await db.query.workouts.findFirst({
 		orderBy: sql`RANDOM()`,
-		with: { exercises: true }
+		with: {
+			exercises: {
+				orderBy: (exercises, { asc }) => [
+					asc(exercises.position),
+					asc(exercises.id)
+				]
+			}
+		}
 	});
 
 	if (!randomWorkout) {

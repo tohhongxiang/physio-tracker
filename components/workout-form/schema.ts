@@ -2,6 +2,7 @@ import { z } from "zod";
 
 const MAX_NUM = 10000;
 export const ExerciseFormSchema = z.object({
+	id: z.number().optional(),
 	name: z
 		.string()
 		.min(1, { message: "Name must be at least 1 character long" })

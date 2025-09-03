@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "4f13f7da-3fac-4189-b7c3-44e98138f689",
+  "id": "ace60764-6b3e-4542-8a40-bdd43a59b3ac",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "exercises": {
@@ -53,6 +53,14 @@
           "autoincrement": false,
           "default": 0
         },
+        "weight_unit": {
+          "name": "weight_unit",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "'kg'"
+        },
         "duration_per_rep_seconds": {
           "name": "duration_per_rep_seconds",
           "type": "integer",
@@ -83,9 +91,26 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "position": {
+          "name": "position",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 0
         }
       },
-      "indexes": {},
+      "indexes": {
+        "exercises_workout_position_unique": {
+          "name": "exercises_workout_position_unique",
+          "columns": [
+            "workout_id",
+            "position"
+          ],
+          "isUnique": true
+        }
+      },
       "foreignKeys": {
         "exercises_workout_id_workouts_id_fk": {
           "name": "exercises_workout_id_workouts_id_fk",

@@ -45,7 +45,12 @@ export default async function getWorkoutsDoneByYearMonth(
 			with: {
 				workout: {
 					with: {
-						exercises: true
+						exercises: {
+							orderBy: (exercises, { asc }) => [
+								asc(exercises.position),
+								asc(exercises.id)
+							]
+						}
 					}
 				}
 			},

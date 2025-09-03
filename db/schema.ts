@@ -1,5 +1,11 @@
 import { relations } from "drizzle-orm";
-import { int, real, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+	int,
+	real,
+	sqliteTable,
+	text,
+	uniqueIndex
+} from "drizzle-orm/sqlite-core";
 
 export const workouts = sqliteTable("workouts", {
 	id: int().primaryKey({ autoIncrement: true }),
@@ -7,27 +13,38 @@ export const workouts = sqliteTable("workouts", {
 	description: text().notNull().default("")
 });
 
-export const exercises = sqliteTable("exercises", {
-	id: int().primaryKey({ autoIncrement: true }),
-	name: text().notNull(),
-	description: text().notNull().default(""),
-	sets: int().notNull().default(1),
-	reps: int().notNull().default(1),
-	weight: real().notNull().default(0),
-	weightUnit: text("weight_unit", { enum: ["kg", "lbs", "%BW"] })
-		.notNull()
-		.default("kg"),
-	durationPerRepSeconds: int("duration_per_rep_seconds").notNull().default(0),
-	restBetweenRepsSeconds: int("rest_between_reps_seconds")
-		.notNull()
-		.default(0),
-	restBetweenSetsSeconds: int("rest_between_sets_seconds")
-		.notNull()
-		.default(0),
-	workoutId: int("workout_id")
-		.references(() => workouts.id, { onDelete: "cascade" })
-		.notNull()
-});
+export const exercises = sqliteTable(
+	"exercises",
+	{
+		id: int().primaryKey({ autoIncrement: true }),
+		name: text().notNull(),
+		description: text().notNull().default(""),
+		sets: int().notNull().default(1),
+		reps: int().notNull().default(1),
+		weight: real().notNull().default(0),
+		weightUnit: text("weight_unit", { enum: ["kg", "lbs", "%BW"] })
+			.notNull()
+			.default("kg"),
+		durationPerRepSeconds: int("duration_per_rep_seconds")
+			.notNull()
+			.default(0),
+		restBetweenRepsSeconds: int("rest_between_reps_seconds")
+			.notNull()
+			.default(0),
+		restBetweenSetsSeconds: int("rest_between_sets_seconds")
+			.notNull()
+			.default(0),
+		workoutId: int("workout_id")
+			.references(() => workouts.id, { onDelete: "cascade" })
+			.notNull(),
+		position: int().notNull().default(0)
+	},
+	(table) => ({
+		execisesWorkoutPositionUnique: uniqueIndex(
+			"exercises_workout_position_unique"
+		).on(table.workoutId, table.position)
+	})
+);
 
 export const workoutLogs = sqliteTable("workout_logs", {
 	id: int().primaryKey({ autoIncrement: true }),

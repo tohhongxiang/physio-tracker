@@ -5,7 +5,12 @@ export default async function getWorkout(id: number) {
 	const result = await db.query.workouts.findFirst({
 		where: (workouts, { eq }) => eq(workouts.id, id),
 		with: {
-			exercises: true
+			exercises: {
+				orderBy: (exercises, { asc }) => [
+					asc(exercises.position),
+					asc(exercises.id)
+				]
+			}
 		}
 	});
 

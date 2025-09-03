@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "~/db/initalize";
 import { exercises, workouts } from "~/db/schema";
 import { CreateExercise, Exercise, Workout } from "~/types";
@@ -41,6 +41,14 @@ export default async function editWorkout({
 			)
 		);
 
+		// Temporarily shift existing rows out of the final range to update the existing ones
+		// and avoid the unique position constraint
+		const SHIFT = updatedExercises.length;
+		await tx
+			.update(exercises)
+			.set({ position: sql`position + ${SHIFT}` })
+			.where(eq(exercises.workoutId, id));
+
 		// update workout information
 		const finalUpdatedWorkout = await tx
 			.update(workouts)
@@ -51,20 +59,20 @@ export default async function editWorkout({
 
 		// update remaining exercises
 		const finalUpdatedExercises = await Promise.all(
-			updatedExercises.map((exercise) => {
-				return isExistingExercise(exercise)
+			updatedExercises.map((exercise, position) =>
+				isExistingExercise(exercise)
 					? tx // update existing exercise
 							.update(exercises)
-							.set(exercise)
+							.set({ ...exercise, position })
 							.where(eq(exercises.id, exercise.id))
 							.returning()
 							.then((createdRows) => createdRows[0])
 					: tx // added new exercise
 							.insert(exercises)
-							.values({ ...exercise, workoutId: id })
+							.values({ ...exercise, position, workoutId: id })
 							.returning()
-							.then((createdRows) => createdRows[0]);
-			})
+							.then((createdRows) => createdRows[0])
+			)
 		);
 
 		return {

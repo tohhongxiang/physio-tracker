@@ -1,1 +1,0 @@
-ALTER TABLE `exercises` ADD `weight_unit` text DEFAULT 'kg' NOT NULL;

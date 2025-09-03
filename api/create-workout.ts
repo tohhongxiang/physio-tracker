@@ -13,9 +13,10 @@ export default async function createWorkout(workout: CreateWorkout) {
 		const createdExercises = await tx
 			.insert(exercises)
 			.values(
-				exercisesToCreate.map((exercise) => ({
+				exercisesToCreate.map((exercise, position) => ({
 					...exercise,
-					workoutId: createdWorkout.id
+					workoutId: createdWorkout.id,
+					position
 				}))
 			)
 			.returning();

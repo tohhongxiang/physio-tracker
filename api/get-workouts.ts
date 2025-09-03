@@ -17,7 +17,14 @@ export default async function getWorkouts(
 			filters.search
 				? like(workouts.name, `%${filters.search}%`)
 				: undefined,
-		with: { exercises: true },
+		with: {
+			exercises: {
+				orderBy: (exercises, { asc }) => [
+					asc(exercises.position),
+					asc(exercises.id)
+				]
+			}
+		},
 		offset: (filters.page ?? 0) * filters.limit,
 		orderBy: (workouts, { desc, asc }) =>
 			filters.sortBy === "name" ? asc(workouts.name) : desc(workouts.id),

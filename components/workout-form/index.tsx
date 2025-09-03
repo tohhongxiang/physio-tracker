@@ -59,10 +59,7 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 	}
 
 	function handleSubmit() {
-		form.handleSubmit(async (data) => {
-			await onSubmit?.(data as Workout);
-		})();
-		return;
+		form.handleSubmit(async (data) => await onSubmit?.(data as Workout))();
 	}
 
 	return (
