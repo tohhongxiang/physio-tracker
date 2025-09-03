@@ -14,15 +14,18 @@ import {
 import { Input } from "./ui/input";
 
 const ZERO_DURATION_INPUT = "000000";
+const DEFAULT_TITLE = "Enter Duration";
 export default function TimerInput({
 	value,
 	onConfirm,
 	children,
+	title = DEFAULT_TITLE,
 	allowZeroDuration = false
 }: {
 	value?: number;
 	onConfirm?: (durationSeconds: number) => void;
 	children?: React.ReactNode;
+	title?: string;
 	allowZeroDuration?: boolean;
 }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -74,7 +77,7 @@ export default function TimerInput({
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Enter Duration</DialogTitle>
+					<DialogTitle>{title}</DialogTitle>
 				</DialogHeader>
 				<TouchableWithoutFeedback
 					onPress={() => inputRef.current?.blur()}

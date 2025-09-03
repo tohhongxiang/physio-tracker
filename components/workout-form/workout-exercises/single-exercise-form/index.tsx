@@ -74,7 +74,7 @@ export default function SingleExerciseForm({
 
 	return (
 		<View className="flex h-full flex-col">
-			<View className="flex flex-row items-center justify-between p-4">
+			<View className="flex flex-row items-center justify-between p-4 pr-0">
 				<Text className="text-2xl font-bold">
 					{initialData ? "Update Exercise" : "New Exercise"}
 				</Text>
@@ -122,6 +122,7 @@ export default function SingleExerciseForm({
 									allowZeroDuration
 									value={value}
 									onConfirm={onChange}
+									title="Rest Between Sets"
 								>
 									<Button
 										className={cn(
@@ -176,6 +177,7 @@ export default function SingleExerciseForm({
 									allowZeroDuration
 									value={value}
 									onConfirm={onChange}
+									title="Duration per Rep"
 								>
 									<Button
 										className={cn(
@@ -213,6 +215,7 @@ export default function SingleExerciseForm({
 									allowZeroDuration
 									value={value}
 									onConfirm={onChange}
+									title="Rest Between Reps"
 								>
 									<Button
 										className={cn(
