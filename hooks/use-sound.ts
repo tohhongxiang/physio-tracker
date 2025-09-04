@@ -6,6 +6,10 @@ export default function useSound(audioSource: AVPlaybackSource) {
 
 	useEffect(() => {
 		player.loadAsync(audioSource);
+
+		return () => {
+			player.unloadAsync();
+		};
 	}, [audioSource, player]);
 
 	const play = useCallback(async () => {
