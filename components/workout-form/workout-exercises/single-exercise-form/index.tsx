@@ -25,6 +25,7 @@ import {
 	SelectValue
 } from "~/components/ui/select";
 import { Label } from "~/components/ui/label";
+import { toast } from "sonner-native";
 
 const WEIGHT_UNIT_OPTIONS = [
 	{ label: "kg", value: "kg" },
@@ -59,7 +60,12 @@ export default function SingleExerciseForm({
 	});
 
 	function handleSubmit() {
-		form.handleSubmit(onSubmit)();
+		form.handleSubmit(onSubmit, (e) => {
+			const errors = Object.entries(e).filter(([, value]) => value);
+			errors.forEach(([key, value]) => {
+				toast.error(`${key}: ${value.message}`);
+			});
+		})();
 	}
 
 	useEffect(() => {

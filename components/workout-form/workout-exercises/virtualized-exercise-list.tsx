@@ -11,6 +11,7 @@ import { Trash } from "~/lib/icons/Trash";
 import { Pencil } from "~/lib/icons/Pencil";
 import { useCallback, useRef } from "react";
 
+type ExerciseData = FieldArrayWithId<WorkoutFormSchemaType, "exercises", "key">;
 const itemLayoutAnimation = LinearTransition.duration(150).easing(Easing.ease);
 export default function VirtualizedExerciseList({
 	data,
@@ -18,17 +19,12 @@ export default function VirtualizedExerciseList({
 	onEdit,
 	onDelete
 }: {
-	data: FieldArrayWithId<WorkoutFormSchemaType, "exercises", "id">[];
+	data: ExerciseData[];
 	onMove: (from: number, to: number) => void;
 	onEdit: (index: number) => void;
 	onDelete: (index: number) => void;
 }) {
-	const scrollViewRef =
-		useRef<
-			Animated.FlatList<
-				FieldArrayWithId<WorkoutFormSchemaType, "exercises", "id">
-			>
-		>(null);
+	const scrollViewRef = useRef<Animated.FlatList<ExerciseData>>(null);
 	const previousHeight = useRef(-1);
 	const handleContentSizeChanged = useCallback(
 		(width: number, height: number) => {
@@ -46,7 +42,7 @@ export default function VirtualizedExerciseList({
 		({ item, index }: { item: (typeof data)[number]; index: number }) => {
 			return (
 				<ListItem
-					key={item.id}
+					key={item.key}
 					item={item}
 					index={index}
 					move={onMove}
@@ -84,7 +80,7 @@ function ListItem({
 	onDelete,
 	isLastIndex
 }: {
-	item: FieldArrayWithId<WorkoutFormSchemaType, "exercises", "id">;
+	item: ExerciseData;
 	index: number;
 	move: (from: number, to: number) => void;
 	onEdit: (index: number) => void;
@@ -94,6 +90,7 @@ function ListItem({
 	return (
 		<View className="flex w-full flex-row">
 			<ExerciseCard
+				key={item.key}
 				exercise={item}
 				className="shrink"
 				actions={

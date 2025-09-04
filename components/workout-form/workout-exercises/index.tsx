@@ -26,7 +26,8 @@ export default function WorkoutExercises({
 }) {
 	const { fields, append, remove, move, update } = useFieldArray({
 		control,
-		name: "exercises"
+		name: "exercises",
+		keyName: "key"
 	});
 
 	const alert = useAlertDialog();
