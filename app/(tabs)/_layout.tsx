@@ -71,8 +71,8 @@ export default function TabLayout() {
 			<Tabs.Screen
 				name="test"
 				options={{
-					title: "Test",
-					href: null,
+					title: "Debug",
+					// href: null,
 					tabBarIcon: ({ color }) => (
 						<Ionicons
 							name="flask-outline"

@@ -1,46 +1,20 @@
+import { deleteDatabaseAsync } from "expo-sqlite";
 import { View } from "react-native";
-import { useState } from "react";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue
-} from "~/components/ui/select";
-import { Label } from "~/components/ui/label";
-
-const SELECT_OPTIONS = [
-	{ label: "Name", value: "name" },
-	{ label: "Date created", value: "dateCreated" }
-];
+import { Button } from "~/components/ui/button";
+import { Text } from "~/components/ui/text";
+import { toast } from "sonner-native";
 
 export default function TestPage() {
-	const [selectedValue, setSelectedValue] = useState<
-		(typeof SELECT_OPTIONS)[number] | undefined
-	>(SELECT_OPTIONS[0]);
+	const handleResetDb = async () => {
+		await deleteDatabaseAsync("db.db");
+		toast.success("DB reset successfully");
+	};
 
 	return (
 		<View className="flex flex-col gap-2 p-8">
-			<Label>Sort By:</Label>
-			<Select value={selectedValue} onValueChange={setSelectedValue}>
-				<SelectTrigger>
-					<SelectValue
-						className="native:text-lg text-sm text-foreground"
-						placeholder="Placeholder"
-					/>
-				</SelectTrigger>
-				<SelectContent className="pr-4">
-					{SELECT_OPTIONS.map((option) => (
-						<SelectItem
-							key={option.value}
-							label={option.label}
-							value={option.value}
-						>
-							{option.label}
-						</SelectItem>
-					))}
-				</SelectContent>
-			</Select>
+			<Button>
+				<Text onPress={handleResetDb}>Reset DB</Text>
+			</Button>
 		</View>
 	);
 }
