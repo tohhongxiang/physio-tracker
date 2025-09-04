@@ -121,26 +121,23 @@ export default function WorkoutList() {
 				onChange={bottomSheet.setIsOpen}
 				enablePanDownToClose
 				handleComponent={() => (
-					<View className="flex items-center justify-center rounded-t-xl border border-b-0 border-input bg-popover pt-4">
+					<View className="flex items-center justify-center rounded-t-xl bg-background pt-4">
 						<View className="h-1 w-16 rounded-md bg-muted-foreground" />
 					</View>
 				)}
 				backgroundComponent={null}
 				backdropComponent={(props) => (
 					<BottomSheetBackdrop
-						opacity={1}
-						pressBehavior={"close"}
-						disappearsOnIndex={-1}
-						style={{
-							backgroundColor: "rgba(0, 0, 0, 0.5)",
-							height: "100%",
-							width: "100%"
-						}}
 						{...props}
+						opacity={0.8}
+						pressBehavior={"close"}
+						appearsOnIndex={0}
+						disappearsOnIndex={-1}
+						style={[props.style, { backgroundColor: "black" }]}
 					/>
 				)}
 			>
-				<BottomSheetView className="flex flex-col gap-4 bg-popover p-8">
+				<BottomSheetView className="flex flex-col gap-4 bg-background p-8">
 					<SearchFiltersForm
 						onConfirm={handleSearchFiltersConfirm}
 						onReset={handleResetSearchParams}
