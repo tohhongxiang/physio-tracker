@@ -20,7 +20,7 @@ export default function NavigationHeader({
 }) {
 	return (
 		<View
-			className="flex flex-row items-center justify-between border-b border-muted-foreground/10 bg-background py-4 pl-4 pr-2"
+			className="flex flex-row items-center justify-between border-b border-muted-foreground/10 py-4 pl-4 pr-2"
 			style={{ marginTop: Constants.statusBarHeight }}
 		>
 			<View className="flex flex-row items-center justify-start gap-2">
