@@ -8,6 +8,7 @@ export default async function getWorkoutToday() {
 		where: like(workoutLogs.completedAt, `${today}%`)
 	});
 
+	// If we already did a workout today, return null
 	if (workoutToday) {
 		return null;
 	}

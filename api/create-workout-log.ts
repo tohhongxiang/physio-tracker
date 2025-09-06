@@ -15,5 +15,15 @@ export default async function createWorkoutLog({
 		.insert(workoutLogs)
 		.values({ workoutId, completedAt: dateString })
 		.returning();
-	return result[0];
+
+	const createdWorkoutLog = result[0];
+
+	if (!createdWorkoutLog) {
+		throw new Error("Failed to create workout log");
+	}
+
+	return {
+		...createdWorkoutLog,
+		completedAt: new Date(createdWorkoutLog.completedAt)
+	};
 }

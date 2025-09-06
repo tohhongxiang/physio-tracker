@@ -9,14 +9,14 @@ export async function deleteWorkoutLog(workoutLogId: WorkoutLog["id"]) {
 		.where(eq(workoutLogs.id, workoutLogId))
 		.returning();
 
-	const deletedWorkout = result[0];
+	const deletedWorkoutLog = result[0];
 
-	if (!deletedWorkout) {
+	if (!deletedWorkoutLog) {
 		throw new Error("Workout Log not found!");
 	}
 
 	return {
-		...deletedWorkout,
-		completedAt: new Date(deletedWorkout.completedAt)
+		...deletedWorkoutLog,
+		completedAt: new Date(deletedWorkoutLog.completedAt)
 	};
 }

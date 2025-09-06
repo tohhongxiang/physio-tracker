@@ -3,6 +3,7 @@ import createWorkout from "~/api/create-workout";
 import { Workout } from "~/types";
 import useWorkoutFilterParams from "../use-workout-filter-params";
 import { workoutQueryKeys } from "./query-keys";
+import usePageParams from "../use-page-params";
 
 export default function useCreateWorkout({
 	onSuccess,
@@ -13,27 +14,20 @@ export default function useCreateWorkout({
 } = {}) {
 	const queryClient = useQueryClient();
 	const { filters } = useWorkoutFilterParams();
+	const { page } = usePageParams();
 
 	const { isPending, mutate, error } = useMutation({
 		mutationFn: createWorkout,
-		onSuccess: (createdWorkout) => {
-			queryClient.setQueryData(
-				workoutQueryKeys.list({ ...filters, page: 0 }),
-				(oldData?: { count: number; data: Workout[] }) => {
-					if (!oldData) return oldData;
-
-					const { count, data: previousWorkouts } = oldData;
-					return {
-						count: count + 1,
-						data: [createdWorkout, ...previousWorkouts]
-					};
-				}
-			);
-
+		onSuccess: async (createdWorkout) => {
 			queryClient.setQueryData(
 				workoutQueryKeys.detail(createdWorkout.id),
 				createdWorkout
 			);
+
+			await queryClient.invalidateQueries({
+				queryKey: workoutQueryKeys.list({ ...filters, page }),
+				exact: true
+			});
 
 			onSuccess?.(createdWorkout);
 		},
