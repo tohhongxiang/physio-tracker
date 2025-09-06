@@ -53,3 +53,4 @@ eas build --profile production --platform ios # Build for production on ios
 - https://orm.drizzle.team/docs/connect-expo-sqlite
 - https://gunnartorfis.github.io/sonner-native/toast
 - https://stackoverflow.com/questions/52817922/typescript-return-type-depending-on-parameter
+- https://tkdodo.eu/blog/practical-react-query

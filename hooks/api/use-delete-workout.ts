@@ -1,7 +1,6 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { deleteWorkout } from "~/api/delete-workout";
 import { Workout } from "~/types";
-import { workoutLogQueryKeys, workoutQueryKeys } from "./query-keys";
 
 export default function useDeleteWorkout({
 	onSuccess,
@@ -10,19 +9,9 @@ export default function useDeleteWorkout({
 	onSuccess?: (deletedWorkout: Omit<Workout, "exercises">) => void;
 	onError?: (error: Error) => void;
 } = {}) {
-	const queryClient = useQueryClient();
 	const { isPending, mutate, error } = useMutation({
 		mutationFn: deleteWorkout,
-		onSuccess: async (deletedWorkout) => {
-			await Promise.all([
-				queryClient.invalidateQueries({
-					queryKey: workoutLogQueryKeys.all
-				}),
-				queryClient.invalidateQueries({
-					queryKey: workoutQueryKeys.all
-				})
-			]);
-
+		onSuccess: (deletedWorkout) => {
 			onSuccess?.(deletedWorkout);
 		},
 		onError
