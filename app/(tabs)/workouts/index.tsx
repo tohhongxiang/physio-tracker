@@ -1,7 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
 import { Link, useNavigation } from "expo-router";
 import { Keyboard, View } from "react-native";
-import getWorkouts from "~/api/get-workouts";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import { Plus } from "~/lib/icons/Plus";
@@ -19,8 +17,8 @@ import { WorkoutFilters } from "~/types";
 import usePageParams from "~/hooks/use-page-params";
 import Pagination from "~/components/pagination";
 import WorkoutsList from "~/components/workouts-list";
-import { workoutQueryKeys } from "~/hooks/api/query-keys";
 import { useBottomSheet } from "~/hooks/use-bottom-sheet";
+import useGetWorkouts from "~/hooks/api/use-get-workouts";
 
 export default function WorkoutList() {
 	const {
@@ -37,11 +35,7 @@ export default function WorkoutList() {
 		isPending,
 		isRefetching,
 		refetch
-	} = useQuery({
-		queryKey: workoutQueryKeys.list({ ...filters, page }),
-		queryFn: () => getWorkouts({ ...filters, page }),
-		refetchOnMount: false // prevent race condition where workout is created, but exercise is not created
-	});
+	} = useGetWorkouts({ ...filters, page });
 
 	const bottomSheet = useBottomSheet();
 	const navigation = useNavigation();

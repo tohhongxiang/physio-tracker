@@ -1,6 +1,10 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback } from "react";
 
+export type PageParams = {
+	page: number;
+};
+
 export default function usePageParams() {
 	const pageParams = useLocalSearchParams<{ page?: string }>();
 	const page = parseInt(pageParams.page ?? "0");

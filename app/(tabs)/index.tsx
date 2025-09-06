@@ -1,7 +1,5 @@
 import { ScrollView, View } from "react-native";
 import { Text } from "~/components/ui/text";
-import { useQuery } from "@tanstack/react-query";
-import getWorkoutToday from "~/api/get-workout-today";
 import WorkoutCard from "~/components/workout-card";
 import WorkoutCalendar from "~/components/workout-calendar";
 import { Button } from "~/components/ui/button";
@@ -10,16 +8,13 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import { startOfMonth } from "date-fns";
 import { ArrowRight } from "~/lib/icons/ArrowRight";
-import { workoutQueryKeys } from "~/hooks/api/query-keys";
+import useGetTodaysWorkout from "~/hooks/api/use-get-todays-workout";
 
 export default function IndexPage() {
 	const [currentDate, setCurrentDate] = useState(startOfMonth(new Date()));
 
 	const { data: todaysWorkout, isPending: isFetchingTodaysWorkout } =
-		useQuery({
-			queryKey: workoutQueryKeys.today(),
-			queryFn: getWorkoutToday
-		});
+		useGetTodaysWorkout();
 
 	return (
 		<ScrollView contentContainerClassName="flex flex-col gap-6 p-4">

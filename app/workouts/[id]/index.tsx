@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import {
 	Link,
 	useLocalSearchParams,
@@ -7,7 +6,6 @@ import {
 } from "expo-router";
 import { useEffect } from "react";
 import { View } from "react-native";
-import getWorkout from "~/api/get-workout";
 import { Button } from "~/components/ui/button";
 import WorkoutDetails from "~/components/workout-details";
 import { Pencil } from "~/lib/icons/Pencil";
@@ -17,14 +15,13 @@ import useDeleteWorkout from "~/hooks/api/use-delete-workout";
 import { useAlertDialog } from "~/providers/alert-dialog-provider";
 import WorkoutNotFound from "~/components/workout-not-found";
 import { toast } from "sonner-native";
-import { workoutQueryKeys } from "~/hooks/api/query-keys";
+import useGetWorkout from "~/hooks/api/use-get-workout";
 
 export default function SpecificWorkOutRoute() {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
-	const { data: workout, isPending: isLoadingWorkout } = useQuery({
-		queryKey: workoutQueryKeys.detail(parseInt(id)),
-		queryFn: ({ queryKey }) => getWorkout(queryKey[1])
+	const { data: workout, isPending: isLoadingWorkout } = useGetWorkout({
+		id: parseInt(id)
 	});
 
 	const { deleteWorkout, isLoading: isDeletingWorkout } = useDeleteWorkout({

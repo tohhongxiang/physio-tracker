@@ -1,13 +1,11 @@
 import { addMonths, subMonths } from "date-fns";
-import { useQuery } from "@tanstack/react-query";
-import { workoutLogQueryKeys } from "~/hooks/api/query-keys";
 import { useCallback, useMemo, useRef } from "react";
 import Calendar, { CalendarImperativeApi } from "react-native-swipe-calendar";
-import getWorkoutLogs from "~/api/get-workout-logs";
 import Header from "./header";
 import DayLabel from "./day-label";
 import toDateId from "./to-date-id";
 import Day from "./day";
+import useGetWorkoutLogs from "~/hooks/api/use-get-workout-logs";
 
 type WorkoutCalendarProps = {
 	currentDate: Date;
@@ -18,10 +16,7 @@ export default function WorkoutCalendar({
 	currentDate,
 	onDateChange
 }: WorkoutCalendarProps) {
-	const { data: completedWorkouts = [] } = useQuery({
-		queryKey: workoutLogQueryKeys.all,
-		queryFn: getWorkoutLogs
-	});
+	const { data: completedWorkouts = [] } = useGetWorkoutLogs();
 
 	const markedDates = useMemo(
 		() =>
