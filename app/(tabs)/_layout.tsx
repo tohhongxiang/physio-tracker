@@ -72,7 +72,7 @@ export default function TabLayout() {
 				name="test"
 				options={{
 					title: "Debug",
-					// href: null,
+					href: __DEV__ ? undefined : null,
 					tabBarIcon: ({ color }) => (
 						<Ionicons
 							name="flask-outline"
