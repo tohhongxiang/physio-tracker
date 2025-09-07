@@ -8236,6 +8236,11 @@ react-native-gesture-handler@~2.20.2:
     invariant "^2.2.4"
     prop-types "^15.7.2"
 
+react-native-haptic-feedback@>=2.0.0:
+  version "2.3.3"
+  resolved "https://registry.yarnpkg.com/react-native-haptic-feedback/-/react-native-haptic-feedback-2.3.3.tgz#88b6876e91399a69bd1b551fe1681b2f3dc1214e"
+  integrity sha512-svS4D5PxfNv8o68m9ahWfwje5NqukM3qLS48+WTdhbDkNUkOhP9rDfDSRHzlhk4zq+ISjyw95EhLeh8NkKX5vQ==
+
 react-native-helmet-async@2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/react-native-helmet-async/-/react-native-helmet-async-2.0.4.tgz#93f53a1ff22d6898039688a541653a2d6b6866bb"
@@ -8289,6 +8294,13 @@ react-native-screens@~4.4.0:
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
+
+react-native-sortables@^1.8.0:
+  version "1.8.0"
+  resolved "https://registry.yarnpkg.com/react-native-sortables/-/react-native-sortables-1.8.0.tgz#fabdc8a757eb1e847eda3b4af1f9d349780a1079"
+  integrity sha512-uoNY0uiHikq3eKJoF85CATMPpo9jS7t37XUlunxSGjjbGi4L05os8eJBGNZSR+3NQgK2FtYGGkQtFbeSJIwmDg==
+  optionalDependencies:
+    react-native-haptic-feedback ">=2.0.0"
 
 react-native-sound@^0.11.2:
   version "0.11.2"

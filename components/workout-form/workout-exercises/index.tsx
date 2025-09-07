@@ -62,7 +62,7 @@ export default function WorkoutExercises({
 		useExerciseDetailBottomSheet({
 			onAddExercise: (newExercise) => append(newExercise),
 			onEditExercise: (index, updatedExercise) =>
-				update(index, updatedExercise)
+				update(index, updatedExercise) // this causes a remount
 		});
 
 	usePreventRemove(!isOpen, () => {
@@ -79,13 +79,15 @@ export default function WorkoutExercises({
 					{errors.exercises.message}
 				</Text>
 			)}
-			<VirtualizedExerciseList
-				data={fields}
-				onMove={move}
-				onEdit={(index) => open({ index, data: fields[index] })}
-				onDelete={handleDeleteExercise}
-			/>
-			<View className="mt-auto flex flex-row gap-4">
+			<View className="flex-1">
+				<VirtualizedExerciseList
+					data={fields}
+					onMove={move}
+					onEdit={(index) => open({ index, data: fields[index] })}
+					onDelete={handleDeleteExercise}
+				/>
+			</View>
+			<View className="mt-auto flex flex-row gap-4 bg-background">
 				<Button
 					variant="secondary"
 					className="flex-1"

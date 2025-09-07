@@ -18,7 +18,7 @@ export default function ExerciseCard({
 	return (
 		<View
 			className={cn(
-				"flex flex-col gap-6 rounded-md border border-muted-foreground/30 p-4",
+				"flex flex-col gap-6 rounded-md border border-muted-foreground/30 bg-background p-4",
 				className
 			)}
 		>
