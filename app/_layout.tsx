@@ -14,6 +14,7 @@ import {
 	configureReanimatedLogger,
 	ReanimatedLogLevel
 } from "react-native-reanimated";
+import NavigationHeader from "~/components/navigation-header";
 
 configureReanimatedLogger({
 	level: ReanimatedLogLevel.warn,
@@ -37,21 +38,24 @@ export default function RootLayout() {
 									<Stack
 										screenOptions={{ headerShown: false }}
 									>
-										<Stack.Screen name="(tabs)" />
-										<Stack.Screen name="+not-found" />
-										<Stack.Screen name="workouts/[id]" />
 										<Stack.Screen // we put the add workout here to show it in front of the tabs
 											name="(modals)/workouts/add"
 											options={{
-												presentation: "modal",
 												headerShown: true,
-												title: "Add New Workout",
-												contentStyle: {
-													marginBottom: 48,
-													flex: 1
-												}
+												header: (props) => (
+													<NavigationHeader
+														back={props.back}
+														title={
+															"Add New Workout"
+														}
+													/>
+												),
+												contentStyle: { flex: 1 }
 											}}
 										/>
+										<Stack.Screen name="(tabs)" />
+										<Stack.Screen name="+not-found" />
+										<Stack.Screen name="workouts/[id]" />
 									</Stack>
 								</BottomSheetModalProvider>
 								<Toaster position="bottom-center" />

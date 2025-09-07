@@ -2,6 +2,7 @@ import WorkoutForm from "~/components/workout-form";
 import useCreateWorkout from "~/hooks/api/use-create-workout";
 import { useRouter } from "expo-router";
 import { toast } from "sonner-native";
+import { View } from "react-native";
 
 export default function AddWorkoutModal() {
 	const router = useRouter();
@@ -16,5 +17,9 @@ export default function AddWorkoutModal() {
 		}
 	});
 
-	return <WorkoutForm onSubmit={createWorkout} />;
+	return (
+		<View className="flex-1">
+			<WorkoutForm onSubmit={createWorkout} />
+		</View>
+	);
 }
