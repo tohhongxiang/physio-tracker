@@ -37,7 +37,7 @@ export default function Day({
 								"text-center text-lg font-bold",
 								!isInDisplayedMonth &&
 									"text-muted-foreground opacity-50",
-								isToday && "text-secondary"
+								isToday && "text-primary-foreground"
 							)}
 						>
 							{date.getDate()}

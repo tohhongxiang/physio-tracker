@@ -38,6 +38,9 @@ export default function RootLayout() {
 									<Stack
 										screenOptions={{ headerShown: false }}
 									>
+										<Stack.Screen name="(tabs)" />
+										<Stack.Screen name="+not-found" />
+										<Stack.Screen name="workouts/[id]" />
 										<Stack.Screen // we put the add workout here to show it in front of the tabs
 											name="(modals)/workouts/add"
 											options={{
@@ -53,9 +56,6 @@ export default function RootLayout() {
 												contentStyle: { flex: 1 }
 											}}
 										/>
-										<Stack.Screen name="(tabs)" />
-										<Stack.Screen name="+not-found" />
-										<Stack.Screen name="workouts/[id]" />
 									</Stack>
 								</BottomSheetModalProvider>
 								<Toaster position="bottom-center" />

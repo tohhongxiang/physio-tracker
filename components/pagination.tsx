@@ -32,7 +32,7 @@ export default function Pagination({
 					className="aspect-square"
 					disabled={currentPage <= 0}
 				>
-					<ChevronsLeft className="text-secondary-foreground" />
+					<ChevronsLeft className="text-foreground" />
 				</Button>
 				<Button
 					onPress={onGoToPreviousPage}
@@ -40,7 +40,7 @@ export default function Pagination({
 					className="aspect-square"
 					disabled={currentPage <= 0}
 				>
-					<ChevronLeft className="text-secondary-foreground" />
+					<ChevronLeft className="text-foreground" />
 				</Button>
 				<Button>
 					<Text>{currentPage + 1}</Text>
@@ -51,7 +51,7 @@ export default function Pagination({
 					className="aspect-square rounded-full"
 					disabled={currentPage >= numberOfPages - 1}
 				>
-					<ChevronRight className="text-secondary-foreground" />
+					<ChevronRight className="text-foreground" />
 				</Button>
 				<Button
 					onPress={() => onGoToPage(numberOfPages - 1)}
@@ -59,7 +59,7 @@ export default function Pagination({
 					className="aspect-square"
 					disabled={currentPage >= numberOfPages - 1}
 				>
-					<ChevronsRight className="text-secondary-foreground" />
+					<ChevronsRight className="text-foreground" />
 				</Button>
 			</View>
 			<Text className="text-center text-sm text-muted-foreground">

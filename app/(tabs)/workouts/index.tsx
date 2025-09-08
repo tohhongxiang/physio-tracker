@@ -52,7 +52,7 @@ export default function WorkoutList() {
 							: bottomSheet.open()
 					}
 				>
-					<SlidersHorizontal className={"text-primary"} size={23} />
+					<SlidersHorizontal className="text-foreground" size={23} />
 					{isSearchFilterModified ? (
 						<Badge
 							variant="destructive"
