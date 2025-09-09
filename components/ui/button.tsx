@@ -13,10 +13,10 @@ const buttonVariants = cva(
 				destructive:
 					"bg-destructive web:hover:opacity-90 active:opacity-90",
 				outline:
-					"border border-input bg-background web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent",
+					"border border-input bg-background web:hover:bg-secondary web:hover:text-secondary-foreground active:bg-secondary",
 				secondary:
 					"bg-secondary web:hover:opacity-80 active:opacity-80",
-				ghost: "web:hover:bg-accent web:hover:text-accent-foreground active:bg-accent",
+				ghost: "web:hover:bg-secondary web:hover:text-secondary-foreground active:bg-secondary",
 				link: "web:underline-offset-4 web:hover:underline web:focus:underline "
 			},
 			size: {
@@ -40,10 +40,10 @@ const buttonTextVariants = cva(
 			variant: {
 				default: "text-primary-foreground",
 				destructive: "text-destructive-foreground",
-				outline: "group-active:text-accent-foreground",
+				outline: "group-active:text-secondary-foreground",
 				secondary:
 					"text-secondary-foreground group-active:text-secondary-foreground",
-				ghost: "group-active:text-accent-foreground",
+				ghost: "group-active:text-secondary-foreground",
 				link: "text-primary group-active:underline"
 			},
 			size: {

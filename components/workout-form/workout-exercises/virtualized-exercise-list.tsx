@@ -3,14 +3,13 @@ import { Button } from "../../ui/button";
 import { FieldArrayWithId } from "react-hook-form";
 import { WorkoutFormSchemaType } from "../schema";
 import ExerciseCard from "../../workout-details/exercise-card";
-import { ChevronUp } from "~/lib/icons/ChevronUp";
-import { ChevronDown } from "~/lib/icons/ChevronDown";
 import { Trash } from "~/lib/icons/Trash";
 import { Pencil } from "~/lib/icons/Pencil";
 import { useCallback, useRef } from "react";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import type { SortableGridRenderItem } from "react-native-sortables";
 import Sortable from "react-native-sortables";
+import { GripVertical } from "~/lib/icons/GripVertical";
 
 type ExerciseData = FieldArrayWithId<WorkoutFormSchemaType, "exercises", "key">;
 export default function VirtualizedExerciseList({
@@ -50,21 +49,11 @@ export default function VirtualizedExerciseList({
 						item={item}
 						onEdit={() => onEdit(index)}
 						onDelete={() => onDelete(index)}
-						onMoveUp={
-							index === 0
-								? undefined
-								: () => onMove(index, index - 1)
-						}
-						onMoveDown={
-							index === data.length - 1
-								? undefined
-								: () => onMove(index, index + 1)
-						}
 					/>
 				</Sortable.Touchable>
 			);
 		},
-		[data.length, onDelete, onEdit, onMove]
+		[onDelete, onEdit]
 	);
 
 	return (
@@ -89,6 +78,7 @@ export default function VirtualizedExerciseList({
 				scrollableRef={scrollViewRef}
 				autoScrollActivationOffset={150}
 				overflow="visible"
+				customHandle
 			/>
 		</Animated.ScrollView>
 	);
@@ -97,56 +87,41 @@ export default function VirtualizedExerciseList({
 function ListItem({
 	item,
 	onEdit, // pass undefined if cannot edit
-	onDelete, // pass undefined if cannot delete
-	onMoveUp, // pass undefined if cannot move up
-	onMoveDown // pass undefined if cannot move down
+	onDelete // pass undefined if cannot delete
 }: {
 	item: ExerciseData;
 	onEdit?: () => void;
 	onDelete?: () => void;
-	onMoveUp?: () => void;
-	onMoveDown?: () => void;
 }) {
 	return (
-		<View className="flex w-full flex-row">
+		<View className="flex w-full flex-row items-center justify-center">
 			<ExerciseCard
 				key={item.key}
 				exercise={item}
 				className="shrink"
 				actions={
-					<View className="flex shrink-0 flex-row gap-4">
-						<Button
-							disabled={!onMoveUp}
-							variant="ghost"
-							size="icon"
-							onPress={onMoveUp}
-						>
-							<ChevronUp className="text-foreground" />
-						</Button>
+					<View className="flex shrink-0 flex-row items-center justify-center gap-4">
 						<Button
 							disabled={!onEdit}
 							onPress={onEdit}
-							variant="secondary"
-							size="icon"
+							variant="ghost"
+							size="sm"
 						>
-							<Pencil className="text-foreground" />
+							<Pencil className="text-muted-foreground" />
 						</Button>
 						<Button
-							variant="destructive"
-							size="icon"
+							variant="ghost"
+							size="sm"
 							disabled={!onDelete}
 							onPress={onDelete}
 						>
-							<Trash className="text-destructive-foreground" />
+							<Trash className="text-destructive opacity-90" />
 						</Button>
-						<Button
-							disabled={!onMoveDown}
-							variant="ghost"
-							size="icon"
-							onPress={onMoveDown}
-						>
-							<ChevronDown className="text-foreground" />
-						</Button>
+						<Sortable.Handle>
+							<View className="flex h-9 w-9 flex-col items-center justify-center">
+								<GripVertical className="text-muted-foreground" />
+							</View>
+						</Sortable.Handle>
 					</View>
 				}
 			/>

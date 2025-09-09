@@ -25,7 +25,7 @@ export default function Layout() {
 									variant="ghost"
 									className="flex flex-row gap-2"
 								>
-									<ClipboardCheck className="text-primary" />
+									<ClipboardCheck className="text-foreground" />
 								</Button>
 							</Link>
 						</View>

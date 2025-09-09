@@ -21,6 +21,7 @@ export default memo(function ExerciseEffortDetails({
 		<View className="flex flex-row flex-wrap items-center gap-1">
 			{sets > 0 ? (
 				<ExerciseDetailBadge
+					variant="accent"
 					boldedText={sets.toString()}
 					text={"set(s)"}
 				/>
@@ -28,6 +29,7 @@ export default memo(function ExerciseEffortDetails({
 			{reps > 0 && sets > 0 ? <Text className="text-lg"> × </Text> : null}
 			{reps > 0 ? (
 				<ExerciseDetailBadge
+					variant="accent"
 					boldedText={reps.toString()}
 					text={"rep(s)"}
 				/>
@@ -37,6 +39,7 @@ export default memo(function ExerciseEffortDetails({
 			) : null}
 			{weight > 0 ? (
 				<ExerciseDetailBadge
+					variant="accent"
 					boldedText={weight.toString()}
 					text={weightUnit}
 				/>

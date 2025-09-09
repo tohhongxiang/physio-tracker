@@ -10,6 +10,7 @@ export const exerciseDetailBadgeVariants = cva(
 			variant: {
 				primary: "bg-primary",
 				secondary: "bg-secondary",
+				accent: "bg-accent",
 				ghost: ""
 			},
 			size: {
@@ -30,6 +31,7 @@ export const exerciseDetailBadgeTextVariants = cva("", {
 		variant: {
 			primary: "text-primary-foreground",
 			secondary: "text-secondary-foreground",
+			accent: "text-accent-foreground",
 			ghost: "text-foreground"
 		},
 		size: {

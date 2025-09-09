@@ -59,10 +59,10 @@ export default memo(function CounterContainer({
 	return (
 		<View
 			className={cn(
-				"flex items-center py-4",
-				widths.setsCounter + widths.repsCounter > widths.parent
-					? "flex-col justify-center gap-4"
-					: "flex-row justify-around gap-8"
+				"flex w-full items-center justify-center gap-4 py-4",
+				widths.setsCounter + widths.repsCounter > widths.parent // if sets/reps are too large, use a column instead
+					? "flex-col"
+					: "flex-row"
 			)}
 			ref={parentContainerRef}
 		>
@@ -79,6 +79,7 @@ export default memo(function CounterContainer({
 				variant="ghost"
 				disabled={exercise.description.length === 0}
 				onPress={bottomSheet.open}
+				className={cn(exercise.description.length === 0 && "opacity-0")}
 			>
 				<Info className="text-primary" />
 			</Button>

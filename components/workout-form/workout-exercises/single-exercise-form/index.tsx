@@ -329,7 +329,11 @@ export default function SingleExerciseForm({
 												placeholder=""
 											/>
 										</SelectTrigger>
-										<SelectContent className="border-none">
+										<SelectContent
+											className="border-none"
+											align="end"
+											avoidCollisions
+										>
 											{WEIGHT_UNIT_OPTIONS.map(
 												({ label, value }) => (
 													<SelectItem

@@ -1,10 +1,17 @@
 import { forwardRef, useCallback, useState } from "react";
 import { useBottomSheet } from "~/hooks/use-bottom-sheet";
 import SingleExerciseForm from "./single-exercise-form";
-import { BottomSheetModal, BottomSheetView } from "@gorhom/bottom-sheet";
+import {
+	BottomSheetBackdrop,
+	BottomSheetModal,
+	BottomSheetView
+} from "@gorhom/bottom-sheet";
 import { CreateExercise } from "~/types";
 import { usePreventRemove } from "@react-navigation/native";
+import { View } from "react-native";
 
+const EMPTY_INDEX = -1;
+const EMPTY_EXERCISE_DATA = null;
 export function useExerciseDetailBottomSheet({
 	onAddExercise,
 	onEditExercise
@@ -14,14 +21,14 @@ export function useExerciseDetailBottomSheet({
 }) {
 	const bottomSheet = useBottomSheet();
 
-	const [editingIndex, setEditingIndex] = useState(-1);
-	const [initialData, setInitialData] = useState<CreateExercise | null>(null);
+	const [editingIndex, setEditingIndex] = useState(EMPTY_INDEX);
+	const [initialData, setInitialData] = useState<CreateExercise | null>(
+		EMPTY_EXERCISE_DATA
+	);
 	const open = useCallback(
 		(props?: { index: number; data: CreateExercise }) => {
-			if (props) {
-				setEditingIndex(props.index);
-				setInitialData(props.data);
-			}
+			setEditingIndex(props?.index ?? EMPTY_INDEX);
+			setInitialData(props?.data ?? EMPTY_EXERCISE_DATA);
 
 			bottomSheet.open();
 		},
@@ -78,7 +85,7 @@ type ExerciseDetailBottomSheetProps = {
 };
 
 // ExerciseDetailBottomSheet should be used with useExerciseDetailBottomSheet
-const snapPoints = ["100%"];
+const snapPoints = ["80%"];
 const ExerciseDetailBottomSheet = forwardRef<
 	BottomSheetModal<CreateExercise>,
 	ExerciseDetailBottomSheetProps
@@ -96,10 +103,23 @@ const ExerciseDetailBottomSheet = forwardRef<
 		<BottomSheetModal
 			ref={ref}
 			onChange={setIsOpen}
-			handleComponent={null}
+			handleComponent={() => (
+				<View className="flex items-center justify-center rounded-t-xl border-none bg-popover pt-2">
+					<View className="h-1 w-16 rounded-md bg-muted-foreground" />
+				</View>
+			)}
 			snapPoints={snapPoints}
 			backgroundComponent={null}
-			backdropComponent={null}
+			backdropComponent={(props) => (
+				<BottomSheetBackdrop
+					{...props}
+					opacity={0.8}
+					pressBehavior={"close"}
+					appearsOnIndex={0}
+					disappearsOnIndex={-1}
+					style={[props.style, { backgroundColor: "black" }]}
+				/>
+			)}
 			enablePanDownToClose={true}
 			enableDynamicSizing={false}
 			enableOverDrag={false}
@@ -107,7 +127,7 @@ const ExerciseDetailBottomSheet = forwardRef<
 			keyboardBlurBehavior="restore"
 			enableDismissOnClose
 		>
-			<BottomSheetView className="flex h-full flex-col gap-4 bg-popover pt-12">
+			<BottomSheetView className="flex h-full flex-col gap-4 bg-popover">
 				<SingleExerciseForm
 					isOpen={isOpen}
 					onCancel={onCancel}

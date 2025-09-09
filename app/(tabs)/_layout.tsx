@@ -14,6 +14,9 @@ export default function TabLayout() {
 				),
 				headerRight: () => <ThemeToggle />,
 				tabBarHideOnKeyboard: true,
+				tabBarStyle: {
+					height: 56
+				},
 				animation: "shift"
 			}}
 		>
