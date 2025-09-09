@@ -21,7 +21,7 @@ export default function WorkoutsTabLayout() {
 					name="index"
 					options={{
 						title: "Workouts",
-						headerBackVisible: true,
+						headerBackVisible: false,
 						headerShadowVisible: true
 					}}
 				/>
