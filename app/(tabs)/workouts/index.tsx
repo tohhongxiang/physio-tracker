@@ -5,11 +5,7 @@ import { Text } from "~/components/ui/text";
 import { Plus } from "~/lib/icons/Plus";
 import { useEffect } from "react";
 import { SlidersHorizontal } from "~/lib/icons/SlidersHorizontal";
-import {
-	BottomSheetBackdrop,
-	BottomSheetModal,
-	BottomSheetView
-} from "@gorhom/bottom-sheet";
+import BottomSheetModal from "~/components/bottom-sheet-modal";
 import SearchFiltersForm from "~/components/search-filters-form";
 import { Badge } from "~/components/ui/badge";
 import useWorkoutFilterParams from "~/hooks/use-workout-filter-params";
@@ -113,32 +109,12 @@ export default function WorkoutList() {
 			<BottomSheetModal
 				ref={bottomSheet.ref}
 				onChange={bottomSheet.setIsOpen}
-				enablePanDownToClose
-				handleComponent={() => (
-					<View className="flex items-center justify-center rounded-t-xl border-none bg-popover pt-2">
-						<View className="h-1 w-16 rounded-md bg-muted-foreground" />
-					</View>
-				)}
-				enableOverDrag={false}
-				backgroundComponent={null}
-				backdropComponent={(props) => (
-					<BottomSheetBackdrop
-						{...props}
-						opacity={0.8}
-						pressBehavior={"close"}
-						appearsOnIndex={0}
-						disappearsOnIndex={-1}
-						style={[props.style, { backgroundColor: "black" }]}
-					/>
-				)}
 			>
-				<BottomSheetView className="flex flex-col gap-4 bg-popover px-4 py-8">
-					<SearchFiltersForm
-						onConfirm={handleSearchFiltersConfirm}
-						onReset={handleResetSearchParams}
-						filters={filters}
-					/>
-				</BottomSheetView>
+				<SearchFiltersForm
+					onConfirm={handleSearchFiltersConfirm}
+					onReset={handleResetSearchParams}
+					filters={filters}
+				/>
 			</BottomSheetModal>
 		</View>
 	);

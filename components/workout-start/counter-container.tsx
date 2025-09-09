@@ -7,14 +7,9 @@ import { Info } from "~/lib/icons/Info";
 import { cn } from "~/lib/utils";
 import { memo, useLayoutEffect, useRef, useState } from "react";
 import { Exercise } from "~/types";
-import {
-	BottomSheetBackdrop,
-	BottomSheetModal,
-	BottomSheetScrollView,
-	BottomSheetView
-} from "@gorhom/bottom-sheet";
 import { useBottomSheet } from "~/hooks/use-bottom-sheet";
 import { Text } from "~/components/ui/text";
+import BottomSheetModal from "../bottom-sheet-modal";
 
 export default memo(function CounterContainer({
 	exercise,
@@ -91,34 +86,12 @@ export default memo(function CounterContainer({
 			<BottomSheetModal
 				ref={bottomSheet.ref}
 				onChange={bottomSheet.setIsOpen}
-				enablePanDownToClose
-				handleComponent={() => (
-					<View className="flex items-center justify-center rounded-t-xl border border-b-0 border-input bg-popover pt-4">
-						<View className="h-1 w-16 rounded-md bg-muted-foreground" />
-					</View>
-				)}
-				backgroundComponent={null}
-				enableOverDrag={false}
 				maxDynamicContentSize={500}
-				backdropComponent={(props) => (
-					<BottomSheetBackdrop
-						opacity={1}
-						pressBehavior={"close"}
-						disappearsOnIndex={-1}
-						style={{
-							backgroundColor: "rgba(0, 0, 0, 0.5)",
-							height: "100%",
-							width: "100%"
-						}}
-						{...props}
-					/>
-				)}
+				scrollable
 			>
-				<BottomSheetView className="flex flex-col gap-4 bg-popover">
-					<BottomSheetScrollView className="p-8 pb-16">
-						<Text>{description}</Text>
-					</BottomSheetScrollView>
-				</BottomSheetView>
+				<View className="p-4 pt-0">
+					<Text>{description}</Text>
+				</View>
 			</BottomSheetModal>
 		</View>
 	);

@@ -3,6 +3,7 @@ import { useFocusEffect } from "expo-router";
 import { useCallback, useRef, useState } from "react";
 import { BackHandler, NativeEventSubscription } from "react-native";
 
+// To be used with file:///./../components/bottom-sheet-modal.tsx
 export function useBottomSheet() {
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
 	const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);

@@ -56,7 +56,7 @@ export default function SearchFiltersForm({
 	}
 
 	return (
-		<View className="flex flex-col gap-4">
+		<View className="flex flex-col gap-4 p-4">
 			<View className="flex flex-col gap-2">
 				<Label>Filter by Name:</Label>
 				<Input

@@ -1,14 +1,11 @@
 import { forwardRef, useCallback, useState } from "react";
 import { useBottomSheet } from "~/hooks/use-bottom-sheet";
 import SingleExerciseForm from "./single-exercise-form";
-import {
-	BottomSheetBackdrop,
-	BottomSheetModal,
-	BottomSheetView
-} from "@gorhom/bottom-sheet";
 import { CreateExercise } from "~/types";
 import { usePreventRemove } from "@react-navigation/native";
-import { View } from "react-native";
+import BottomSheetModal, {
+	BottomSheetModalRef
+} from "~/components/bottom-sheet-modal";
 
 const EMPTY_INDEX = -1;
 const EMPTY_EXERCISE_DATA = null;
@@ -87,7 +84,7 @@ type ExerciseDetailBottomSheetProps = {
 // ExerciseDetailBottomSheet should be used with useExerciseDetailBottomSheet
 const snapPoints = ["80%"];
 const ExerciseDetailBottomSheet = forwardRef<
-	BottomSheetModal<CreateExercise>,
+	BottomSheetModalRef<CreateExercise>,
 	ExerciseDetailBottomSheetProps
 >(function ExerciseDetailBottomSheet(
 	{
@@ -103,38 +100,15 @@ const ExerciseDetailBottomSheet = forwardRef<
 		<BottomSheetModal
 			ref={ref}
 			onChange={setIsOpen}
-			handleComponent={() => (
-				<View className="flex items-center justify-center rounded-t-xl border-none bg-popover pt-2">
-					<View className="h-1 w-16 rounded-md bg-muted-foreground" />
-				</View>
-			)}
 			snapPoints={snapPoints}
-			backgroundComponent={null}
-			backdropComponent={(props) => (
-				<BottomSheetBackdrop
-					{...props}
-					opacity={0.8}
-					pressBehavior={"close"}
-					appearsOnIndex={0}
-					disappearsOnIndex={-1}
-					style={[props.style, { backgroundColor: "black" }]}
-				/>
-			)}
-			enablePanDownToClose={true}
 			enableDynamicSizing={false}
-			enableOverDrag={false}
-			keyboardBehavior="interactive"
-			keyboardBlurBehavior="restore"
-			enableDismissOnClose
 		>
-			<BottomSheetView className="flex h-full flex-col gap-4 bg-popover">
-				<SingleExerciseForm
-					isOpen={isOpen}
-					onCancel={onCancel}
-					onSubmit={onSubmit}
-					initialData={initialData}
-				/>
-			</BottomSheetView>
+			<SingleExerciseForm
+				isOpen={isOpen}
+				onCancel={onCancel}
+				onSubmit={onSubmit}
+				initialData={initialData}
+			/>
 		</BottomSheetModal>
 	);
 });
