@@ -13,6 +13,7 @@ import { cn } from "~/lib/utils";
 export default function WorkoutDurationBadge({
 	variant,
 	workout,
+	size,
 	className
 }: { workout: Workout; className?: string } & VariantProps<
 	typeof exerciseDetailBadgeVariants
@@ -25,52 +26,59 @@ export default function WorkoutDurationBadge({
 		estimatedWorkoutDurationMinutes
 	);
 
-	if (days > 0) {
-		return (
-			<ExerciseDetailBadge
-				variant={variant}
-				leftIcon={
-					<Clock
-						className={exerciseDetailBadgeTextVariants({ variant })}
-						size={16}
-					/>
-				}
-				className={className}
-			>
-				<>
-					<Text
-						className={cn(
-							exerciseDetailBadgeTextVariants({ variant }),
-							"font-semibold"
-						)}
-					>
-						{formatBigNumber(days)}
-					</Text>
-					<Text> {days === 1 ? "day" : "days"}</Text>
-				</>
-			</ExerciseDetailBadge>
-		);
-	}
+	const textClassNames = exerciseDetailBadgeTextVariants({
+		variant,
+		size
+	});
+	const iconSize = size === "small" ? 12 : 16;
 
 	return (
 		<ExerciseDetailBadge
 			variant={variant}
+			size={size}
 			leftIcon={
 				<Clock
-					className={exerciseDetailBadgeTextVariants({ variant })}
-					size={16}
+					className={exerciseDetailBadgeTextVariants({
+						variant,
+						size
+					})}
+					size={iconSize}
 				/>
 			}
 			className={className}
 		>
+			<Content {...{ days, hours, minutes, className: textClassNames }} />
+		</ExerciseDetailBadge>
+	);
+}
+
+function Content({
+	days,
+	hours,
+	minutes,
+	className
+}: {
+	days: number;
+	hours: number;
+	minutes: number;
+	className?: string;
+}) {
+	if (days > 0) {
+		return (
+			<>
+				<Text className={cn(className, "font-semibold")}>
+					{formatBigNumber(days)}
+				</Text>
+				<Text> {days === 1 ? "day" : "days"}</Text>
+			</>
+		);
+	}
+
+	return (
+		<>
 			{hours > 0 ? (
 				<>
-					<Text
-						className={cn(
-							exerciseDetailBadgeTextVariants({ variant }),
-							"font-semibold"
-						)}
-					>
+					<Text className={cn(className, "font-semibold")}>
 						{formatBigNumber(hours)}
 					</Text>
 					<Text> {hours === 1 ? "hour" : "hours"}</Text>
@@ -79,18 +87,15 @@ export default function WorkoutDurationBadge({
 			{hours > 0 && minutes > 0 ? <Text> </Text> : null}
 			{minutes > 0 ? (
 				<>
-					<Text
-						className={cn(
-							exerciseDetailBadgeTextVariants({ variant }),
-							"font-semibold"
-						)}
-					>
-						{formatBigNumber(minutes)}
+					<Text className={cn(className, "font-semibold")}>
+						{formatBigNumber(minutes)}{" "}
 					</Text>
-					<Text> {minutes === 1 ? "minute" : "minutes"}</Text>
+					<Text className={className}>
+						{minutes === 1 ? "minute" : "minutes"}
+					</Text>
 				</>
 			) : null}
-		</ExerciseDetailBadge>
+		</>
 	);
 }
 
