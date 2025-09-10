@@ -26,7 +26,7 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 
 	const form = useWorkoutForm(data);
 	usePreventRemove(
-		form.formState.isDirty && !form.formState.isSubmitting, // when submitting, we can allow redirects
+		!form.formState.isSubmitting && !form.formState.isSubmitted, // when submitting, we can allow redirects
 		({ data }) => {
 			if (step === 1) {
 				return;
@@ -59,7 +59,9 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 	}
 
 	function handleSubmit() {
-		form.handleSubmit(async (data) => await onSubmit?.(data as Workout))();
+		form.handleSubmit(async (data) => {
+			await onSubmit?.(data as Workout);
+		})();
 	}
 
 	return (
