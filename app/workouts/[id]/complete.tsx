@@ -10,7 +10,7 @@ export default function CompleteWorkoutPage() {
 	const router = useRouter();
 	const { createWorkoutLog, isLoading } = useCreateWorkoutLog({
 		onSuccess: () => {
-			router.push("/");
+			router.dismissTo("/");
 		},
 		onError: (error: Error) =>
 			toast.error("Failed to add log: " + error.message)
