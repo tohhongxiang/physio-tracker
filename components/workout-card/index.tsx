@@ -9,13 +9,14 @@ import {
 import { Button } from "../ui/button";
 import { Text } from "../ui/text";
 import { Link } from "expo-router";
-import { View, ViewProps } from "react-native";
+import { Pressable, View, ViewProps } from "react-native";
 import { Workout } from "~/types";
 import { Eye } from "~/lib/icons/Eye";
 import LoadingWorkoutCard from "./loading";
 import WorkoutDurationBadge from "../exercise-detail-badges/workout-duration-badge";
 import NumberOfExercisesBadge from "../exercise-detail-badges/number-of-exercises-badge";
 import { Play } from "~/lib/icons/Play";
+import { cn } from "~/lib/utils";
 
 interface WorkoutCardProps extends ViewProps {
 	workout: Workout;
@@ -23,59 +24,69 @@ interface WorkoutCardProps extends ViewProps {
 
 export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
 	return (
-		<Link href={`/workouts/${workout.id}`}>
-			<Card className="w-full max-w-md" {...props}>
-				<CardHeader className="flex w-full flex-row items-start justify-between gap-4">
-					<View className="flex flex-1 flex-col gap-2">
-						<CardTitle numberOfLines={1}>{workout.name}</CardTitle>
-						{workout.description && (
-							<CardDescription className="line-clamp-2 text-ellipsis">
-								{workout.description}
-							</CardDescription>
-						)}
-					</View>
-					<Link
-						href={`/workouts/${workout.id}`}
-						asChild
-						className="shrink-0"
-					>
-						<Button variant="ghost">
-							<Eye
-								size={16}
-								className="text-secondary-foreground"
-							/>
-						</Button>
-					</Link>
-				</CardHeader>
-				<CardContent className="flex flex-col gap-4">
-					<View className="flex flex-row justify-start gap-4">
-						<NumberOfExercisesBadge
-							number={workout.exercises.length}
-							variant="ghost"
-							className="px-0 opacity-75"
-						/>
-						<WorkoutDurationBadge
-							workout={workout}
-							variant="ghost"
-							className="px-0 opacity-75"
-						/>
-					</View>
-				</CardContent>
-				<CardFooter>
-					<Link href={`/workouts/${workout.id}/start`} asChild>
-						<Button
-							className="flex w-full flex-row items-center gap-2"
-							disabled={workout.exercises.length === 0}
+		<Link href={`/workouts/${workout.id}`} asChild>
+			<Pressable className="acitve:opacity-80">
+				<Card
+					{...props}
+					className={cn(
+						"w-full max-w-md bg-background",
+						props.className
+					)}
+				>
+					<CardHeader className="flex w-full flex-row items-start justify-between gap-4">
+						<View className="flex flex-1 flex-col gap-2">
+							<CardTitle numberOfLines={1}>
+								{workout.name}
+							</CardTitle>
+							{workout.description && (
+								<CardDescription className="line-clamp-2 text-ellipsis">
+									{workout.description}
+								</CardDescription>
+							)}
+						</View>
+						<Link
+							href={`/workouts/${workout.id}`}
+							asChild
+							className="shrink-0"
 						>
-							<Play
-								className="text-primary-foreground"
-								size={16}
+							<Button variant="ghost">
+								<Eye
+									size={16}
+									className="text-secondary-foreground"
+								/>
+							</Button>
+						</Link>
+					</CardHeader>
+					<CardContent className="flex flex-col gap-4">
+						<View className="flex flex-row justify-start gap-4">
+							<NumberOfExercisesBadge
+								number={workout.exercises.length}
+								variant="ghost"
+								className="px-0 opacity-75"
 							/>
-							<Text>Start</Text>
-						</Button>
-					</Link>
-				</CardFooter>
-			</Card>
+							<WorkoutDurationBadge
+								workout={workout}
+								variant="ghost"
+								className="px-0 opacity-75"
+							/>
+						</View>
+					</CardContent>
+					<CardFooter>
+						<Link href={`/workouts/${workout.id}/start`} asChild>
+							<Button
+								className="flex w-full flex-row items-center gap-2"
+								disabled={workout.exercises.length === 0}
+							>
+								<Play
+									className="text-primary-foreground"
+									size={16}
+								/>
+								<Text>Start</Text>
+							</Button>
+						</Link>
+					</CardFooter>
+				</Card>
+			</Pressable>
 		</Link>
 	);
 }
