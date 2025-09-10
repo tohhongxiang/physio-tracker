@@ -10,6 +10,7 @@ import ExerciseDetailBottomSheet, {
 	useExerciseDetailBottomSheet
 } from "./exercise-detail-bottom-sheet";
 import VirtualizedExerciseList from "./virtualized-exercise-list";
+import { useCallback } from "react";
 
 export default function WorkoutExercises({
 	form: {
@@ -31,25 +32,30 @@ export default function WorkoutExercises({
 	});
 
 	const alert = useAlertDialog();
-	function handleDeleteExercise(index: number) {
-		alert({
-			title: "Delete this exercise?",
-			description: (
-				<View className="flex flex-col gap-2">
-					<Text className="text-muted-foreground">
-						You are about to delete the following exercise:
-					</Text>
-					<ExerciseCard exercise={fields[index]} />
-					<Text className="text-muted-foreground">Are you sure?</Text>
-				</View>
-			),
-			variant: "destructive",
-			actionText: "Delete",
-			onConfirm() {
-				remove(index);
-			}
-		});
-	}
+	const handleDeleteExercise = useCallback(
+		(index: number) => {
+			alert({
+				title: "Delete this exercise?",
+				description: (
+					<View className="flex flex-col gap-2">
+						<Text className="text-muted-foreground">
+							You are about to delete the following exercise:
+						</Text>
+						<ExerciseCard exercise={fields[index]} />
+						<Text className="text-muted-foreground">
+							Are you sure?
+						</Text>
+					</View>
+				),
+				variant: "destructive",
+				actionText: "Delete",
+				onConfirm() {
+					remove(index);
+				}
+			});
+		},
+		[alert, fields, remove]
+	);
 
 	async function handleSubmit() {
 		const isValid = await trigger(["exercises"]);
@@ -69,6 +75,11 @@ export default function WorkoutExercises({
 		onGoToPreviousStep();
 	});
 
+	const handleEditExercise = useCallback(
+		(index: number) => open({ index, data: fields[index] }),
+		[fields, open]
+	);
+
 	return (
 		<View className="flex h-full grow flex-col gap-4 p-4">
 			<Button onPress={() => open()}>
@@ -83,7 +94,7 @@ export default function WorkoutExercises({
 				<VirtualizedExerciseList
 					data={fields}
 					onMove={move}
-					onEdit={(index) => open({ index, data: fields[index] })}
+					onEdit={handleEditExercise}
 					onDelete={handleDeleteExercise}
 				/>
 			</View>

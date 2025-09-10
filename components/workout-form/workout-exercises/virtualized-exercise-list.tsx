@@ -42,17 +42,15 @@ export default function VirtualizedExerciseList({
 
 	// Does not need key, handled by react-native-sortables
 	const renderItem = useCallback<SortableGridRenderItem<ExerciseData>>(
-		({ item, index }) => {
-			return (
-				<Sortable.Touchable>
-					<ListItem
-						item={item}
-						onEdit={() => onEdit(index)}
-						onDelete={() => onDelete(index)}
-					/>
-				</Sortable.Touchable>
-			);
-		},
+		({ item, index }) => (
+			<Sortable.Touchable>
+				<ListItem
+					item={item}
+					onEdit={() => onEdit(index)}
+					onDelete={() => onDelete(index)}
+				/>
+			</Sortable.Touchable>
+		),
 		[onDelete, onEdit]
 	);
 
@@ -66,6 +64,7 @@ export default function VirtualizedExerciseList({
 				itemExiting={null}
 				columns={1}
 				data={data}
+				dragActivationDelay={0}
 				rowGap={8}
 				overDrag="none"
 				activeItemScale={1}
@@ -76,7 +75,7 @@ export default function VirtualizedExerciseList({
 					onMove(fromIndex, toIndex)
 				}
 				scrollableRef={scrollViewRef}
-				autoScrollActivationOffset={150}
+				autoScrollActivationOffset={200}
 				overflow="visible"
 				customHandle
 			/>
