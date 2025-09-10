@@ -11,12 +11,12 @@ export default function RecentWorkouts() {
 	const { data, isPending } = useGetWorkoutLogsByMonthYear(currentDate);
 
 	return (
-		<ScrollView contentContainerClassName="flex flex-col gap-8 p-4">
+		<ScrollView contentContainerClassName="flex flex-col gap-4 p-4">
 			<WorkoutCalendar
 				currentDate={currentDate}
 				onDateChange={setCurrentDate}
 			/>
-			<View className="flex flex-col gap-4">
+			<View className="flex flex-col">
 				<Text className="text-3xl font-bold">
 					Your Completed Workouts
 				</Text>
