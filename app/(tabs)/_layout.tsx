@@ -6,7 +6,7 @@ import { Dumbbell } from "~/lib/icons/Dumbbell";
 import { Home } from "~/lib/icons/Home";
 import { ClipboardList } from "~/lib/icons/ClipboardList";
 import { Clock } from "~/lib/icons/Clock";
-import { Info } from "~/lib/icons/Info";
+import { Settings } from "~/lib/icons/Settings";
 
 export default function TabLayout() {
 	return (
@@ -70,7 +70,7 @@ export default function TabLayout() {
 					title: "Debug",
 					href: __DEV__ ? undefined : null,
 					tabBarIcon: ({ color, size }) => (
-						<Info color={color} size={size} />
+						<Settings color={color} size={size} />
 					)
 				}}
 			/>

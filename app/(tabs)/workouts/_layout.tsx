@@ -20,7 +20,7 @@ export default function WorkoutsTabLayout() {
 				<Stack.Screen
 					name="index"
 					options={{
-						title: "Workouts",
+						title: "Your Workouts",
 						headerBackVisible: false,
 						headerShadowVisible: true
 					}}
