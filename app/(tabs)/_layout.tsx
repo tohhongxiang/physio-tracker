@@ -1,11 +1,17 @@
 import { Tabs } from "expo-router";
 import { ThemeToggle } from "~/components/theme-toggle";
-import Ionicons from "@expo/vector-icons/Ionicons";
 import NavigationHeader from "~/components/navigation-header";
+import { Button } from "~/components/ui/button";
+import { Dumbbell } from "~/lib/icons/Dumbbell";
+import { Home } from "~/lib/icons/Home";
+import { ClipboardList } from "~/lib/icons/ClipboardList";
+import { Clock } from "~/lib/icons/Clock";
+import { Info } from "~/lib/icons/Info";
 
 export default function TabLayout() {
 	return (
 		<Tabs
+			backBehavior="history"
 			screenOptions={{
 				header: (props) => (
 					<NavigationHeader
@@ -15,21 +21,18 @@ export default function TabLayout() {
 				headerRight: () => <ThemeToggle />,
 				tabBarHideOnKeyboard: true,
 				tabBarStyle: {
-					height: 56
+					height: 64
 				},
-				animation: "shift"
+				animation: "shift",
+				tabBarButton: (props) => <Button {...props} variant="ghost" />
 			}}
 		>
 			<Tabs.Screen
 				name="index"
 				options={{
 					title: "Home",
-					tabBarIcon: ({ color, focused }) => (
-						<Ionicons
-							name={focused ? "home-sharp" : "home-outline"}
-							color={color}
-							size={24}
-						/>
+					tabBarIcon: ({ color, size }) => (
+						<Home color={color} size={size} />
 					)
 				}}
 			/>
@@ -38,26 +41,17 @@ export default function TabLayout() {
 				options={{
 					title: "Workouts",
 					headerShown: false,
-					tabBarIcon: ({ color }) => (
-						<Ionicons
-							name={"barbell-outline"}
-							color={color}
-							size={24}
-						/>
-					),
-					href: "/workouts"
+					tabBarIcon: ({ color, size }) => (
+						<Dumbbell color={color} size={size} />
+					)
 				}}
 			/>
 			<Tabs.Screen
 				name="logbook"
 				options={{
 					title: "Logbook",
-					tabBarIcon: ({ color, focused }) => (
-						<Ionicons
-							name={focused ? "book" : "book-outline"}
-							color={color}
-							size={24}
-						/>
+					tabBarIcon: ({ color, size }) => (
+						<ClipboardList color={color} size={size} />
 					)
 				}}
 			/>
@@ -65,9 +59,8 @@ export default function TabLayout() {
 				name="timer"
 				options={{
 					title: "Timer",
-					// href: null,
-					tabBarIcon: ({ color }) => (
-						<Ionicons name="time-outline" color={color} size={24} />
+					tabBarIcon: ({ color, size }) => (
+						<Clock color={color} size={size} />
 					)
 				}}
 			/>
@@ -76,12 +69,8 @@ export default function TabLayout() {
 				options={{
 					title: "Debug",
 					href: __DEV__ ? undefined : null,
-					tabBarIcon: ({ color }) => (
-						<Ionicons
-							name="flask-outline"
-							color={color}
-							size={24}
-						/>
+					tabBarIcon: ({ color, size }) => (
+						<Info color={color} size={size} />
 					)
 				}}
 			/>
