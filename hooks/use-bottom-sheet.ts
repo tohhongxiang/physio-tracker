@@ -1,12 +1,12 @@
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
 import { useFocusEffect } from "expo-router";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BackHandler, NativeEventSubscription } from "react-native";
 
 // To be used with file:///./../components/bottom-sheet-modal.tsx
 export function useBottomSheet() {
 	const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-	const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -16,43 +16,44 @@ export function useBottomSheet() {
 	);
 
 	const open = useCallback(() => {
-		setIsBottomSheetOpen(true);
+		setIsOpen(true);
 		bottomSheetModalRef.current?.present();
 	}, []);
 
 	const close = useCallback(() => {
-		setIsBottomSheetOpen(false);
+		setIsOpen(false);
 		bottomSheetModalRef.current?.close();
 	}, []);
 
 	const backHandlerSubscriptionRef = useRef<NativeEventSubscription | null>(
 		null
 	);
-	const setIsOpen = useCallback(
-		(index: number) => {
-			const isBottomSheetOpen = index >= 0;
-			setIsBottomSheetOpen(isBottomSheetOpen);
+	useEffect(() => {
+		if (isOpen && !backHandlerSubscriptionRef.current) {
+			backHandlerSubscriptionRef.current = BackHandler.addEventListener(
+				"hardwareBackPress",
+				() => {
+					bottomSheetModalRef.current?.dismiss();
+					return true;
+				}
+			);
+		}
 
-			// handle back button to dismiss bottom sheet
-			if (isBottomSheetOpen && !backHandlerSubscriptionRef.current) {
-				// setup the back handler if the bottom sheet is right in front of the user
-				backHandlerSubscriptionRef.current =
-					BackHandler.addEventListener("hardwareBackPress", () => {
-						bottomSheetModalRef.current?.dismiss();
-						return true;
-					});
-			} else if (!isBottomSheetOpen) {
-				backHandlerSubscriptionRef.current?.remove(); // remove event listener and clean up
-				backHandlerSubscriptionRef.current = null;
-			}
-		},
-		[backHandlerSubscriptionRef]
-	);
+		return () => {
+			backHandlerSubscriptionRef.current?.remove(); // remove event listener and clean up
+			backHandlerSubscriptionRef.current = null;
+		};
+	}, [isOpen]);
+
+	const onChange = useCallback((index: number) => {
+		const isBottomSheetOpen = index >= 0;
+		setIsOpen(isBottomSheetOpen);
+	}, []);
 
 	return {
 		ref: bottomSheetModalRef,
-		isOpen: isBottomSheetOpen,
-		setIsOpen,
+		isOpen,
+		onChange,
 		open,
 		close
 	};

@@ -29,7 +29,6 @@ const BottomSheetModal = forwardRef<
 	return (
 		<GorhomBottomSheetModal
 			ref={ref}
-			onChange={props.onChange}
 			enablePanDownToClose
 			handleComponent={() => (
 				<View className="flex items-center justify-center rounded-t-xl bg-popover pb-2 pt-4">

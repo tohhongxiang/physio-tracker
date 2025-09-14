@@ -85,7 +85,7 @@ export default memo(function CounterContainer({
 			/>
 			<BottomSheetModal
 				ref={bottomSheet.ref}
-				onChange={bottomSheet.setIsOpen}
+				onChange={bottomSheet.onChange}
 				maxDynamicContentSize={500}
 				scrollable
 			>

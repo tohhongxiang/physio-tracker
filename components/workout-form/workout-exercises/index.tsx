@@ -4,14 +4,17 @@ import { Text } from "../../ui/text";
 import { useFieldArray, UseFormReturn } from "react-hook-form";
 import { WorkoutFormSchemaType } from "../schema";
 import ExerciseCard from "../../workout-details/exercise-card";
-import { usePreventRemove } from "@react-navigation/native";
 import { useAlertDialog } from "~/providers/alert-dialog-provider";
-import ExerciseDetailBottomSheet, {
-	useExerciseDetailBottomSheet
-} from "./exercise-detail-bottom-sheet";
 import VirtualizedExerciseList from "./virtualized-exercise-list";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
+import SingleExerciseForm from "./single-exercise-form";
+import { useBottomSheet } from "~/hooks/use-bottom-sheet";
+import BottomSheetModal from "~/components/bottom-sheet-modal";
+import { CreateExercise } from "~/types";
 
+const EMPTY_INDEX = -1;
+const EMPTY_EXERCISE_DATA = null;
+const SNAP_POINTS = ["80%"];
 export default function WorkoutExercises({
 	form: {
 		control,
@@ -64,25 +67,21 @@ export default function WorkoutExercises({
 		onSuccessfulSubmit();
 	}
 
-	const { isOpen, open, exerciseDetailsBottomSheetProps } =
-		useExerciseDetailBottomSheet({
-			onAddExercise: (newExercise) => append(newExercise),
-			onEditExercise: (index, updatedExercise) =>
-				update(index, updatedExercise) // this causes a remount
-		});
-
-	usePreventRemove(!isOpen, () => {
-		onGoToPreviousStep();
+	const {
+		exerciseFormData,
+		handleStartAddExercise,
+		handleStartEditExercise,
+		handleConfirm,
+		bottomSheet
+	} = useEditOrAddExercise({
+		exercises: fields,
+		onAddExercise: append,
+		onUpdateExercise: update
 	});
-
-	const handleEditExercise = useCallback(
-		(index: number) => open({ index, data: fields[index] }),
-		[fields, open]
-	);
 
 	return (
 		<View className="flex h-full grow flex-col gap-4 p-4">
-			<Button onPress={() => open()}>
+			<Button onPress={handleStartAddExercise}>
 				<Text>Add Exercise</Text>
 			</Button>
 			{errors.exercises && (
@@ -94,7 +93,7 @@ export default function WorkoutExercises({
 				<VirtualizedExerciseList
 					data={fields}
 					onMove={move}
-					onEdit={handleEditExercise}
+					onEdit={handleStartEditExercise}
 					onDelete={handleDeleteExercise}
 				/>
 			</View>
@@ -110,7 +109,64 @@ export default function WorkoutExercises({
 					<Text>Next</Text>
 				</Button>
 			</View>
-			<ExerciseDetailBottomSheet {...exerciseDetailsBottomSheetProps} />
+			<BottomSheetModal
+				ref={bottomSheet.ref}
+				snapPoints={SNAP_POINTS}
+				enableDynamicSizing={false}
+				onChange={bottomSheet.onChange}
+			>
+				<SingleExerciseForm
+					onCancel={bottomSheet.close}
+					onSubmit={handleConfirm}
+					initialData={exerciseFormData}
+				/>
+			</BottomSheetModal>
 		</View>
 	);
+}
+
+function useEditOrAddExercise({
+	exercises,
+	onAddExercise,
+	onUpdateExercise
+}: {
+	exercises: CreateExercise[];
+	onAddExercise: (exercise: CreateExercise) => void;
+	onUpdateExercise: (index: number, exercise: CreateExercise) => void;
+}) {
+	const [editingIndex, setEditingIndex] = useState(EMPTY_INDEX);
+	const [initialData, setInitialData] = useState<CreateExercise | null>(null);
+
+	const bottomSheet = useBottomSheet();
+	const handleStartAddExercise = () => {
+		setEditingIndex(-1);
+		setInitialData(EMPTY_EXERCISE_DATA);
+		bottomSheet.open();
+	};
+
+	const handleStartEditExercise = (index: number) => {
+		setEditingIndex(index);
+		setInitialData(exercises[index]);
+		bottomSheet.open();
+	};
+
+	const handleConfirm = (exercise: CreateExercise) => {
+		if (initialData) {
+			onUpdateExercise(editingIndex, exercise);
+		} else {
+			onAddExercise(exercise);
+		}
+
+		setEditingIndex(-1);
+		setInitialData(null);
+		bottomSheet.close();
+	};
+
+	return {
+		exerciseFormData: initialData,
+		handleStartAddExercise,
+		handleStartEditExercise,
+		handleConfirm,
+		bottomSheet
+	};
 }

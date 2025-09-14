@@ -30,10 +30,6 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 			!form.formState.isSubmitting &&
 			!form.formState.isSubmitted, // when submitting, we can allow redirects
 		({ data }) => {
-			if (step === 1) {
-				return;
-			}
-
 			if (step > 0) {
 				setStep((c) => c - 1);
 				return;

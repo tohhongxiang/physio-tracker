@@ -43,6 +43,14 @@ eas build --profile production --platform android # Build for production on andr
 eas build --profile production --platform ios # Build for production on ios
 ```
 
+# Features to Implement
+
+[] Pinned workouts
+[] Settings tab
+[] Able to mute sound
+[] Haptic feedback for workout start
+[] Edit exercise directly within workout
+
 # Resources
 
 - https://www.reactnative.express/app/project_structure

@@ -42,11 +42,7 @@ export default function WorkoutList() {
 					variant={"ghost"}
 					size="icon"
 					className="aspect-square p-0"
-					onPress={() =>
-						bottomSheet.isOpen
-							? bottomSheet.close()
-							: bottomSheet.open()
-					}
+					onPress={() => bottomSheet.open()}
 				>
 					<SlidersHorizontal className="text-foreground" size={23} />
 					{isSearchFilterModified ? (
@@ -108,7 +104,7 @@ export default function WorkoutList() {
 			/>
 			<BottomSheetModal
 				ref={bottomSheet.ref}
-				onChange={bottomSheet.setIsOpen}
+				onChange={bottomSheet.onChange}
 			>
 				<SearchFiltersForm
 					onConfirm={handleSearchFiltersConfirm}
