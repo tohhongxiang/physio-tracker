@@ -1,5 +1,5 @@
 import { useFocusEffect } from "expo-router";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import useCountdownTimer from "~/hooks/use-countdown-timer";
 import { Exercise } from "~/types";
 
@@ -32,6 +32,12 @@ export default function useExerciseControls({
 	const [state, setState] = useState<keyof typeof STATES>(STATES.READY);
 	const [currentRep, setCurrentRep] = useState(1);
 	const [currentSet, setCurrentSet] = useState(1);
+
+	// When the exercise is updated, make sure currentRep and currentSet are valid
+	useEffect(() => {
+		setCurrentRep((currentRep) => Math.min(currentRep, exercise.reps));
+		setCurrentSet((currentSet) => Math.min(currentSet, exercise.sets));
+	}, [exercise]);
 
 	useFocusEffect(
 		useCallback(() => {
@@ -156,11 +162,7 @@ export default function useExerciseControls({
 					handleExerciseComplete();
 				} else {
 					setIsRunning(false);
-					if (exercise.restBetweenRepsSeconds > 0) {
-						setState(STATES.RESTING_REP);
-					} else if (exercise.restBetweenSetsSeconds > 0) {
-						setState(STATES.RESTING_SET);
-					}
+					setState(STATES.READY);
 
 					if (
 						exercise.restBetweenRepsSeconds === 0 ||
@@ -192,7 +194,6 @@ export default function useExerciseControls({
 		exercise.durationPerRepSeconds,
 		exercise.reps,
 		exercise.restBetweenRepsSeconds,
-		exercise.restBetweenSetsSeconds,
 		exercise.sets,
 		handleExerciseComplete,
 		handleRepComplete,

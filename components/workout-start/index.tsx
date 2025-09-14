@@ -18,6 +18,8 @@ import { Link, Stack, useRouter } from "expo-router";
 import { Button } from "~/components/ui/button";
 import { ClipboardCheck } from "~/lib/icons/ClipboardCheck";
 import { Pencil } from "~/lib/icons/Pencil";
+import hasDurationPerRep from "~/lib/has-duration-per-rep";
+import hasRestBetweenReps from "~/lib/has-rest-between-reps";
 
 const width = Dimensions.get("window").width;
 export default function WorkoutStartPage({
@@ -192,6 +194,10 @@ export default function WorkoutStartPage({
 				isTimerRunning={isTimerRunning}
 				onSetChange={changeSet}
 				onRepChange={changeRep}
+				repChangeDisabled={
+					!hasDurationPerRep(currentExercise) &&
+					!hasRestBetweenReps(currentExercise)
+				}
 				onStart={toggleTimer}
 			/>
 		</View>

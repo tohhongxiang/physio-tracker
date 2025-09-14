@@ -32,6 +32,13 @@ export default function useCountdownTimer({
 
 	const lastAnimationFrameID = useRef<number | null>(null);
 	const lastUpdatedTime = useRef<number | null>();
+	const isPlayingRef = useRef(isPlaying);
+
+	// Update the ref whenever isPlaying changes
+	useEffect(() => {
+		isPlayingRef.current = isPlaying;
+	}, [isPlaying]);
+
 	const cleanUp = useCallback(() => {
 		lastUpdatedTime.current = null;
 		if (lastAnimationFrameID.current) {
@@ -41,6 +48,13 @@ export default function useCountdownTimer({
 	}, []);
 
 	const handleTimerUpdate = useCallback((time: number) => {
+		// Check current isPlaying state using ref instead of closure so we get the most updated version
+		// When !isPlaying, we should stop requesting animation frame
+		if (!isPlayingRef.current) {
+			lastAnimationFrameID.current = null;
+			return;
+		}
+
 		if (!lastAnimationFrameID.current || !lastUpdatedTime.current) {
 			lastUpdatedTime.current = time;
 			lastAnimationFrameID.current =
