@@ -14,7 +14,10 @@ import ExerciseListNavigation from "./exercise-list-navigation";
 import useSound from "~/hooks/use-sound";
 import goSound from "~/assets/audio/go.mp3";
 import readySound from "~/assets/audio/ready.mp3";
-import { useRouter } from "expo-router";
+import { Link, Stack, useRouter } from "expo-router";
+import { Button } from "~/components/ui/button";
+import { ClipboardCheck } from "~/lib/icons/ClipboardCheck";
+import { Pencil } from "~/lib/icons/Pencil";
 
 const width = Dimensions.get("window").width;
 export default function WorkoutStartPage({
@@ -98,6 +101,38 @@ export default function WorkoutStartPage({
 	const [areArrowsDisabled, setAreArrowsDisabled] = useState(false);
 	return (
 		<View className="flex flex-1 flex-col items-center justify-between">
+			<Stack.Screen
+				options={{
+					headerRight: () => {
+						return (
+							<View className="flex flex-row items-center justify-center">
+								<Link
+									href={`/workouts/${workoutId}/exercises/${currentExercise.id}/edit`}
+									asChild
+								>
+									<Button
+										variant="ghost"
+										className="flex flex-row gap-2"
+									>
+										<Pencil className="text-foreground" />
+									</Button>
+								</Link>
+								<Link
+									href={`/workouts/${workoutId}/complete`}
+									asChild
+								>
+									<Button
+										variant="ghost"
+										className="flex flex-row gap-2"
+									>
+										<ClipboardCheck className="text-foreground" />
+									</Button>
+								</Link>
+							</View>
+						);
+					}
+				}}
+			></Stack.Screen>
 			<WorkoutProgressIndicator
 				totalExercises={exercises.length}
 				currentExerciseIndex={currentExerciseIndex}

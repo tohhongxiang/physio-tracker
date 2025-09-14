@@ -1,17 +1,21 @@
-import { Workout, WorkoutFilters } from "~/types";
+import { Exercise, Workout, WorkoutFilters } from "~/types";
 
-const workoutQueryKeys = {
+export const workoutQueryKeys = {
 	all: ["workouts"] as const,
 	list: (filters: WorkoutFilters & { page: number }) =>
 		[...workoutQueryKeys.all, filters] as const,
 	detail: (id: Workout["id"]) => [...workoutQueryKeys.all, id] as const,
+	exercises: {
+		all: (workoutId: Workout["id"]) =>
+			[...workoutQueryKeys.detail(workoutId), "exercises"] as const,
+		detail: (workoutId: Workout["id"], exerciseId: Exercise["id"]) =>
+			[...workoutQueryKeys.exercises.all(workoutId), exerciseId] as const
+	},
 	today: () => [...workoutQueryKeys.all, "today"] as const
 };
 
-const workoutLogQueryKeys = {
+export const workoutLogQueryKeys = {
 	all: ["workout-logs"] as const,
 	month: (year: number, month: number, withWorkoutData = false) =>
 		[...workoutLogQueryKeys.all, year, month, withWorkoutData] as const
 };
-
-export { workoutQueryKeys, workoutLogQueryKeys };

@@ -1,11 +1,6 @@
-import { Link, Stack, useLocalSearchParams } from "expo-router";
-import { View } from "react-native";
-import { Button } from "~/components/ui/button";
-import { ClipboardCheck } from "~/lib/icons/ClipboardCheck";
+import { Stack } from "expo-router";
 
 export default function Layout() {
-	const { id } = useLocalSearchParams<{ id: string }>();
-
 	return (
 		<Stack>
 			<Stack.Screen
@@ -17,24 +12,16 @@ export default function Layout() {
 			<Stack.Screen
 				name="start"
 				options={{
-					title: "Start",
-					headerRight: () => (
-						<View className="flex flex-row items-center justify-center">
-							<Link href={`/workouts/${id}/complete`} asChild>
-								<Button
-									variant="ghost"
-									className="flex flex-row gap-2"
-								>
-									<ClipboardCheck className="text-foreground" />
-								</Button>
-							</Link>
-						</View>
-					)
+					title: "Start"
 				}}
 			/>
 			<Stack.Screen
 				name="edit"
 				options={{ title: "Edit", presentation: "modal" }}
+			/>
+			<Stack.Screen
+				name="exercises/[exercise_id]/edit"
+				options={{ title: "Edit Exercise", presentation: "modal" }}
 			/>
 			<Stack.Screen
 				name="complete"

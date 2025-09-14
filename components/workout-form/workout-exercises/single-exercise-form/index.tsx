@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "~/lib/utils";
 import TimerInput from "../../../timer-input";
 import formatDuration from "~/lib/format-duration";
-import { CreateExercise } from "~/types";
+import { CreateExercise, Exercise } from "~/types";
 import { X } from "~/lib/icons/X";
 import { useEffect } from "react";
 import { ScrollView } from "react-native-gesture-handler";
@@ -33,17 +33,29 @@ const WEIGHT_UNIT_OPTIONS = [
 	{ label: "%BW", value: "%BW" }
 ];
 
+type SingleExerciseFormBaseProps = {
+	isOpen?: boolean;
+	showHeader?: boolean;
+	onCancel?: () => void;
+};
+
+interface CreateNewExerciseProps extends SingleExerciseFormBaseProps {
+	initialData?: CreateExercise | null | undefined;
+	onSubmit?: (exercise: CreateExercise) => void;
+}
+
+interface UpdateExistingExerciseProps extends SingleExerciseFormBaseProps {
+	initialData: Exercise;
+	onSubmit?: (exercise: Exercise) => void;
+}
+
 export default function SingleExerciseForm({
 	isOpen,
+	showHeader = true,
 	initialData,
 	onCancel,
 	onSubmit
-}: {
-	isOpen?: boolean;
-	initialData?: CreateExercise | null | undefined;
-	onCancel: () => void;
-	onSubmit: (createdExercise: CreateExercise) => void;
-}) {
+}: CreateNewExerciseProps | UpdateExistingExerciseProps) {
 	const form = useForm<ExerciseFormSchemaType>({
 		resolver: zodResolver(ExerciseFormSchema),
 		defaultValues: {
@@ -60,12 +72,17 @@ export default function SingleExerciseForm({
 	});
 
 	function handleSubmit() {
-		form.handleSubmit(onSubmit, (e) => {
-			const errors = Object.entries(e).filter(([, value]) => value);
-			errors.forEach(([key, value]) => {
-				toast.error(`${key}: ${value.message}`);
-			});
-		})();
+		if (!onSubmit) return;
+
+		form.handleSubmit(
+			onSubmit as (exercise: CreateExercise) => void, // Cannot infer that id is defined if we intially pass in the ID
+			(e) => {
+				const errors = Object.entries(e).filter(([, value]) => value);
+				errors.forEach(([key, value]) => {
+					toast.error(`${key}: ${value.message}`);
+				});
+			}
+		)();
 	}
 
 	useEffect(() => {
@@ -80,14 +97,16 @@ export default function SingleExerciseForm({
 
 	return (
 		<View className="flex h-full flex-col">
-			<View className="flex flex-row items-center justify-between p-4 pr-0">
-				<Text className="text-2xl font-bold">
-					{initialData ? "Update Exercise" : "New Exercise"}
-				</Text>
-				<Button variant="ghost" onPress={onCancel}>
-					<X className="text-foreground" />
-				</Button>
-			</View>
+			{showHeader && (
+				<View className="flex flex-row items-center justify-between p-4 pr-0">
+					<Text className="text-2xl font-bold">
+						{initialData ? "Update Exercise" : "New Exercise"}
+					</Text>
+					<Button variant="ghost" onPress={onCancel}>
+						<X className="text-foreground" />
+					</Button>
+				</View>
+			)}
 			<ScrollView contentContainerClassName="flex flex-col grow gap-8 p-4">
 				<View className="flex flex-col gap-4">
 					<FullWidthInput
