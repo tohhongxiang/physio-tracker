@@ -22,7 +22,7 @@ import { getDurationForTimer } from "./use-exercise-controls/utils";
 
 const width = Dimensions.get("window").width;
 export default function WorkoutStartPage({
-	workout: { id: workoutId, exercises }
+	workout: { id: workoutId, exercises, name }
 }: {
 	workout: Workout;
 }) {
@@ -104,6 +104,7 @@ export default function WorkoutStartPage({
 		<View className="flex flex-1 flex-col items-center justify-between">
 			<Stack.Screen
 				options={{
+					title: name,
 					headerRight: () => {
 						return (
 							<View className="flex flex-row items-center justify-center">
