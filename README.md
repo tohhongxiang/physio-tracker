@@ -49,7 +49,6 @@ eas build --profile production --platform ios # Build for production on ios
 [] Settings tab
 [] Able to mute sound
 [] Haptic feedback for workout start
-[] Edit exercise directly within workout
 
 # Resources
 
