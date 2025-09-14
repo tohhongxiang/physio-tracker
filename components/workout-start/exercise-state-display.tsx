@@ -3,7 +3,7 @@ import { Exercise } from "~/types";
 import { Text } from "~/components/ui/text";
 import hasDurationPerRep from "~/lib/has-duration-per-rep";
 import TimerDisplay from "./timer-display";
-import { STATES } from "./use-exercise-controls";
+import { STATES } from "./use-exercise-controls/constants";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
 import hasRestBetweenSets from "~/lib/has-rest-between-sets";
 import CounterContainer from "./counter-container";

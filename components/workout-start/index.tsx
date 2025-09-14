@@ -5,10 +5,8 @@ import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import BottomControls from "./bottom-controls";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import ExerciseStateDisplay from "./exercise-state-display";
-import useExerciseControls, {
-	getDurationForTimer,
-	STATES
-} from "./use-exercise-controls";
+import useExerciseControls from "./use-exercise-controls";
+import { STATES } from "./use-exercise-controls/constants";
 import WorkoutProgressIndicator from "./workout-progress-indicator";
 import ExerciseListNavigation from "./exercise-list-navigation";
 import useSound from "~/hooks/use-sound";
@@ -20,6 +18,7 @@ import { ClipboardCheck } from "~/lib/icons/ClipboardCheck";
 import { Pencil } from "~/lib/icons/Pencil";
 import hasDurationPerRep from "~/lib/has-duration-per-rep";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
+import { getDurationForTimer } from "./use-exercise-controls/utils";
 
 const width = Dimensions.get("window").width;
 export default function WorkoutStartPage({
@@ -155,7 +154,7 @@ export default function WorkoutStartPage({
 				ref={ref}
 				width={width}
 				data={exercises}
-				scrollAnimationDuration={100}
+				scrollAnimationDuration={150}
 				onScrollStart={() => setAreArrowsDisabled(true)}
 				onScrollEnd={() => setAreArrowsDisabled(false)}
 				onSnapToItem={setCurrentExerciseIndex}
