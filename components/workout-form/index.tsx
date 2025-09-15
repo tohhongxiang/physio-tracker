@@ -63,7 +63,7 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 	}
 
 	return (
-		<View>
+		<View className="flex-1">
 			{step === 0 ? (
 				<WorkoutInformation
 					form={form}

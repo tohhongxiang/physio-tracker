@@ -18,12 +18,18 @@ export default function TabLayout() {
 				header: (props) => (
 					<NavigationHeader
 						title={props.options.title ?? props.route.name}
+						headerRight={() =>
+							props.options.headerRight?.({
+								canGoBack: false // Bottom tabs requires a canGoBack, but we don't want our tab header to be able to go back
+							})
+						}
 					/>
 				),
 				headerRight: () => <ThemeToggle />,
 				tabBarHideOnKeyboard: true,
 				tabBarStyle: {
-					height: 64
+					height: 64,
+					borderTopWidth: 0
 				},
 				animation: "shift",
 				tabBarButton: (props) => <Button {...props} variant="ghost" />

@@ -1,8 +1,19 @@
 import { Stack } from "expo-router";
+import NavigationHeader from "~/components/navigation-header";
 
 export default function Layout() {
 	return (
-		<Stack>
+		<Stack
+			screenOptions={{
+				header: (props) => (
+					<NavigationHeader
+						back={props.back}
+						title={props.options.title ?? props.route.name}
+						headerRight={props.options.headerRight}
+					/>
+				)
+			}}
+		>
 			<Stack.Screen
 				name="index"
 				options={{

@@ -15,6 +15,7 @@ import Pagination from "~/components/pagination";
 import WorkoutsList from "~/components/workouts-list";
 import { useBottomSheet } from "~/hooks/use-bottom-sheet";
 import useGetWorkouts from "~/hooks/api/use-get-workouts";
+import { ThemeToggle } from "~/components/theme-toggle";
 
 export default function WorkoutList() {
 	const {
@@ -38,20 +39,26 @@ export default function WorkoutList() {
 	useEffect(() => {
 		navigation.setOptions({
 			headerRight: () => (
-				<Button
-					variant={"ghost"}
-					size="icon"
-					className="aspect-square p-0"
-					onPress={() => bottomSheet.open()}
-				>
-					<SlidersHorizontal className="text-foreground" size={23} />
-					{isSearchFilterModified ? (
-						<Badge
-							variant="destructive"
-							className="absolute right-0 top-1 h-3 w-3 rounded-full p-0"
+				<View className="flex flex-row items-center gap-4">
+					<Button
+						variant={"ghost"}
+						size="icon"
+						className="aspect-square p-0"
+						onPress={() => bottomSheet.open()}
+					>
+						<SlidersHorizontal
+							className="text-foreground"
+							size={23}
 						/>
-					) : null}
-				</Button>
+						{isSearchFilterModified ? (
+							<Badge
+								variant="destructive"
+								className="absolute right-0 top-1 h-3 w-3 rounded-full p-0"
+							/>
+						) : null}
+					</Button>
+					<ThemeToggle />
+				</View>
 			)
 		});
 	}, [navigation, filters, isSearchFilterModified, bottomSheet]);
