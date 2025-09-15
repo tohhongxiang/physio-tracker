@@ -8,6 +8,8 @@ import { ClipboardList } from "~/lib/icons/ClipboardList";
 import { Clock } from "~/lib/icons/Clock";
 import { Settings } from "~/lib/icons/Settings";
 
+const FOCUSED_ICON_STROKE_WIDTH = 2.3;
+const UNFOCUSED_ICON_STROKE_WIDTH = 2;
 export default function TabLayout() {
 	return (
 		<Tabs
@@ -31,8 +33,16 @@ export default function TabLayout() {
 				name="index"
 				options={{
 					title: "Home",
-					tabBarIcon: ({ color, size }) => (
-						<Home color={color} size={size} />
+					tabBarIcon: ({ color, size, focused }) => (
+						<Home
+							color={color}
+							size={size}
+							strokeWidth={
+								focused
+									? FOCUSED_ICON_STROKE_WIDTH
+									: UNFOCUSED_ICON_STROKE_WIDTH
+							}
+						/>
 					)
 				}}
 			/>
@@ -41,8 +51,16 @@ export default function TabLayout() {
 				options={{
 					title: "Workouts",
 					headerShown: false,
-					tabBarIcon: ({ color, size }) => (
-						<Dumbbell color={color} size={size} />
+					tabBarIcon: ({ color, size, focused }) => (
+						<Dumbbell
+							color={color}
+							size={size}
+							strokeWidth={
+								focused
+									? FOCUSED_ICON_STROKE_WIDTH
+									: UNFOCUSED_ICON_STROKE_WIDTH
+							}
+						/>
 					)
 				}}
 			/>
@@ -50,8 +68,16 @@ export default function TabLayout() {
 				name="logbook"
 				options={{
 					title: "Logbook",
-					tabBarIcon: ({ color, size }) => (
-						<ClipboardList color={color} size={size} />
+					tabBarIcon: ({ color, size, focused }) => (
+						<ClipboardList
+							color={color}
+							size={size}
+							strokeWidth={
+								focused
+									? FOCUSED_ICON_STROKE_WIDTH
+									: UNFOCUSED_ICON_STROKE_WIDTH
+							}
+						/>
 					)
 				}}
 			/>
@@ -59,8 +85,16 @@ export default function TabLayout() {
 				name="timer"
 				options={{
 					title: "Timer",
-					tabBarIcon: ({ color, size }) => (
-						<Clock color={color} size={size} />
+					tabBarIcon: ({ color, size, focused }) => (
+						<Clock
+							color={color}
+							size={size}
+							strokeWidth={
+								focused
+									? FOCUSED_ICON_STROKE_WIDTH
+									: UNFOCUSED_ICON_STROKE_WIDTH
+							}
+						/>
 					)
 				}}
 			/>
@@ -69,8 +103,16 @@ export default function TabLayout() {
 				options={{
 					title: "Debug",
 					href: __DEV__ ? undefined : null,
-					tabBarIcon: ({ color, size }) => (
-						<Settings color={color} size={size} />
+					tabBarIcon: ({ color, size, focused }) => (
+						<Settings
+							color={color}
+							size={size}
+							strokeWidth={
+								focused
+									? FOCUSED_ICON_STROKE_WIDTH
+									: UNFOCUSED_ICON_STROKE_WIDTH
+							}
+						/>
 					)
 				}}
 			/>
