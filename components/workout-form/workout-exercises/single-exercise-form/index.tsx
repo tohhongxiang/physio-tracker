@@ -1,14 +1,14 @@
 import { View } from "react-native";
-import { Text } from "../../../ui/text";
-import { Input } from "../../../ui/input";
-import { Textarea } from "../../../ui/textarea";
-import { Button } from "../../../ui/button";
-import { Separator } from "../../../ui/separator";
+import { Text } from "~/components/ui/text";
+import { Input } from "~/components/ui/input";
+import { Textarea } from "~/components/ui/textarea";
+import { Button } from "~/components/ui/button";
+import { Separator } from "~/components/ui/separator";
 import { Controller, useForm } from "react-hook-form";
 import { ExerciseFormSchema, ExerciseFormSchemaType } from "../../schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { cn } from "~/lib/utils";
-import TimerInput from "../../../timer-input";
+import TimerInput from "~/components/timer-input";
 import formatDuration from "~/lib/format-duration";
 import { CreateExercise, Exercise } from "~/types";
 import { X } from "~/lib/icons/X";
@@ -26,6 +26,7 @@ import {
 } from "~/components/ui/select";
 import { Label } from "~/components/ui/label";
 import { toast } from "sonner-native";
+import LoadingSingleExercise from "./loading";
 
 const WEIGHT_UNIT_OPTIONS = [
 	{ label: "kg", value: "kg" },
@@ -424,3 +425,5 @@ export default function SingleExerciseForm({
 		</View>
 	);
 }
+
+SingleExerciseForm.Loading = LoadingSingleExercise;

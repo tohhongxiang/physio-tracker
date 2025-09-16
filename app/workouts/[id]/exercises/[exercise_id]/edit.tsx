@@ -1,11 +1,11 @@
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import { View } from "react-native";
-import { Text } from "~/components/ui/text";
 import SingleExerciseForm from "~/components/workout-form/workout-exercises/single-exercise-form";
 import useEditExercise from "~/hooks/api/use-edit-exercise";
 import useGetExercise from "~/hooks/api/use-get-exercise";
 import { Exercise } from "~/types";
 import { toast } from "sonner-native";
+import NotFound from "~/components/not-found";
 
 export default function EditExercise() {
 	const { id: workoutId, exercise_id: exerciseId } = useLocalSearchParams<{
@@ -39,18 +39,15 @@ export default function EditExercise() {
 	};
 
 	if (isPending) {
-		return (
-			<View>
-				<Text>Loading</Text>
-			</View>
-		);
+		return <SingleExerciseForm.Loading />;
 	}
 
 	if (!data) {
 		return (
-			<View>
-				<Text>No data</Text>
-			</View>
+			<NotFound
+				title="Exercise not found"
+				text="This exercise was not found"
+			/>
 		);
 	}
 
