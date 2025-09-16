@@ -1,16 +1,18 @@
+import { useCallback, useState } from "react";
+import { UseFormReturn, useFieldArray } from "react-hook-form";
 import { View } from "react-native";
+
+import BottomSheetModal from "~/components/bottom-sheet-modal";
+import { useBottomSheet } from "~/hooks/use-bottom-sheet";
+import { useAlertDialog } from "~/providers/alert-dialog-provider";
+import { CreateExercise } from "~/types";
+
 import { Button } from "../../ui/button";
 import { Text } from "../../ui/text";
-import { useFieldArray, UseFormReturn } from "react-hook-form";
-import { WorkoutFormSchemaType } from "../schema";
 import ExerciseCard from "../../workout-details/exercise-card";
-import { useAlertDialog } from "~/providers/alert-dialog-provider";
-import VirtualizedExerciseList from "./virtualized-exercise-list";
-import { useCallback, useState } from "react";
+import { WorkoutFormSchemaType } from "../schema";
 import SingleExerciseForm from "./single-exercise-form";
-import { useBottomSheet } from "~/hooks/use-bottom-sheet";
-import BottomSheetModal from "~/components/bottom-sheet-modal";
-import { CreateExercise } from "~/types";
+import VirtualizedExerciseList from "./virtualized-exercise-list";
 
 const EMPTY_INDEX = -1;
 const EMPTY_EXERCISE_DATA = null;

@@ -6,17 +6,18 @@ import {
 } from "expo-router";
 import { useEffect } from "react";
 import { View } from "react-native";
-import { Button } from "~/components/ui/button";
-import WorkoutDetails from "~/components/workout-details";
-import { Pencil } from "~/lib/icons/Pencil";
-import { Trash } from "~/lib/icons/Trash";
-import { Text } from "~/components/ui/text";
-import useDeleteWorkout from "~/hooks/api/use-delete-workout";
-import { useAlertDialog } from "~/providers/alert-dialog-provider";
-import WorkoutNotFound from "~/components/workout-not-found";
 import { toast } from "sonner-native";
+
+import { Button } from "~/components/ui/button";
+import { Text } from "~/components/ui/text";
+import WorkoutDetails from "~/components/workout-details";
+import WorkoutNotFound from "~/components/workout-not-found";
+import useDeleteWorkout from "~/hooks/api/use-delete-workout";
 import useGetWorkout from "~/hooks/api/use-get-workout";
+import { Pencil } from "~/lib/icons/Pencil";
 import { Play } from "~/lib/icons/Play";
+import { Trash } from "~/lib/icons/Trash";
+import { useAlertDialog } from "~/providers/alert-dialog-provider";
 
 export default function SpecificWorkOutRoute() {
 	const { id } = useLocalSearchParams<{ id: string }>();

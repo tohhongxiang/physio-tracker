@@ -1,4 +1,5 @@
 import { View } from "react-native";
+
 import { Skeleton } from "~/components/ui/skeleton";
 
 export default function LoadingSingleExercise() {

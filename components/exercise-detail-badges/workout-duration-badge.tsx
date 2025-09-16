@@ -1,14 +1,16 @@
 import { VariantProps } from "class-variance-authority";
+
+import formatBigNumber from "~/lib/format-big-number";
+import getEstimatedWorkoutDurationSeconds from "~/lib/get-estimated-workout-duration-seconds";
+import { Clock } from "~/lib/icons/Clock";
+import { cn } from "~/lib/utils";
+import { Workout } from "~/types";
+
+import { Text } from "../ui/text";
 import ExerciseDetailBadge, {
 	exerciseDetailBadgeTextVariants,
 	exerciseDetailBadgeVariants
 } from "./exercise-detail-badge";
-import { Workout } from "~/types";
-import { Clock } from "~/lib/icons/Clock";
-import getEstimatedWorkoutDurationSeconds from "~/lib/get-estimated-workout-duration-seconds";
-import formatBigNumber from "~/lib/format-big-number";
-import { Text } from "../ui/text";
-import { cn } from "~/lib/utils";
 
 export default function WorkoutDurationBadge({
 	variant,

@@ -1,15 +1,17 @@
 import * as SelectPrimitive from "@rn-primitives/select";
-import { useRootContext, ValueProps, ValueRef } from "@rn-primitives/select";
-import { Text } from "./text";
+import { ValueProps, ValueRef, useRootContext } from "@rn-primitives/select";
 import * as Slot from "@rn-primitives/slot";
 import * as React from "react";
 import { forwardRef } from "react";
 import { Platform, StyleSheet, View } from "react-native";
 import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
+
 import { Check } from "~/lib/icons/Check";
 import { ChevronDown } from "~/lib/icons/ChevronDown";
 import { ChevronUp } from "~/lib/icons/ChevronUp";
 import { cn } from "~/lib/utils";
+
+import { Text } from "./text";
 
 type Option = SelectPrimitive.Option;
 

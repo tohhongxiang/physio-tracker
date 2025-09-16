@@ -1,12 +1,12 @@
-import { View } from "react-native";
 import {
 	BottomSheetBackdrop,
-	BottomSheetModal as GorhomBottomSheetModal,
 	BottomSheetScrollView,
 	BottomSheetView,
+	BottomSheetModal as GorhomBottomSheetModal,
 	BottomSheetModalProps as GorhomBottomSheetModalProps
 } from "@gorhom/bottom-sheet";
 import { forwardRef } from "react";
+import { View } from "react-native";
 
 export type BottomSheetModalRef<T> = GorhomBottomSheetModal<T>;
 export interface BottomSheetModalProps<T>

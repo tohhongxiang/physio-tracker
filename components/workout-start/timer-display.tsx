@@ -1,4 +1,5 @@
 import { TextProps } from "react-native";
+
 import { Text } from "~/components/ui/text";
 import formatDuration from "~/lib/format-duration";
 import { cn } from "~/lib/utils";

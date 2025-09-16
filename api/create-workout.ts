@@ -1,5 +1,5 @@
 import { db } from "~/db/initalize";
-import { workouts, exercises } from "~/db/schema";
+import { exercises, workouts } from "~/db/schema";
 import { CreateWorkout, Workout } from "~/types";
 
 export default async function createWorkout(workout: CreateWorkout) {

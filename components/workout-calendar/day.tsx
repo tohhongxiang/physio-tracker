@@ -1,7 +1,8 @@
 import { View } from "react-native";
-import { cn } from "~/lib/utils";
-import { CircleCheckBig } from "~/lib/icons/CircleCheckBig";
+
 import { Text } from "~/components/ui/text";
+import { CircleCheckBig } from "~/lib/icons/CircleCheckBig";
+import { cn } from "~/lib/utils";
 
 interface DayProps {
 	date: Date;

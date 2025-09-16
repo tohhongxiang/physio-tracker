@@ -1,9 +1,11 @@
-import { View } from "react-native";
-import { Button } from "../ui/button";
-import { ChevronLeft } from "~/lib/icons/ChevronLeft";
-import { Text } from "../ui/text";
-import { ChevronRight } from "~/lib/icons/ChevronRight";
 import { memo } from "react";
+import { View } from "react-native";
+
+import { ChevronLeft } from "~/lib/icons/ChevronLeft";
+import { ChevronRight } from "~/lib/icons/ChevronRight";
+
+import { Button } from "../ui/button";
+import { Text } from "../ui/text";
 
 export default memo(function ExerciseListNavigation({
 	currentExerciseName,

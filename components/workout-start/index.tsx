@@ -1,24 +1,26 @@
-import { Dimensions, View } from "react-native";
-import { Workout } from "~/types";
-import LoadingWorkoutPage from "./loading";
+import { Link, Stack, useRouter } from "expo-router";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
-import BottomControls from "./bottom-controls";
+import { Dimensions, View } from "react-native";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
-import ExerciseStateDisplay from "./exercise-state-display";
-import useExerciseControls from "./use-exercise-controls";
-import { STATES } from "./use-exercise-controls/constants";
-import WorkoutProgressIndicator from "./workout-progress-indicator";
-import ExerciseListNavigation from "./exercise-list-navigation";
-import useSound from "~/hooks/use-sound";
+
 import goSound from "~/assets/audio/go.mp3";
 import readySound from "~/assets/audio/ready.mp3";
-import { Link, Stack, useRouter } from "expo-router";
 import { Button } from "~/components/ui/button";
-import { ClipboardCheck } from "~/lib/icons/ClipboardCheck";
-import { Pencil } from "~/lib/icons/Pencil";
+import useSound from "~/hooks/use-sound";
 import hasDurationPerRep from "~/lib/has-duration-per-rep";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
+import { ClipboardCheck } from "~/lib/icons/ClipboardCheck";
+import { Pencil } from "~/lib/icons/Pencil";
+import { Workout } from "~/types";
+
+import BottomControls from "./bottom-controls";
+import ExerciseListNavigation from "./exercise-list-navigation";
+import ExerciseStateDisplay from "./exercise-state-display";
+import LoadingWorkoutPage from "./loading";
+import useExerciseControls from "./use-exercise-controls";
+import { STATES } from "./use-exercise-controls/constants";
 import { getDurationForTimer } from "./use-exercise-controls/utils";
+import WorkoutProgressIndicator from "./workout-progress-indicator";
 
 const width = Dimensions.get("window").width;
 export default function WorkoutStartPage({

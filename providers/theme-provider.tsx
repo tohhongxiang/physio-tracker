@@ -2,16 +2,17 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
 	DarkTheme,
 	DefaultTheme,
-	Theme,
-	ThemeProvider as ReactNavigationThemeProvider
+	ThemeProvider as ReactNavigationThemeProvider,
+	Theme
 } from "@react-navigation/native";
 import { SplashScreen } from "expo-router";
-import { Platform } from "react-native";
 import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
+import { Platform } from "react-native";
+
+import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
 import { NAV_THEME } from "~/lib/constants";
 import { useColorScheme } from "~/lib/use-color-scheme";
-import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
-import { useEffect, useState } from "react";
 
 const LIGHT_THEME: Theme = {
 	...DefaultTheme,

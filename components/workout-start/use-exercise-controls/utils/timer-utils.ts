@@ -1,9 +1,10 @@
 import { Exercise } from "~/types";
-import { STATES, STARTING_TIME_SECONDS } from "../constants";
+
+import { STARTING_TIME_SECONDS, STATES } from "../constants";
 import {
-	hasTimedReps,
 	hasRestBetweenReps,
-	hasRestBetweenSets
+	hasRestBetweenSets,
+	hasTimedReps
 } from "./exercise-state";
 
 export const resetTimer = ({

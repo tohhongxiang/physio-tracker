@@ -1,9 +1,11 @@
 import { FlatList, FlatListProps, View } from "react-native";
-import WorkoutCard from "~/components/workout-card";
+
 import { Text } from "~/components/ui/text";
-import { Workout } from "~/types";
-import LoadingWorkoutsList from "./loading";
+import WorkoutCard from "~/components/workout-card";
 import { SearchX } from "~/lib/icons/SearchX";
+import { Workout } from "~/types";
+
+import LoadingWorkoutsList from "./loading";
 
 function renderItem({ item }: { item: Workout }) {
 	return <WorkoutCard workout={item} />;

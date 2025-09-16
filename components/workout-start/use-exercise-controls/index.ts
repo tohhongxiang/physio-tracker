@@ -1,22 +1,24 @@
 import { useFocusEffect } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
+
 import useCountdownTimer from "~/hooks/use-countdown-timer";
 import { Exercise } from "~/types";
+
+import { STATES } from "./constants";
 import {
-	hasTimedReps,
-	isFinalSet,
-	hasRestBetweenReps,
-	hasRestBetweenSets,
 	canNavigate,
-	isSetBoundary,
-	navigateAcrossSets,
+	getDurationForTimer,
 	handleRestingRepComplete,
 	handleRestingSetComplete,
 	handleRunningComplete,
-	resetTimer,
-	getDurationForTimer
+	hasRestBetweenReps,
+	hasRestBetweenSets,
+	hasTimedReps,
+	isFinalSet,
+	isSetBoundary,
+	navigateAcrossSets,
+	resetTimer
 } from "./utils";
-import { STATES } from "./constants";
 
 export default function useExerciseControls({
 	exercise,

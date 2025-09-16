@@ -1,11 +1,12 @@
+import { Controller, UseFormReturn } from "react-hook-form";
 import { View } from "react-native";
-import { Text } from "../ui/text";
-import { Label } from "../ui/label";
+
+import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Text } from "../ui/text";
 import { Textarea } from "../ui/textarea";
 import { WorkoutFormSchemaType } from "./schema";
-import { Controller, UseFormReturn } from "react-hook-form";
-import { Button } from "../ui/button";
 
 export default function WorkoutInformation({
 	form,

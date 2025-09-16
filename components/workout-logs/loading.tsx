@@ -1,4 +1,5 @@
 import { View } from "react-native";
+
 import WorkoutLogCard from "./workout-log-card";
 
 export default function LoadingWorkoutLogs() {

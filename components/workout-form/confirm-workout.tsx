@@ -1,8 +1,10 @@
-import { Workout } from "~/types";
 import { View } from "react-native";
-import WorkoutDetails from "../workout-details";
+
+import { Workout } from "~/types";
+
 import { Button } from "../ui/button";
 import { Text } from "../ui/text";
+import WorkoutDetails from "../workout-details";
 
 interface ConfirmWorkoutProps {
 	workout: Workout;

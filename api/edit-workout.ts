@@ -1,4 +1,5 @@
 import { eq, sql } from "drizzle-orm";
+
 import { db } from "~/db/initalize";
 import { exercises, workouts } from "~/db/schema";
 import { CreateExercise, Exercise, Workout } from "~/types";

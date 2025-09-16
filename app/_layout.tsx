@@ -1,20 +1,20 @@
-import "~/global.css";
-
-import { Stack } from "expo-router";
-import { PortalHost } from "@rn-primitives/portal";
-import ThemeProvider from "~/providers/theme-provider";
-import QueryClientProvider from "~/providers/query-client-provider";
-import DatabaseProvider from "~/providers/database-provider";
-import { Toaster } from "sonner-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { SafeAreaProvider } from "react-native-safe-area-context";
-import AlertDialogProvider from "~/providers/alert-dialog-provider";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { PortalHost } from "@rn-primitives/portal";
+import { Stack } from "expo-router";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
-	configureReanimatedLogger,
-	ReanimatedLogLevel
+	ReanimatedLogLevel,
+	configureReanimatedLogger
 } from "react-native-reanimated";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { Toaster } from "sonner-native";
+
 import NavigationHeader from "~/components/navigation-header";
+import "~/global.css";
+import AlertDialogProvider from "~/providers/alert-dialog-provider";
+import DatabaseProvider from "~/providers/database-provider";
+import QueryClientProvider from "~/providers/query-client-provider";
+import ThemeProvider from "~/providers/theme-provider";
 
 configureReanimatedLogger({
 	level: ReanimatedLogLevel.warn,

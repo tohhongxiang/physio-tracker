@@ -1,13 +1,14 @@
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
-import migrations from "~/drizzle/migrations";
+import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
+import { deleteDatabaseAsync } from "expo-sqlite";
 import { createContext, useContext, useEffect, useState } from "react";
 import { View } from "react-native";
-import { Text } from "~/components/ui/text";
-import { useDrizzleStudio } from "expo-drizzle-studio-plugin";
-import { DATABASE_NAME, db, expoSQLiteDb } from "~/db/initalize";
-import { Button } from "~/components/ui/button";
 import { toast } from "sonner-native";
-import { deleteDatabaseAsync } from "expo-sqlite";
+
+import { Button } from "~/components/ui/button";
+import { Text } from "~/components/ui/text";
+import { DATABASE_NAME, db, expoSQLiteDb } from "~/db/initalize";
+import migrations from "~/drizzle/migrations";
 
 const DBContext = createContext({ db });
 

@@ -1,14 +1,15 @@
-import { ScrollView, View } from "react-native";
-import { Text } from "~/components/ui/text";
-import WorkoutCard from "~/components/workout-card";
-import WorkoutCalendar from "~/components/workout-calendar";
-import { Button } from "~/components/ui/button";
-import { PartyPopper } from "~/lib/icons/PartyPopper";
+import { startOfMonth } from "date-fns";
 import { Link } from "expo-router";
 import { useState } from "react";
-import { startOfMonth } from "date-fns";
-import { ArrowRight } from "~/lib/icons/ArrowRight";
+import { ScrollView, View } from "react-native";
+
+import { Button } from "~/components/ui/button";
+import { Text } from "~/components/ui/text";
+import WorkoutCalendar from "~/components/workout-calendar";
+import WorkoutCard from "~/components/workout-card";
 import useGetTodaysWorkout from "~/hooks/api/use-get-todays-workout";
+import { ArrowRight } from "~/lib/icons/ArrowRight";
+import { PartyPopper } from "~/lib/icons/PartyPopper";
 
 export default function IndexPage() {
 	const [currentDate, setCurrentDate] = useState(startOfMonth(new Date()));

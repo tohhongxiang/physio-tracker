@@ -1,9 +1,10 @@
 import { startOfMonth } from "date-fns";
 import { useState } from "react";
 import { ScrollView, View } from "react-native";
+
+import { Text } from "~/components/ui/text";
 import WorkoutCalendar from "~/components/workout-calendar";
 import WorkoutLogsList from "~/components/workout-logs";
-import { Text } from "~/components/ui/text";
 import useGetWorkoutLogsByMonthYear from "~/hooks/api/use-get-workout-logs-by-month-year";
 
 export default function RecentWorkouts() {

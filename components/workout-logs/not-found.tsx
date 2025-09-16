@@ -1,6 +1,8 @@
 import { View } from "react-native";
-import { Text } from "../ui/text";
+
 import { Frown } from "~/lib/icons/Frown";
+
+import { Text } from "../ui/text";
 
 export default function NoLogsFound() {
 	return (

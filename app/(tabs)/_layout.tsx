@@ -1,11 +1,12 @@
 import { Tabs } from "expo-router";
-import { ThemeToggle } from "~/components/theme-toggle";
+
 import NavigationHeader from "~/components/navigation-header";
+import { ThemeToggle } from "~/components/theme-toggle";
 import { Button } from "~/components/ui/button";
-import { Dumbbell } from "~/lib/icons/Dumbbell";
-import { Home } from "~/lib/icons/Home";
 import { ClipboardList } from "~/lib/icons/ClipboardList";
 import { Clock } from "~/lib/icons/Clock";
+import { Dumbbell } from "~/lib/icons/Dumbbell";
+import { Home } from "~/lib/icons/Home";
 import { Settings } from "~/lib/icons/Settings";
 
 const FOCUSED_ICON_STROKE_WIDTH = 2.3;

@@ -1,17 +1,18 @@
+import { useFocusEffect } from "expo-router";
+import { useCallback, useState } from "react";
 import { TouchableWithoutFeedback, View } from "react-native";
-import useSound from "~/hooks/use-sound";
+
 import goSound from "~/assets/audio/go.mp3";
 import readySound from "~/assets/audio/ready.mp3";
-import useCountdownTimer from "~/hooks/use-countdown-timer";
-import { useCallback, useState } from "react";
-import TimerDisplay from "~/components/workout-start/timer-display";
-import { Button } from "~/components/ui/button";
-import { Play } from "~/lib/icons/Play";
-import { Pause } from "~/lib/icons/Pause";
-import CounterDisplay from "~/components/workout-start/counter-display";
-import { RotateCcw } from "~/lib/icons/RotateCcw";
-import { useFocusEffect } from "expo-router";
 import TimerInput from "~/components/timer-input";
+import { Button } from "~/components/ui/button";
+import CounterDisplay from "~/components/workout-start/counter-display";
+import TimerDisplay from "~/components/workout-start/timer-display";
+import useCountdownTimer from "~/hooks/use-countdown-timer";
+import useSound from "~/hooks/use-sound";
+import { Pause } from "~/lib/icons/Pause";
+import { Play } from "~/lib/icons/Play";
+import { RotateCcw } from "~/lib/icons/RotateCcw";
 
 export default function TimerPage() {
 	const [durationSeconds, setDurationSeconds] = useState(10);

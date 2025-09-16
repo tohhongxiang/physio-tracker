@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { WorkoutLog } from "~/types";
+
 import { deleteWorkoutLog } from "~/api/delete-workout-log";
+import { WorkoutLog } from "~/types";
 
 export default function useDeleteWorkoutLog({
 	onSuccess,

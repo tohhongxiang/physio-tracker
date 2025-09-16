@@ -1,8 +1,9 @@
 import { deleteDatabaseAsync } from "expo-sqlite";
 import { View } from "react-native";
+import { toast } from "sonner-native";
+
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
-import { toast } from "sonner-native";
 
 export default function TestPage() {
 	const handleResetDb = async () => {

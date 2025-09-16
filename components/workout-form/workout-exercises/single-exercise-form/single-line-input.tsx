@@ -1,5 +1,3 @@
-import { View } from "react-native";
-import { Text } from "../../../ui/text";
 import {
 	Control,
 	Controller,
@@ -7,8 +5,12 @@ import {
 	FieldPath,
 	FieldValues
 } from "react-hook-form";
-import { cn } from "~/lib/utils";
+import { View } from "react-native";
+
 import { Input } from "~/components/ui/input";
+import { cn } from "~/lib/utils";
+
+import { Text } from "../../../ui/text";
 
 export default function SingleLineInput<
 	TFieldPath extends FieldValues,

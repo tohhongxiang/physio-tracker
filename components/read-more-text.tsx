@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Text } from "./ui/text";
 import { TextProps, View } from "react-native";
+
 import { Button } from "./ui/button";
+import { Text } from "./ui/text";
 
 const DEFAULT_MAX_LINES = 3;
 export default function ReadMoreText({

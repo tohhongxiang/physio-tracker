@@ -1,8 +1,10 @@
+import { View } from "react-native";
+
 import { WorkoutLog } from "~/types";
-import WorkoutLogCard from "./workout-log-card";
+
 import LoadingWorkoutLogs from "./loading";
 import NoLogsFound from "./not-found";
-import { View } from "react-native";
+import WorkoutLogCard from "./workout-log-card";
 
 export default function WorkoutLogsList({ logs }: { logs: WorkoutLog[] }) {
 	if (logs.length === 0) {

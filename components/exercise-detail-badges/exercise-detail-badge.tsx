@@ -1,5 +1,6 @@
-import { cva, VariantProps } from "class-variance-authority";
+import { VariantProps, cva } from "class-variance-authority";
 import { View } from "react-native";
+
 import { Text } from "~/components/ui/text";
 import { cn } from "~/lib/utils";
 

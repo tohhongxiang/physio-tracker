@@ -1,7 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { workoutQueryKeys } from "./query-keys";
-import { Exercise, Workout } from "~/types";
+
 import getExercise from "~/api/get-exercise";
+import { Exercise, Workout } from "~/types";
+
+import { workoutQueryKeys } from "./query-keys";
 
 export default function useGetExercise({
 	workoutId,

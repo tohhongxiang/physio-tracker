@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { TextInput, TouchableWithoutFeedback, View } from "react-native";
-import { Text } from "./ui/text";
-import { Button } from "./ui/button";
+
 import {
 	Dialog,
 	DialogClose,
@@ -11,7 +10,10 @@ import {
 	DialogTitle,
 	DialogTrigger
 } from "~/components/ui/dialog";
+
+import { Button } from "./ui/button";
 import { Input } from "./ui/input";
+import { Text } from "./ui/text";
 
 const ZERO_DURATION_INPUT = "000000";
 const DEFAULT_TITLE = "Enter Duration";

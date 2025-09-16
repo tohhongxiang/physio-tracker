@@ -1,8 +1,9 @@
+import { memo } from "react";
 import { View } from "react-native";
+
+import ExerciseDetailBadge from "~/components/exercise-detail-badges/exercise-detail-badge";
 import { Text } from "~/components/ui/text";
 import formatDuration from "~/lib/format-duration";
-import ExerciseDetailBadge from "~/components/exercise-detail-badges/exercise-detail-badge";
-import { memo } from "react";
 
 export default memo(function ExerciseRestDetails({
 	restBetweenRepsSeconds = 0,

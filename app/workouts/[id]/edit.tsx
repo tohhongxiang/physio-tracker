@@ -1,11 +1,12 @@
 import { useLocalSearchParams } from "expo-router";
+import { useRouter } from "expo-router";
 import { View } from "react-native";
+import { toast } from "sonner-native";
+
 import { Text } from "~/components/ui/text";
 import WorkoutForm from "~/components/workout-form";
-import useEditWorkout from "~/hooks/api/use-edit-workout";
-import { useRouter } from "expo-router";
-import { toast } from "sonner-native";
 import WorkoutNotFound from "~/components/workout-not-found";
+import useEditWorkout from "~/hooks/api/use-edit-workout";
 import useGetWorkout from "~/hooks/api/use-get-workout";
 
 export default function EditWorkoutModal() {

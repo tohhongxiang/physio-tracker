@@ -1,15 +1,17 @@
-import { View } from "react-native";
-import { Button } from "../../ui/button";
-import { FieldArrayWithId } from "react-hook-form";
-import { WorkoutFormSchemaType } from "../schema";
-import ExerciseCard from "../../workout-details/exercise-card";
-import { Trash } from "~/lib/icons/Trash";
-import { Pencil } from "~/lib/icons/Pencil";
 import { useCallback, useRef } from "react";
+import { FieldArrayWithId } from "react-hook-form";
+import { View } from "react-native";
 import Animated, { useAnimatedRef } from "react-native-reanimated";
 import type { SortableGridRenderItem } from "react-native-sortables";
 import Sortable from "react-native-sortables";
+
 import { GripVertical } from "~/lib/icons/GripVertical";
+import { Pencil } from "~/lib/icons/Pencil";
+import { Trash } from "~/lib/icons/Trash";
+
+import { Button } from "../../ui/button";
+import ExerciseCard from "../../workout-details/exercise-card";
+import { WorkoutFormSchemaType } from "../schema";
 
 type ExerciseData = FieldArrayWithId<WorkoutFormSchemaType, "exercises", "key">;
 export default function VirtualizedExerciseList({

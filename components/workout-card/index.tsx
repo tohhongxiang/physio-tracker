@@ -1,3 +1,14 @@
+import { Link } from "expo-router";
+import { Pressable, View, ViewProps } from "react-native";
+
+import { Eye } from "~/lib/icons/Eye";
+import { Play } from "~/lib/icons/Play";
+import { cn } from "~/lib/utils";
+import { Workout } from "~/types";
+
+import NumberOfExercisesBadge from "../exercise-detail-badges/number-of-exercises-badge";
+import WorkoutDurationBadge from "../exercise-detail-badges/workout-duration-badge";
+import { Button } from "../ui/button";
 import {
 	Card,
 	CardContent,
@@ -6,17 +17,8 @@ import {
 	CardHeader,
 	CardTitle
 } from "../ui/card";
-import { Button } from "../ui/button";
 import { Text } from "../ui/text";
-import { Link } from "expo-router";
-import { Pressable, View, ViewProps } from "react-native";
-import { Workout } from "~/types";
-import { Eye } from "~/lib/icons/Eye";
 import LoadingWorkoutCard from "./loading";
-import WorkoutDurationBadge from "../exercise-detail-badges/workout-duration-badge";
-import NumberOfExercisesBadge from "../exercise-detail-badges/number-of-exercises-badge";
-import { Play } from "~/lib/icons/Play";
-import { cn } from "~/lib/utils";
 
 interface WorkoutCardProps extends ViewProps {
 	workout: Workout;

@@ -1,5 +1,6 @@
 import { Exercise } from "~/types";
-import { isFirstRep, isFirstSet, isFinalRep } from "./exercise-state";
+
+import { isFinalRep, isFirstRep, isFirstSet } from "./exercise-state";
 
 export const canNavigate = ({
 	change,

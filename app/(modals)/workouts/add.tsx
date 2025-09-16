@@ -1,8 +1,9 @@
+import { useRouter } from "expo-router";
+import { View } from "react-native";
+import { toast } from "sonner-native";
+
 import WorkoutForm from "~/components/workout-form";
 import useCreateWorkout from "~/hooks/api/use-create-workout";
-import { useRouter } from "expo-router";
-import { toast } from "sonner-native";
-import { View } from "react-native";
 
 export default function AddWorkoutModal() {
 	const router = useRouter();

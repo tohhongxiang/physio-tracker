@@ -1,7 +1,9 @@
-import { WorkoutFilters } from "~/types";
-import { PageParams } from "../use-page-params";
 import { useQuery } from "@tanstack/react-query";
+
 import getWorkouts from "~/api/get-workouts";
+import { WorkoutFilters } from "~/types";
+
+import { PageParams } from "../use-page-params";
 import { workoutQueryKeys } from "./query-keys";
 
 export default function useGetWorkouts(

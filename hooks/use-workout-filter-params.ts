@@ -1,5 +1,6 @@
 import { router, useLocalSearchParams } from "expo-router";
 import { useCallback, useMemo } from "react";
+
 import { WorkoutFilters } from "~/types";
 
 export const DEFAULT_LIMIT = 50;

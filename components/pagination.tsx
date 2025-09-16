@@ -1,10 +1,12 @@
 import { View } from "react-native";
-import { Button } from "./ui/button";
+
 import { ChevronLeft } from "~/lib/icons/ChevronLeft";
 import { ChevronRight } from "~/lib/icons/ChevronRight";
-import { Text } from "./ui/text";
 import { ChevronsLeft } from "~/lib/icons/ChevronsLeft";
 import { ChevronsRight } from "~/lib/icons/ChevronsRight";
+
+import { Button } from "./ui/button";
+import { Text } from "./ui/text";
 
 export default function Pagination({
 	currentPage,

@@ -1,9 +1,10 @@
-import { View } from "react-native";
-import { Text } from "~/components/ui/text";
-import { Button } from "~/components/ui/button";
-import { router } from "expo-router";
-import { ArrowLeft } from "~/lib/icons/ArrowLeft";
 import Constants from "expo-constants";
+import { router } from "expo-router";
+import { View } from "react-native";
+
+import { Button } from "~/components/ui/button";
+import { Text } from "~/components/ui/text";
+import { ArrowLeft } from "~/lib/icons/ArrowLeft";
 
 export default function NavigationHeader({
 	title,

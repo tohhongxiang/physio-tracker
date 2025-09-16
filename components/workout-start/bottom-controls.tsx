@@ -1,13 +1,14 @@
+import { memo } from "react";
 import { View } from "react-native";
-import { Text } from "~/components/ui/text";
+
 import { Button } from "~/components/ui/button";
-import { ChevronsLeft } from "~/lib/icons/ChevronsLeft";
+import { Text } from "~/components/ui/text";
 import { ChevronLeft } from "~/lib/icons/ChevronLeft";
+import { ChevronRight } from "~/lib/icons/ChevronRight";
+import { ChevronsLeft } from "~/lib/icons/ChevronsLeft";
+import { ChevronsRight } from "~/lib/icons/ChevronsRight";
 import { Pause } from "~/lib/icons/Pause";
 import { Play } from "~/lib/icons/Play";
-import { ChevronRight } from "~/lib/icons/ChevronRight";
-import { ChevronsRight } from "~/lib/icons/ChevronsRight";
-import { memo } from "react";
 
 export default memo(function BottomControls({
 	currentSet,

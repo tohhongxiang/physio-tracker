@@ -1,9 +1,11 @@
 import { VariantProps } from "class-variance-authority";
+
+import { Dumbbell } from "~/lib/icons/Dumbbell";
+
 import ExerciseDetailBadge, {
 	exerciseDetailBadgeTextVariants,
 	exerciseDetailBadgeVariants
 } from "./exercise-detail-badge";
-import { Dumbbell } from "~/lib/icons/Dumbbell";
 
 export default function NumberOfExercisesBadge({
 	number,

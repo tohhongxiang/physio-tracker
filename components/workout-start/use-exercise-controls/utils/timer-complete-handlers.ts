@@ -1,10 +1,11 @@
 import { Exercise } from "~/types";
+
 import { STATES } from "../constants";
 import {
-	isExerciseComplete,
-	isFinalRep,
+	hasRestBetweenReps,
 	hasTimedReps,
-	hasRestBetweenReps
+	isExerciseComplete,
+	isFinalRep
 } from "./exercise-state";
 
 export const handleRunningComplete = ({

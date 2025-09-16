@@ -1,11 +1,13 @@
 import { ScrollView, View } from "react-native";
+
 import { Text } from "~/components/ui/text";
 import ExerciseCard from "~/components/workout-details/exercise-card";
 import { Workout } from "~/types";
+
+import WorkoutDurationBadge from "../exercise-detail-badges/workout-duration-badge";
+import ReadMoreText from "../read-more-text";
 import LoadingWorkoutDetails from "./loading";
 import NoExercises from "./no-exercises";
-import ReadMoreText from "../read-more-text";
-import WorkoutDurationBadge from "../exercise-detail-badges/workout-duration-badge";
 
 export default function WorkoutDetails({
 	workout,

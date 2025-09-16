@@ -1,10 +1,12 @@
 import { View } from "react-native";
+
+import ReadMoreText from "~/components/read-more-text";
 import { Text } from "~/components/ui/text";
+import { cn } from "~/lib/utils";
 import { CreateExercise, Exercise } from "~/types";
+
 import ExerciseEffortDetails from "./exercise-effort-details";
 import ExerciseRestDetails from "./exercise-rest-details";
-import ReadMoreText from "~/components/read-more-text";
-import { cn } from "~/lib/utils";
 
 export default function ExerciseCard({
 	exercise,

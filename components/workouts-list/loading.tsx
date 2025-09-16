@@ -1,4 +1,5 @@
 import { View } from "react-native";
+
 import WorkoutCard from "~/components/workout-card";
 
 export default function LoadingWorkoutsList() {

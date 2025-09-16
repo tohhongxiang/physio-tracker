@@ -6,10 +6,12 @@ import {
 	FieldValues
 } from "react-hook-form";
 import { View } from "react-native";
+
+import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { cn } from "~/lib/utils";
+
 import { Text } from "../../../ui/text";
-import { Input } from "~/components/ui/input";
 
 export default function FullWidthInput<
 	TFieldPath extends FieldValues,

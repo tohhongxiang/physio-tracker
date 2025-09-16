@@ -1,14 +1,16 @@
-import { Workout } from "~/types";
-import { View } from "react-native";
-import { useNavigation } from "expo-router";
-import { useAlertDialog } from "~/providers/alert-dialog-provider";
-import useWorkoutForm from "./use-workout-form";
-import { useState } from "react";
-import WorkoutInformation from "./workout-information";
 import { usePreventRemove } from "@react-navigation/native";
-import WorkoutExercises from "./workout-exercises";
-import { WorkoutFormSchemaType } from "./schema";
+import { useNavigation } from "expo-router";
+import { useState } from "react";
+import { View } from "react-native";
+
+import { useAlertDialog } from "~/providers/alert-dialog-provider";
+import { Workout } from "~/types";
+
 import ConfirmWorkout from "./confirm-workout";
+import { WorkoutFormSchemaType } from "./schema";
+import useWorkoutForm from "./use-workout-form";
+import WorkoutExercises from "./workout-exercises";
+import WorkoutInformation from "./workout-information";
 
 type WorkoutFormProps =
 	| {

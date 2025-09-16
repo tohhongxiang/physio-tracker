@@ -1,4 +1,5 @@
 import { and, eq } from "drizzle-orm";
+
 import { db } from "~/db/initalize";
 import { exercises } from "~/db/schema";
 import { Exercise, Workout } from "~/types";

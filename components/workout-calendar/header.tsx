@@ -1,8 +1,9 @@
 import { View } from "react-native";
+
+import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 import { ChevronLeft } from "~/lib/icons/ChevronLeft";
 import { ChevronRight } from "~/lib/icons/ChevronRight";
-import { Button } from "~/components/ui/button";
 
 export default function Header({
 	title,

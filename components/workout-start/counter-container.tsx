@@ -1,15 +1,17 @@
+import { memo, useLayoutEffect, useRef, useState } from "react";
 import { View } from "react-native";
-import hasDurationPerRep from "~/lib/has-duration-per-rep";
-import CounterDisplay from "./counter-display";
-import hasRestBetweenReps from "~/lib/has-rest-between-reps";
+
 import { Button } from "~/components/ui/button";
+import { Text } from "~/components/ui/text";
+import { useBottomSheet } from "~/hooks/use-bottom-sheet";
+import hasDurationPerRep from "~/lib/has-duration-per-rep";
+import hasRestBetweenReps from "~/lib/has-rest-between-reps";
 import { Info } from "~/lib/icons/Info";
 import { cn } from "~/lib/utils";
-import { memo, useLayoutEffect, useRef, useState } from "react";
 import { Exercise } from "~/types";
-import { useBottomSheet } from "~/hooks/use-bottom-sheet";
-import { Text } from "~/components/ui/text";
+
 import BottomSheetModal from "../bottom-sheet-modal";
+import CounterDisplay from "./counter-display";
 
 export default memo(function CounterContainer({
 	exercise,

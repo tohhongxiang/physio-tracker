@@ -1,15 +1,17 @@
+import { memo } from "react";
 import { View } from "react-native";
-import { Exercise } from "~/types";
+
 import { Text } from "~/components/ui/text";
+import ExerciseEffortDetails from "~/components/workout-details/exercise-card/exercise-effort-details";
+import ExerciseRestDetails from "~/components/workout-details/exercise-card/exercise-rest-details";
 import hasDurationPerRep from "~/lib/has-duration-per-rep";
-import TimerDisplay from "./timer-display";
-import { STATES } from "./use-exercise-controls/constants";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
 import hasRestBetweenSets from "~/lib/has-rest-between-sets";
+import { Exercise } from "~/types";
+
 import CounterContainer from "./counter-container";
-import ExerciseRestDetails from "~/components/workout-details/exercise-card/exercise-rest-details";
-import ExerciseEffortDetails from "~/components/workout-details/exercise-card/exercise-effort-details";
-import { memo } from "react";
+import TimerDisplay from "./timer-display";
+import { STATES } from "./use-exercise-controls/constants";
 
 const STATES_TO_MESSAGE: Record<keyof typeof STATES, string> = {
 	[STATES.READY]: "READY",

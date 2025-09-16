@@ -1,11 +1,13 @@
 import { addMonths, subMonths } from "date-fns";
 import { useCallback, useMemo, useRef } from "react";
 import Calendar, { CalendarImperativeApi } from "react-native-swipe-calendar";
-import Header from "./header";
-import DayLabel from "./day-label";
-import toDateId from "./to-date-id";
-import Day from "./day";
+
 import useGetWorkoutLogs from "~/hooks/api/use-get-workout-logs";
+
+import Day from "./day";
+import DayLabel from "./day-label";
+import Header from "./header";
+import toDateId from "./to-date-id";
 
 type WorkoutCalendarProps = {
 	currentDate: Date;

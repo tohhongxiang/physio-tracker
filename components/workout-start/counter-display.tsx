@@ -1,5 +1,6 @@
 import { ElementRef, forwardRef, memo } from "react";
 import { View, ViewProps } from "react-native";
+
 import { Text } from "~/components/ui/text";
 import { cn } from "~/lib/utils";
 

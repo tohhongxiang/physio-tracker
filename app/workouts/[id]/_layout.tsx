@@ -1,4 +1,5 @@
 import { Stack } from "expo-router";
+
 import NavigationHeader from "~/components/navigation-header";
 
 export default function Layout() {

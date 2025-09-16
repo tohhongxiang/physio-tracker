@@ -1,9 +1,11 @@
-import { View } from "react-native";
-import { Frown } from "~/lib/icons/Frown";
-import { Text } from "~/components/ui/text";
-import { Button } from "../ui/button";
 import { useNavigation } from "expo-router";
 import { useEffect } from "react";
+import { View } from "react-native";
+
+import { Text } from "~/components/ui/text";
+import { Frown } from "~/lib/icons/Frown";
+
+import { Button } from "../ui/button";
 
 export default function NotFound({
 	title,

@@ -1,8 +1,9 @@
-import { View } from "react-native";
-import { Text } from "~/components/ui/text";
 import { useEffect, useState } from "react";
+import { View } from "react-native";
+
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
+import { Label } from "~/components/ui/label";
 import {
 	Select,
 	SelectContent,
@@ -10,9 +11,9 @@ import {
 	SelectTrigger,
 	SelectValue
 } from "~/components/ui/select";
-import { Label } from "~/components/ui/label";
-import { WorkoutFilters } from "~/types";
+import { Text } from "~/components/ui/text";
 import { DEFAULT_LIMIT } from "~/hooks/use-workout-filter-params";
+import { WorkoutFilters } from "~/types";
 
 const SELECT_OPTIONS = [
 	{ label: "No sort", value: "" },

@@ -1,16 +1,18 @@
-import { WorkoutLog } from "~/types";
-import { Pressable, View, ViewProps } from "react-native";
-import { Text } from "../../ui/text";
 import { Link } from "expo-router";
-import { Button } from "../../ui/button";
+import { Pressable, View, ViewProps } from "react-native";
+import { toast } from "sonner-native";
+
+import NumberOfExercisesBadge from "~/components/exercise-detail-badges/number-of-exercises-badge";
+import WorkoutDurationBadge from "~/components/exercise-detail-badges/workout-duration-badge";
+import useDeleteWorkoutLog from "~/hooks/api/use-delete-workout-log";
 import { ChevronRight } from "~/lib/icons/ChevronRight";
-import Loading from "./loading";
 import { Trash } from "~/lib/icons/Trash";
 import { useAlertDialog } from "~/providers/alert-dialog-provider";
-import { toast } from "sonner-native";
-import useDeleteWorkoutLog from "~/hooks/api/use-delete-workout-log";
-import WorkoutDurationBadge from "~/components/exercise-detail-badges/workout-duration-badge";
-import NumberOfExercisesBadge from "~/components/exercise-detail-badges/number-of-exercises-badge";
+import { WorkoutLog } from "~/types";
+
+import { Button } from "../../ui/button";
+import { Text } from "../../ui/text";
+import Loading from "./loading";
 
 interface WorkoutLogCardProps extends ViewProps {
 	workoutLog: WorkoutLog;

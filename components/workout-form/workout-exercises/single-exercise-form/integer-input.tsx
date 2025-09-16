@@ -1,9 +1,11 @@
 import { View, ViewProps } from "react-native";
-import { Text } from "../../../ui/text";
-import { Button } from "../../../ui/button";
-import { Plus } from "~/lib/icons/Plus";
+
 import { Minus } from "~/lib/icons/Minus";
+import { Plus } from "~/lib/icons/Plus";
 import { cn } from "~/lib/utils";
+
+import { Button } from "../../../ui/button";
+import { Text } from "../../../ui/text";
 
 interface IntegerInputProps extends ViewProps {
 	value: number;

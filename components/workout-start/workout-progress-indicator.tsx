@@ -1,6 +1,7 @@
-import { View } from "react-native";
-import { Progress } from "../ui/progress";
 import { memo } from "react";
+import { View } from "react-native";
+
+import { Progress } from "../ui/progress";
 
 export default memo(function WorkoutProgressIndicator({
 	totalExercises,

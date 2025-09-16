@@ -7,6 +7,7 @@ import Animated, {
 	useDerivedValue,
 	withTiming
 } from "react-native-reanimated";
+
 import { useColorScheme } from "~/lib/use-color-scheme";
 import { cn } from "~/lib/utils";
 

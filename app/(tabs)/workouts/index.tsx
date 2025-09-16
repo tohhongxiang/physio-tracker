@@ -1,21 +1,22 @@
 import { Link, useNavigation } from "expo-router";
+import { useEffect } from "react";
 import { Keyboard, View } from "react-native";
+
+import BottomSheetModal from "~/components/bottom-sheet-modal";
+import Pagination from "~/components/pagination";
+import SearchFiltersForm from "~/components/search-filters-form";
+import { ThemeToggle } from "~/components/theme-toggle";
+import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
-import { Plus } from "~/lib/icons/Plus";
-import { useEffect } from "react";
-import { SlidersHorizontal } from "~/lib/icons/SlidersHorizontal";
-import BottomSheetModal from "~/components/bottom-sheet-modal";
-import SearchFiltersForm from "~/components/search-filters-form";
-import { Badge } from "~/components/ui/badge";
-import useWorkoutFilterParams from "~/hooks/use-workout-filter-params";
-import { WorkoutFilters } from "~/types";
-import usePageParams from "~/hooks/use-page-params";
-import Pagination from "~/components/pagination";
 import WorkoutsList from "~/components/workouts-list";
-import { useBottomSheet } from "~/hooks/use-bottom-sheet";
 import useGetWorkouts from "~/hooks/api/use-get-workouts";
-import { ThemeToggle } from "~/components/theme-toggle";
+import { useBottomSheet } from "~/hooks/use-bottom-sheet";
+import usePageParams from "~/hooks/use-page-params";
+import useWorkoutFilterParams from "~/hooks/use-workout-filter-params";
+import { Plus } from "~/lib/icons/Plus";
+import { SlidersHorizontal } from "~/lib/icons/SlidersHorizontal";
+import { WorkoutFilters } from "~/types";
 
 export default function WorkoutList() {
 	const {
