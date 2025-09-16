@@ -26,7 +26,6 @@ export default function EditExercise() {
 	});
 
 	const navigator = useNavigation();
-
 	const handleCancel = () => {
 		navigator.goBack();
 	};
@@ -56,7 +55,7 @@ export default function EditExercise() {
 	}
 
 	return (
-		<View>
+		<View className="flex-1">
 			<SingleExerciseForm
 				isOpen
 				showHeader={false}
