@@ -16,6 +16,7 @@ import { useAlertDialog } from "~/providers/alert-dialog-provider";
 import WorkoutNotFound from "~/components/workout-not-found";
 import { toast } from "sonner-native";
 import useGetWorkout from "~/hooks/api/use-get-workout";
+import { Play } from "~/lib/icons/Play";
 
 export default function SpecificWorkOutRoute() {
 	const { id } = useLocalSearchParams<{ id: string }>();
@@ -91,7 +92,8 @@ export default function SpecificWorkOutRoute() {
 			<WorkoutDetails workout={workout} />
 			<View className="flex flex-col gap-4 p-4">
 				<Link href={`/workouts/${workout.id}/start`} asChild>
-					<Button>
+					<Button className="flex w-full flex-row items-center gap-2">
+						<Play className="text-primary-foreground" size={16} />
 						<Text>Start Exercise</Text>
 					</Button>
 				</Link>
