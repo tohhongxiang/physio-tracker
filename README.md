@@ -46,7 +46,40 @@ eas build --profile production --platform ios # Build for production on ios
 # Features to Implement
 
 [] Pinned workouts
-[] Settings tab - Audio and sound settings - Enable/disable timer completion sounds and countdown warning sounds - Adjust volume level for workout sounds - Enable/disable haptic feedback for timer events - Custom sound selection - Timer and workout settings - Default timer duration - Countdown warning time - Auto start next exercise - Exercise and weight settings - Default weight unit - Default sets and reps - Set user's body weight for %BW calculations?? - Exercise display order?? - Appearance settings - Theme - Color scheme - Timer display style - Data and privacy settings - Data export - Data import - Backup settings - Clear data - Analytics - App behavior settings - Keep screen on - Auto-pause on phone calls - Startup screen: Choose which tab to open when launching the application - Calendar and scheduling - Week start day - Date format - Workout reminders - Goal tracking
+[] Settings tab 
+- Audio and sound settings 
+  - Enable/disable timer completion sounds and countdown warning sounds 
+  - Adjust volume level for workout sounds 
+  - Enable/disable haptic feedback for timer events 
+  - Custom sound selection 
+- Timer and workout settings 
+  - Default timer duration 
+  - Countdown warning time 
+  - Auto start next exercise 
+- Exercise and weight settings 
+  - Default weight unit 
+  - Default sets and reps 
+  - Set user's body weight for %BW calculations?? 
+  - Exercise display order?? 
+- Appearance settings 
+  - Theme 
+  - Color scheme 
+  - Timer display style 
+  - Data and privacy settings 
+  - Data export 
+  - Data import 
+- Backup settings 
+  - Clear data 
+  - Analytics 
+  - App behavior settings 
+  - Keep screen on 
+  - Auto-pause on phone calls 
+  - Startup screen: Choose which tab to open when launching the application 
+  - Calendar and scheduling 
+  - Week start day 
+  - Date format 
+  - Workout reminders 
+  - Goal tracking
 [] Able to mute sound
 [] Haptic feedback for workout start
 

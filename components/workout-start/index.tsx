@@ -11,6 +11,8 @@ import hasDurationPerRep from "~/lib/has-duration-per-rep";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
 import { ClipboardCheck } from "~/lib/icons/ClipboardCheck";
 import { Pencil } from "~/lib/icons/Pencil";
+import { Volume2 } from "~/lib/icons/Volume2";
+import { VolumeX } from "~/lib/icons/VolumeOff";
 import { Workout } from "~/types";
 
 import BottomControls from "./bottom-controls";
@@ -54,8 +56,9 @@ export default function WorkoutStartPage({
 		});
 	}, [currentExerciseIndex, exercises.length, router, workoutId]);
 
-	const goSoundPlayer = useSound(goSound);
-	const readySoundPlayer = useSound(readySound);
+	const [isMuted, setIsMuted] = useState(false);
+	const goSoundPlayer = useSound(goSound, isMuted);
+	const readySoundPlayer = useSound(readySound, isMuted);
 
 	const handleTimerUpdate = useCallback(
 		({
@@ -110,6 +113,17 @@ export default function WorkoutStartPage({
 					headerRight: () => {
 						return (
 							<View className="flex flex-row items-center justify-center">
+								<Button
+									variant="ghost"
+									className="flex flex-row gap-2"
+									onPress={() => setIsMuted((c) => !c)}
+								>
+									{isMuted ? (
+										<VolumeX className="text-foreground" />
+									) : (
+										<Volume2 className="text-foreground" />
+									)}
+								</Button>
 								<Link
 									href={`/workouts/${workoutId}/exercises/${currentExercise.id}/edit`}
 									asChild
