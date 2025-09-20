@@ -1,7 +1,11 @@
 import { Link } from "expo-router";
 import { Pressable, View, ViewProps } from "react-native";
+import { toast } from "sonner-native";
 
+import useGetPinnedWorkout from "~/hooks/api/use-get-pinned-workout";
+import useTogglePinnedWorkout from "~/hooks/api/use-toggle-pinned-workout";
 import { Eye } from "~/lib/icons/Eye";
+import { Pin } from "~/lib/icons/Pin";
 import { Play } from "~/lib/icons/Play";
 import { cn } from "~/lib/utils";
 import { Workout } from "~/types";
@@ -25,6 +29,14 @@ interface WorkoutCardProps extends ViewProps {
 }
 
 export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
+	const { isLoading: isPinningWorkout, togglePinnedWorkout } =
+		useTogglePinnedWorkout({
+			onError: (error) => toast.error(error.message)
+		});
+
+	const { isLoading: isFetchingPinnedWorkout, data: pinnedWorkout } =
+		useGetPinnedWorkout({ id: workout.id });
+
 	return (
 		<Link href={`/workouts/${workout.id}`} asChild>
 			<Pressable className="acitve:opacity-80">
@@ -35,17 +47,27 @@ export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
 						props.className
 					)}
 				>
-					<CardHeader className="flex w-full flex-row items-start justify-between gap-4">
+					<CardHeader className="flex w-full flex-row items-center justify-between gap-4 mb-0">
 						<View className="flex flex-1 flex-col gap-2">
 							<CardTitle numberOfLines={1}>
 								{workout.name}
 							</CardTitle>
-							{workout.description && (
-								<CardDescription className="line-clamp-2 text-ellipsis">
-									{workout.description}
-								</CardDescription>
-							)}
 						</View>
+						<Button
+							variant="ghost"
+							disabled={
+								isPinningWorkout || isFetchingPinnedWorkout
+							}
+							onPress={() => togglePinnedWorkout(workout.id)}
+						>
+							<Pin
+								size={16}
+								className={cn(
+									"stroke-secondary-foreground",
+									pinnedWorkout && "fill-secondary-foreground"
+								)}
+							/>
+						</Button>
 						<Link
 							href={`/workouts/${workout.id}`}
 							asChild
@@ -60,6 +82,11 @@ export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
 						</Link>
 					</CardHeader>
 					<CardContent className="flex flex-col gap-4">
+						{workout.description && (
+							<CardDescription className="line-clamp-2 text-ellipsis">
+								{workout.description}
+							</CardDescription>
+						)}
 						<View className="flex flex-row justify-start gap-4">
 							<NumberOfExercisesBadge
 								number={workout.exercises.length}

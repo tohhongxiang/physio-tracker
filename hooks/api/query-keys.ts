@@ -11,7 +11,12 @@ export const workoutQueryKeys = {
 		detail: (workoutId: Workout["id"], exerciseId: Exercise["id"]) =>
 			[...workoutQueryKeys.exercises.all(workoutId), exerciseId] as const
 	},
-	today: () => [...workoutQueryKeys.all, "today"] as const
+	today: () => [...workoutQueryKeys.all, "today"] as const,
+	pinned: {
+		all: () => [...workoutQueryKeys.all, "pinned"] as const,
+		detail: (workoutId: Workout["id"]) =>
+			[...workoutQueryKeys.pinned.all(), workoutId] as const
+	}
 };
 
 export const workoutLogQueryKeys = {

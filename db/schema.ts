@@ -54,6 +54,13 @@ export const workoutLogs = sqliteTable("workout_logs", {
 	completedAt: text("completed_at").notNull() // Store dates as ISO string e.g. '2025-05-31T16:00:00.000Z'
 });
 
+export const pinnedWorkouts = sqliteTable("pinned_workouts", {
+	workoutId: int("workout_id")
+		.primaryKey()
+		.references(() => workouts.id, { onDelete: "cascade" }),
+	position: int().notNull().unique()
+});
+
 export const workoutsRelations = relations(workouts, ({ many }) => ({
 	exercises: many(exercises),
 	workoutLogs: many(workoutLogs)
@@ -73,4 +80,9 @@ export const workoutLogsRelations = relations(workoutLogs, ({ one }) => ({
 	})
 }));
 
-// TODO: Index for workout logs on (userId, completedAt)
+export const pinnedWorkoutsRelations = relations(pinnedWorkouts, ({ one }) => ({
+	workout: one(workouts, {
+		fields: [pinnedWorkouts.workoutId],
+		references: [workouts.id]
+	})
+}));

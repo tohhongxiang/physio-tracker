@@ -3,7 +3,7 @@ import { Skeleton } from "../ui/skeleton";
 
 export default function LoadingWorkoutCard() {
 	return (
-		<Card className="w-full max-w-md">
+		<Card className="w-full max-w-md bg-background">
 			<CardHeader className="flex flex-row items-center justify-between">
 				<Skeleton className="h-8 w-full" />
 			</CardHeader>

@@ -80,7 +80,7 @@ eas build --profile production --platform ios # Build for production on ios
   - Date format 
   - Workout reminders 
   - Goal tracking
-[] Able to mute sound
+[x] Able to mute sound
 [] Haptic feedback for workout start
 
 # Resources
