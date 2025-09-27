@@ -45,7 +45,9 @@ eas build --profile production --platform ios # Build for production on ios
 
 # Features to Implement
 
-[] Pinned workouts
+[x] Pinned workouts
+[x] Able to mute sound
+[] Backup workouts
 [] Settings tab 
 - Audio and sound settings 
   - Enable/disable timer completion sounds and countdown warning sounds 
@@ -80,7 +82,6 @@ eas build --profile production --platform ios # Build for production on ios
   - Date format 
   - Workout reminders 
   - Goal tracking
-[x] Able to mute sound
 [] Haptic feedback for workout start
 
 # Resources
