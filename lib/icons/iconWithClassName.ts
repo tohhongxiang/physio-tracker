@@ -7,7 +7,8 @@ export function iconWithClassName(icon: LucideIcon) {
 			target: "style",
 			nativeStyleToProp: {
 				color: true,
-				opacity: true
+				opacity: true,
+				transform: true
 			}
 		}
 	});

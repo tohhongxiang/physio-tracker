@@ -1,3 +1,7 @@
+import { InferSelectModel } from "drizzle-orm";
+
+import { pinnedWorkouts, workoutLogs } from "~/db/schema";
+
 export type Workout = {
 	id: number;
 	name: string;
@@ -33,4 +37,23 @@ export type WorkoutLog = {
 	id: number;
 	completedAt: Date;
 	workout: Workout;
+};
+
+export type ExportDataOptions = {
+	workouts: boolean;
+	logs: boolean;
+	pinned: boolean;
+};
+
+export type ExportData = {
+	timestamp: string;
+	device: {
+		platform: "ios" | "android" | "windows" | "macos" | "web";
+		version: string;
+	};
+	data: {
+		workouts: Workout[];
+		logs: InferSelectModel<typeof workoutLogs>[];
+		pinned: InferSelectModel<typeof pinnedWorkouts>[];
+	};
 };

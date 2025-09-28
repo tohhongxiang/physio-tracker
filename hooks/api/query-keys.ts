@@ -1,4 +1,4 @@
-import { Exercise, Workout, WorkoutFilters } from "~/types";
+import { Exercise, ExportDataOptions, Workout, WorkoutFilters } from "~/types";
 
 export const workoutQueryKeys = {
 	all: ["workouts"] as const,
@@ -23,4 +23,10 @@ export const workoutLogQueryKeys = {
 	all: ["workout-logs"] as const,
 	month: (year: number, month: number, withWorkoutData = false) =>
 		[...workoutLogQueryKeys.all, year, month, withWorkoutData] as const
+};
+
+export const exportDataQueryKeys = {
+	all: ["export-data"] as const,
+	filtered: (filters: ExportDataOptions) =>
+		[...exportDataQueryKeys.all, filters] as const
 };

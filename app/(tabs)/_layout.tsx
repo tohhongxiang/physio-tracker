@@ -7,6 +7,7 @@ import { ClipboardList } from "~/lib/icons/ClipboardList";
 import { Clock } from "~/lib/icons/Clock";
 import { Dumbbell } from "~/lib/icons/Dumbbell";
 import { Home } from "~/lib/icons/Home";
+import { Info } from "~/lib/icons/Info";
 import { Settings } from "~/lib/icons/Settings";
 
 const FOCUSED_ICON_STROKE_WIDTH = 2.3;
@@ -106,12 +107,29 @@ export default function TabLayout() {
 				}}
 			/>
 			<Tabs.Screen
+				name="settings"
+				options={{
+					title: "Settings",
+					tabBarIcon: ({ color, size, focused }) => (
+						<Settings
+							color={color}
+							size={size}
+							strokeWidth={
+								focused
+									? FOCUSED_ICON_STROKE_WIDTH
+									: UNFOCUSED_ICON_STROKE_WIDTH
+							}
+						/>
+					)
+				}}
+			/>
+			<Tabs.Screen
 				name="test"
 				options={{
 					title: "Debug",
 					href: __DEV__ ? undefined : null,
 					tabBarIcon: ({ color, size, focused }) => (
-						<Settings
+						<Info
 							color={color}
 							size={size}
 							strokeWidth={
