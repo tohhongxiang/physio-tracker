@@ -33,7 +33,7 @@ export default function Data() {
 				</CardDescription>
 			</CardHeader>
 			<CardContent className="flex flex-col gap-4 w-full">
-				<View className="flex flex-row gap-4 w-full justify-center items-center border">
+				<View className="flex flex-row gap-4 w-full justify-center items-center">
 					<View className="flex-1">
 						<ExportDataDialog>
 							<Button

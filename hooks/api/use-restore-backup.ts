@@ -16,8 +16,7 @@ export default function useRestoreBackup({
 	const { isPending, mutate, error } = useMutation({
 		mutationFn: async (data: ExportData) => {
 			await new Promise<void>((res) => setTimeout(() => res(), 1000));
-			const result = await deleteAll();
-			console.log(result);
+			await deleteAll();
 			return restoreBackup(data);
 		},
 		onSuccess: (data) => {

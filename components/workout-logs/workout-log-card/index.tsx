@@ -53,7 +53,7 @@ export default function WorkoutLogCard({
 					<View>
 						<Text className="font-bold text-muted-foreground">
 							{workoutLog.completedAt.toLocaleDateString(
-								"en-SG",
+								"default",
 								{
 									day: "2-digit",
 									month: "short"
@@ -67,7 +67,10 @@ export default function WorkoutLogCard({
 						</Text>
 					</View>
 					<View className="flex flex-1 flex-col gap-2">
-						<Text className="line-clamp-1 text-ellipsis px-2 text-xl font-bold">
+						<Text
+							className="line-clamp-1 text-ellipsis px-2 text-xl font-bold"
+							numberOfLines={2}
+						>
 							{workoutLog.workout.name} {workoutLog.id}
 						</Text>
 						<View className="flex flex-row">

@@ -101,7 +101,7 @@ export default function ExportDataDialog({
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Export your Data</DialogTitle>
+					<DialogTitle>Export Backup</DialogTitle>
 					<DialogDescription>
 						Select which information to export. A JSON backup file
 						will be created, and you can choose where to save or

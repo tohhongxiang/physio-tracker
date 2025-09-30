@@ -9,7 +9,6 @@ import {
 	Dialog,
 	DialogClose,
 	DialogContent,
-	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
@@ -17,6 +16,7 @@ import {
 } from "~/components/ui/dialog";
 import { Text } from "~/components/ui/text";
 import useRestoreBackup from "~/hooks/api/use-restore-backup";
+import { File } from "~/lib/icons/File";
 import { Info } from "~/lib/icons/Info";
 import { LoaderCircle } from "~/lib/icons/LoaderCircle";
 import { Upload } from "~/lib/icons/Upload";
@@ -32,6 +32,7 @@ export default function ImportDataDialog({
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedFile, setSelectedFile] =
 		useState<DocumentPicker.DocumentPickerAsset | null>(null);
+	const [parsedData, setParsedData] = useState<ExportData | null>(null);
 	const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
 	async function pickFile() {
@@ -41,15 +42,33 @@ export default function ImportDataDialog({
 				copyToCacheDirectory: true
 			});
 
+			setErrorMessages([]);
+			setParsedData(null);
+
 			if (result.canceled) {
 				setSelectedFile(null);
-				setErrorMessages([]);
 				return;
 			}
 
 			const file = result.assets[0];
 			if (!file) return;
 
+			const jsonString = await FileSystem.readAsStringAsync(file.uri);
+			let data: unknown;
+			try {
+				data = JSON.parse(jsonString);
+			} catch {
+				setErrorMessages(["Invalid JSON file"]);
+				return;
+			}
+
+			const errorMessages = validateBackupData(data);
+			if (errorMessages.length > 0) {
+				setErrorMessages(errorMessages);
+				return;
+			}
+
+			setParsedData(data as ExportData);
 			setSelectedFile(file);
 			setErrorMessages([]);
 		} catch (err) {
@@ -77,30 +96,13 @@ export default function ImportDataDialog({
 		}
 	});
 	async function handleSubmit() {
-		setErrorMessages([]);
-
-		if (!selectedFile) {
+		if (!parsedData) {
 			setErrorMessages(["No file selected"]);
 			return;
 		}
 
-		const jsonString = await FileSystem.readAsStringAsync(selectedFile.uri);
-		let data: unknown;
-		try {
-			data = JSON.parse(jsonString);
-		} catch {
-			setErrorMessages(["Invalid JSON file"]);
-			return;
-		}
-
-		const errorMessages = validateBackupData(data);
-		if (errorMessages.length > 0) {
-			setErrorMessages(errorMessages);
-			return;
-		}
-
 		// Pass data to your DB import function
-		restoreBackup(data as ExportData);
+		restoreBackup(parsedData);
 	}
 
 	return (
@@ -108,19 +110,27 @@ export default function ImportDataDialog({
 			<DialogTrigger asChild>{children}</DialogTrigger>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle>Import Data</DialogTitle>
-					<DialogDescription>
-						Select a JSON backup file to import into your database.
-					</DialogDescription>
-					<View className="bg-destructive rounded-md p-2 flex flex-row gap-2 items-center mt-4">
-						<Info className="text-destructive-foreground" />
-						<Text className="text-destructive-foreground">
-							Warning: This will delete all your data
+					<DialogTitle>Restore Backup</DialogTitle>
+					<View className="bg-destructive rounded-md p-4 flex flex-col gap-2 mt-2">
+						<View className="flex flex-row gap-2 items-center">
+							<Info className="text-destructive-foreground" />
+							<Text className="text-destructive-foreground font-bold">
+								Warning: This will overwrite all existing data
+							</Text>
+						</View>
+						<Text className="opacity-80 text-destructive-foreground">
+							Your current workouts, logs, and pinned workouts
+							will be permanently deleted.
 						</Text>
 					</View>
 				</DialogHeader>
 				<View className="flex flex-col gap-4 my-4">
-					<Button variant="outline" onPress={pickFile}>
+					<Button
+						variant="outline"
+						className="flex flex-row gap-2 items-center justify-center"
+						onPress={pickFile}
+					>
+						<File className="text-foreground" size={16} />
 						<Text>
 							{selectedFile ? "Change File" : "Choose File"}
 						</Text>
@@ -129,6 +139,25 @@ export default function ImportDataDialog({
 						<Text className="text-xs text-muted-foreground mb-2">
 							Selected file: {selectedFile.name}
 						</Text>
+					)}
+					{parsedData && (
+						<View>
+							<Text>
+								Backup date:{" "}
+								{new Date(
+									parsedData.timestamp
+								).toLocaleDateString("default", {
+									day: "2-digit",
+									month: "short",
+									year: "numeric"
+								})}
+								,{" "}
+								{new Intl.DateTimeFormat("en-US", {
+									timeStyle: "short"
+								}).format(new Date(parsedData.timestamp))}
+							</Text>
+							<Text>{`Contents: ${parsedData.data.workouts.length} workout(s), ${parsedData.data.pinned.length} pinned, ${parsedData.data.logs.length} log(s)`}</Text>
+						</View>
 					)}
 					{restoreBackupError && (
 						<View>
@@ -162,16 +191,17 @@ export default function ImportDataDialog({
 						</View>
 					)}
 				</View>
-				<DialogFooter className="flex flex-row justify-end gap-2">
+				<DialogFooter className="flex flex-row justify-end">
 					<DialogClose asChild>
-						<Button variant="outline">
+						<Button variant="outline" className="flex-1">
 							<Text>Cancel</Text>
 						</Button>
 					</DialogClose>
 					<Button
-						className="flex flex-row gap-2 justify-center items-center"
+						variant="destructive"
+						className="flex-1 flex flex-row gap-2 justify-center items-center"
 						onPress={handleSubmit}
-						disabled={!selectedFile || isLoading}
+						disabled={!parsedData || isLoading}
 					>
 						{isLoading ? (
 							<>
@@ -189,7 +219,7 @@ export default function ImportDataDialog({
 									className="text-primary-foreground"
 									size={16}
 								/>
-								<Text>Import</Text>
+								<Text>Restore Backup</Text>
 							</>
 						)}
 					</Button>
