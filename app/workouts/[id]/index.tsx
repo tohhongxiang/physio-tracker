@@ -61,7 +61,10 @@ export default function SpecificWorkOutRoute() {
 								actionText: "Delete",
 								loadingText: "Deleting...",
 								onConfirm: async () => {
-									deleteWorkout(workout.id);
+									await new Promise<void>((res) =>
+										setTimeout(() => res(), 100)
+									);
+									await deleteWorkout(workout.id);
 								},
 								onSuccess: () => {
 									router.push("/(tabs)/workouts");

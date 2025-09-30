@@ -10,7 +10,7 @@ export default function useDeleteWorkout({
 	onSuccess?: (deletedWorkout: Omit<Workout, "exercises">) => void;
 	onError?: (error: Error) => void;
 } = {}) {
-	const { isPending, mutate, error } = useMutation({
+	const { isPending, mutateAsync, error } = useMutation({
 		mutationFn: deleteWorkout,
 		onSuccess: (deletedWorkout) => {
 			onSuccess?.(deletedWorkout);
@@ -18,5 +18,5 @@ export default function useDeleteWorkout({
 		onError
 	});
 
-	return { isLoading: isPending, deleteWorkout: mutate, error };
+	return { isLoading: isPending, deleteWorkout: mutateAsync, error };
 }
