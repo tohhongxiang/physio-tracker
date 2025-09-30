@@ -27,8 +27,6 @@ export default function ExportDataDialog({
 }: {
 	children: React.ReactNode;
 }) {
-	const [isOpen, setIsOpen] = useState(false);
-
 	const [options, setOptions] = useState({
 		workouts: true, // always included
 		pinned: true,
@@ -54,6 +52,7 @@ export default function ExportDataDialog({
 
 	const { isRefetching: isExporting, refetch: getExportData } =
 		useGetExportData(options);
+	const [isOpen, setIsOpen] = useState(false);
 
 	async function handleSubmit() {
 		const { data, error } = await getExportData();
@@ -100,7 +99,7 @@ export default function ExportDataDialog({
 	return (
 		<Dialog open={isOpen} onOpenChange={setIsOpen}>
 			<DialogTrigger asChild>{children}</DialogTrigger>
-			<DialogContent className="rounded-2xl">
+			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>Export your Data</DialogTitle>
 					<DialogDescription>

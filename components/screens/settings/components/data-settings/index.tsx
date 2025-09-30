@@ -44,7 +44,7 @@ export default function Data() {
 									size={16}
 									className="text-secondary-foreground"
 								/>
-								<Text>Export Data</Text>
+								<Text>Export Backup</Text>
 							</Button>
 						</ExportDataDialog>
 					</View>
@@ -58,7 +58,7 @@ export default function Data() {
 									size={16}
 									className="text-secondary-foreground"
 								/>
-								<Text>Import Data</Text>
+								<Text>Restore Backup</Text>
 							</Button>
 						</ImportDataDialog>
 					</View>
