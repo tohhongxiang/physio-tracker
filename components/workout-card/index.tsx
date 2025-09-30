@@ -4,9 +4,11 @@ import { toast } from "sonner-native";
 
 import useGetPinnedWorkout from "~/hooks/api/use-get-pinned-workout";
 import useTogglePinnedWorkout from "~/hooks/api/use-toggle-pinned-workout";
+import { NAV_THEME } from "~/lib/constants";
 import { Eye } from "~/lib/icons/Eye";
 import { Pin } from "~/lib/icons/Pin";
 import { Play } from "~/lib/icons/Play";
+import { useColorScheme } from "~/lib/use-color-scheme";
 import { cn } from "~/lib/utils";
 import { Workout } from "~/types";
 
@@ -37,6 +39,9 @@ export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
 	const { isLoading: isFetchingPinnedWorkout, data: pinnedWorkout } =
 		useGetPinnedWorkout({ id: workout.id });
 
+	// using fill-secondary-foreground on the icon does not seem to work. Nativewind bug
+	const { colorScheme } = useColorScheme();
+
 	return (
 		<Link href={`/workouts/${workout.id}`} asChild>
 			<Pressable className="acitve:opacity-80">
@@ -62,10 +67,14 @@ export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
 						>
 							<Pin
 								size={16}
-								className={cn(
-									"stroke-secondary-foreground",
-									pinnedWorkout && "fill-secondary-foreground"
-								)}
+								className={"text-secondary-foreground"}
+								fill={
+									pinnedWorkout
+										? colorScheme === "dark"
+											? NAV_THEME.dark.text
+											: NAV_THEME.light.text
+										: "none"
+								}
 							/>
 						</Button>
 						<Link
