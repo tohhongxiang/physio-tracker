@@ -38,7 +38,10 @@ export default function NavigationHeader({
 							/>
 						</Button>
 					)}
-					<Text className="line-clamp-1 flex-1 text-ellipsis text-2xl font-bold">
+					<Text
+						className="line-clamp-1 flex-1 text-ellipsis text-2xl font-bold"
+						numberOfLines={1}
+					>
 						{title}
 					</Text>
 				</View>

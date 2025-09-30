@@ -83,7 +83,10 @@ export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
 					</CardHeader>
 					<CardContent className="flex flex-col gap-4">
 						{workout.description && (
-							<CardDescription className="line-clamp-2 text-ellipsis">
+							<CardDescription
+								className="line-clamp-2 text-ellipsis"
+								numberOfLines={2}
+							>
 								{workout.description}
 							</CardDescription>
 						)}
