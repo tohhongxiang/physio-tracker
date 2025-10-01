@@ -1,4 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { X } from "lucide-react-native";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { View } from "react-native";
@@ -7,6 +8,7 @@ import { toast } from "sonner-native";
 
 import TimerInput from "~/components/timer-input";
 import { Button } from "~/components/ui/button";
+import { Icon } from "~/components/ui/icon";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import {
@@ -20,7 +22,6 @@ import { Separator } from "~/components/ui/separator";
 import { Text } from "~/components/ui/text";
 import { Textarea } from "~/components/ui/textarea";
 import formatDuration from "~/lib/format-duration";
-import { X } from "~/lib/icons/X";
 import { cn } from "~/lib/utils";
 import { CreateExercise, Exercise } from "~/types";
 
@@ -106,7 +107,7 @@ export default function SingleExerciseForm({
 						{initialData ? "Update Exercise" : "New Exercise"}
 					</Text>
 					<Button variant="ghost" onPress={onCancel}>
-						<X className="text-foreground" />
+						<Icon as={X} className="text-foreground" />
 					</Button>
 				</View>
 			)}

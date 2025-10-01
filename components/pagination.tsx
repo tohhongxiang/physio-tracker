@@ -1,11 +1,13 @@
+import {
+	ChevronLeft,
+	ChevronRight,
+	ChevronsLeft,
+	ChevronsRight
+} from "lucide-react-native";
 import { View } from "react-native";
 
-import { ChevronLeft } from "~/lib/icons/ChevronLeft";
-import { ChevronRight } from "~/lib/icons/ChevronRight";
-import { ChevronsLeft } from "~/lib/icons/ChevronsLeft";
-import { ChevronsRight } from "~/lib/icons/ChevronsRight";
-
 import { Button } from "./ui/button";
+import { Icon } from "./ui/icon";
 import { Text } from "./ui/text";
 
 export default function Pagination({
@@ -34,7 +36,10 @@ export default function Pagination({
 					className="aspect-square"
 					disabled={currentPage <= 0}
 				>
-					<ChevronsLeft className="text-foreground" />
+					<Icon
+						as={ChevronsLeft}
+						className="text-foreground h-6 w-6"
+					/>
 				</Button>
 				<Button
 					onPress={onGoToPreviousPage}
@@ -42,7 +47,10 @@ export default function Pagination({
 					className="aspect-square"
 					disabled={currentPage <= 0}
 				>
-					<ChevronLeft className="text-foreground" />
+					<Icon
+						as={ChevronLeft}
+						className="text-foreground h-6 w-6"
+					/>
 				</Button>
 				<Button>
 					<Text>{currentPage + 1}</Text>
@@ -53,7 +61,10 @@ export default function Pagination({
 					className="aspect-square rounded-full"
 					disabled={currentPage >= numberOfPages - 1}
 				>
-					<ChevronRight className="text-foreground" />
+					<Icon
+						as={ChevronRight}
+						className="text-foreground h-6 w-6"
+					/>
 				</Button>
 				<Button
 					onPress={() => onGoToPage(numberOfPages - 1)}
@@ -61,7 +72,10 @@ export default function Pagination({
 					className="aspect-square"
 					disabled={currentPage >= numberOfPages - 1}
 				>
-					<ChevronsRight className="text-foreground" />
+					<Icon
+						as={ChevronsRight}
+						className="text-foreground h-6 w-6"
+					/>
 				</Button>
 			</View>
 			<Text className="text-center text-sm text-muted-foreground">

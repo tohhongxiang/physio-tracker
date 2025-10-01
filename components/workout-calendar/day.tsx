@@ -1,7 +1,8 @@
+import { CircleCheckBig } from "lucide-react-native";
 import { View } from "react-native";
 
+import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
-import { CircleCheckBig } from "~/lib/icons/CircleCheckBig";
 import { cn } from "~/lib/utils";
 
 interface DayProps {
@@ -31,7 +32,11 @@ export default function Day({
 			{isInDisplayedMonth ? (
 				<View className="flex flex-col items-center justify-center">
 					{isMarked ? (
-						<CircleCheckBig className="text-green-500" />
+						<Icon
+							as={CircleCheckBig}
+							size={24}
+							className="text-green-500"
+						/>
 					) : (
 						<Text
 							className={cn(

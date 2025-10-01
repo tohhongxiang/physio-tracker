@@ -1,4 +1,5 @@
 import { useFocusEffect } from "expo-router";
+import { Pause, Play, RotateCcw } from "lucide-react-native";
 import { useCallback, useState } from "react";
 import { TouchableWithoutFeedback, View } from "react-native";
 
@@ -6,13 +7,11 @@ import goSound from "~/assets/audio/go.mp3";
 import readySound from "~/assets/audio/ready.mp3";
 import TimerInput from "~/components/timer-input";
 import { Button } from "~/components/ui/button";
+import { Icon } from "~/components/ui/icon";
 import CounterDisplay from "~/components/workout-start/counter-display";
 import TimerDisplay from "~/components/workout-start/timer-display";
 import useCountdownTimer from "~/hooks/use-countdown-timer";
 import useSound from "~/hooks/use-sound";
-import { Pause } from "~/lib/icons/Pause";
-import { Play } from "~/lib/icons/Play";
-import { RotateCcw } from "~/lib/icons/RotateCcw";
 
 export default function TimerPage() {
 	const [durationSeconds, setDurationSeconds] = useState(10);
@@ -75,9 +74,15 @@ export default function TimerPage() {
 					onPress={() => setIsPlaying((c) => !c)}
 				>
 					{isPlaying ? (
-						<Pause className="text-primary-foreground" />
+						<Icon
+							as={Pause}
+							className="text-primary-foreground h-6 w-6"
+						/>
 					) : (
-						<Play className="text-primary-foreground" />
+						<Icon
+							as={Play}
+							className="text-primary-foreground h-6 w-6"
+						/>
 					)}
 				</Button>
 				<Button
@@ -85,7 +90,10 @@ export default function TimerPage() {
 					variant="secondary"
 					onPress={handleReset}
 				>
-					<RotateCcw className="text-secondary-foreground" />
+					<Icon
+						as={RotateCcw}
+						className="text-secondary-foreground h-6 w-6"
+					/>
 				</Button>
 			</View>
 		</View>

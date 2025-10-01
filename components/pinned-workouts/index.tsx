@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import { Pin } from "lucide-react-native";
+import { ArrowRight, Pin } from "lucide-react-native";
 import { useCallback } from "react";
 import { View } from "react-native";
 import Animated, { AnimatedRef } from "react-native-reanimated";
@@ -7,14 +7,12 @@ import Sortable, { SortableGridRenderItem } from "react-native-sortables";
 import { toast } from "sonner-native";
 
 import { Button } from "~/components/ui/button";
+import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
 import WorkoutCard from "~/components/workout-card";
 import useEditPinnedWorkoutPosition from "~/hooks/api/use-edit-pinned-workout-position";
 import useGetPinnedWorkouts from "~/hooks/api/use-get-pinned-workouts";
-import { ArrowRight } from "~/lib/icons/ArrowRight";
 import { Workout } from "~/types";
-
-import { Icon } from "../ui/icon";
 
 export default function PinnedWorkouts({
 	scrollableRef
@@ -75,7 +73,8 @@ export default function PinnedWorkouts({
 					<Link href="/(tabs)/workouts" asChild>
 						<Button className="flex flex-row items-center justify-center gap-2">
 							<Text className="text-center">Browse workouts</Text>
-							<ArrowRight
+							<Icon
+								as={ArrowRight}
 								size={16}
 								className="text-primary-foreground"
 							/>

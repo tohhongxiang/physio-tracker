@@ -1,9 +1,10 @@
 import { Link } from "expo-router";
+import { Plus } from "lucide-react-native";
 import { View } from "react-native";
 
 import { Button } from "~/components/ui/button";
+import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
-import { Plus } from "~/lib/icons/Plus";
 
 export default function NoExercises({ id }: { id: string }) {
 	return (
@@ -14,7 +15,11 @@ export default function NoExercises({ id }: { id: string }) {
 				</Text>
 				<Link href={`/workouts/${id}/edit`} asChild>
 					<Button className="flex flex-row gap-2">
-						<Plus size={20} className="text-primary-foreground" />
+						<Icon
+							as={Plus}
+							size={20}
+							className="text-primary-foreground"
+						/>
 						<Text>Add an Exercise</Text>
 					</Button>
 				</Link>

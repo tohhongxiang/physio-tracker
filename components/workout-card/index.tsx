@@ -1,12 +1,10 @@
 import { Link } from "expo-router";
-import { Pin } from "lucide-react-native";
+import { Eye, Pin, Play } from "lucide-react-native";
 import { Pressable, View, ViewProps } from "react-native";
 import { toast } from "sonner-native";
 
 import useGetPinnedWorkout from "~/hooks/api/use-get-pinned-workout";
 import useTogglePinnedWorkout from "~/hooks/api/use-toggle-pinned-workout";
-import { Eye } from "~/lib/icons/Eye";
-import { Play } from "~/lib/icons/Play";
 import { cn } from "~/lib/utils";
 import { Workout } from "~/types";
 
@@ -64,7 +62,7 @@ export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
 							<Icon
 								as={Pin}
 								className={cn("text-secondary-foreground")}
-								fill={pinnedWorkout ? "currentColor" : ""}
+								fill={pinnedWorkout ? "currentColor" : "none"}
 								size={16}
 							/>
 						</Button>
@@ -74,7 +72,8 @@ export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
 							className="shrink-0"
 						>
 							<Button variant="ghost">
-								<Eye
+								<Icon
+									as={Eye}
 									size={16}
 									className="text-secondary-foreground"
 								/>
@@ -109,9 +108,9 @@ export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
 								className="flex w-full flex-row items-center gap-2"
 								disabled={workout.exercises.length === 0}
 							>
-								<Play
-									className="text-primary-foreground"
-									size={16}
+								<Icon
+									as={Play}
+									className="text-primary-foreground h-4 w-4"
 								/>
 								<Text>Start</Text>
 							</Button>

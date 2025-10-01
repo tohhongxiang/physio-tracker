@@ -1,16 +1,16 @@
 import { Link } from "expo-router";
+import { Trash } from "lucide-react-native";
 import { Pressable, View, ViewProps } from "react-native";
 import { toast } from "sonner-native";
 
 import NumberOfExercisesBadge from "~/components/exercise-detail-badges/number-of-exercises-badge";
 import WorkoutDurationBadge from "~/components/exercise-detail-badges/workout-duration-badge";
 import useDeleteWorkoutLog from "~/hooks/api/use-delete-workout-log";
-import { ChevronRight } from "~/lib/icons/ChevronRight";
-import { Trash } from "~/lib/icons/Trash";
 import { useAlertDialog } from "~/providers/alert-dialog-provider";
 import { WorkoutLog } from "~/types";
 
 import { Button } from "../../ui/button";
+import { Icon } from "../../ui/icon";
 import { Text } from "../../ui/text";
 import Loading from "./loading";
 
@@ -49,7 +49,7 @@ export default function WorkoutLogCard({
 	return (
 		<View {...props} key={workoutLog.id} className={className}>
 			<Link href={`/workouts/${workoutLog.workout.id}`} asChild>
-				<Pressable className="flex w-full flex-row items-center justify-between gap-4 rounded-md border border-input px-4 py-4 active:opacity-80">
+				<Pressable className="flex w-full flex-row items-center justify-between gap-2 rounded-md border border-input px-4 py-4 active:opacity-80">
 					<View>
 						<Text className="font-bold text-muted-foreground">
 							{workoutLog.completedAt.toLocaleDateString(
@@ -73,7 +73,7 @@ export default function WorkoutLogCard({
 						>
 							{workoutLog.workout.name}
 						</Text>
-						<View className="flex flex-row">
+						<View className="flex flex-row flex-wrap">
 							<WorkoutDurationBadge
 								workout={workoutLog.workout}
 								variant="ghost"
@@ -93,20 +93,11 @@ export default function WorkoutLogCard({
 							className="self-center"
 							onPress={handleDeleteDialogPress}
 						>
-							<Trash size={20} className="text-destructive" />
+							<Icon
+								as={Trash}
+								className="text-destructive h-6 w-6"
+							/>
 						</Button>
-						<Link
-							href={`/workouts/${workoutLog.workout.id}`}
-							asChild
-						>
-							<Button
-								variant="ghost"
-								size="icon"
-								className="self-center"
-							>
-								<ChevronRight className="text-muted-foreground" />
-							</Button>
-						</Link>
 					</View>
 				</Pressable>
 			</Link>

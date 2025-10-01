@@ -1,4 +1,10 @@
 import * as DropdownMenuPrimitive from "@rn-primitives/dropdown-menu";
+import {
+	Check,
+	ChevronDown,
+	ChevronRight,
+	ChevronUp
+} from "lucide-react-native";
 import * as React from "react";
 import {
 	Platform,
@@ -10,11 +16,8 @@ import {
 	type ViewStyle
 } from "react-native";
 
+import { Icon } from "~/components/ui/icon";
 import { TextClassContext } from "~/components/ui/text";
-import { Check } from "~/lib/icons/Check";
-import { ChevronDown } from "~/lib/icons/ChevronDown";
-import { ChevronRight } from "~/lib/icons/ChevronRight";
-import { ChevronUp } from "~/lib/icons/ChevronUp";
 import { cn } from "~/lib/utils";
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
@@ -36,7 +39,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
 	}
 >(({ className, inset, children, ...props }, ref) => {
 	const { open } = DropdownMenuPrimitive.useSubContext();
-	const Icon =
+	const IconComponent =
 		Platform.OS === "web" ? ChevronRight : open ? ChevronUp : ChevronDown;
 	return (
 		<TextClassContext.Provider
@@ -56,7 +59,11 @@ const DropdownMenuSubTrigger = React.forwardRef<
 				{...props}
 			>
 				<>{children}</>
-				<Icon size={18} className="ml-auto text-foreground" />
+				<Icon
+					as={IconComponent}
+					size={18}
+					className="ml-auto text-foreground"
+				/>
 			</DropdownMenuPrimitive.SubTrigger>
 		</TextClassContext.Provider>
 	);
@@ -171,7 +178,12 @@ const DropdownMenuCheckboxItem = React.forwardRef<
 	>
 		<View className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
 			<DropdownMenuPrimitive.ItemIndicator>
-				<Check size={14} strokeWidth={3} className="text-foreground" />
+				<Icon
+					as={Check}
+					size={14}
+					strokeWidth={3}
+					className="text-foreground"
+				/>
 			</DropdownMenuPrimitive.ItemIndicator>
 		</View>
 		<>{children}</>

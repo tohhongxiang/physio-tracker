@@ -1,7 +1,7 @@
 import { VariantProps } from "class-variance-authority";
+import { Dumbbell } from "lucide-react-native";
 
-import { Dumbbell } from "~/lib/icons/Dumbbell";
-
+import { Icon } from "../ui/icon";
 import ExerciseDetailBadge, {
 	exerciseDetailBadgeTextVariants,
 	exerciseDetailBadgeVariants
@@ -19,7 +19,8 @@ export default function NumberOfExercisesBadge({
 	return (
 		<ExerciseDetailBadge
 			leftIcon={
-				<Dumbbell
+				<Icon
+					as={Dumbbell}
 					className={exerciseDetailBadgeTextVariants({
 						variant,
 						size

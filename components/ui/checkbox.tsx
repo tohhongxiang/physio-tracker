@@ -1,8 +1,9 @@
 import * as CheckboxPrimitive from "@rn-primitives/checkbox";
+import { Check } from "lucide-react-native";
 import * as React from "react";
 import { Platform } from "react-native";
 
-import { Check } from "~/lib/icons/Check";
+import { Icon } from "~/components/ui/icon";
 import { cn } from "~/lib/utils";
 
 const Checkbox = React.forwardRef<
@@ -22,7 +23,8 @@ const Checkbox = React.forwardRef<
 			<CheckboxPrimitive.Indicator
 				className={cn("h-full w-full items-center justify-center")}
 			>
-				<Check
+				<Icon
+					as={Check}
 					size={12}
 					strokeWidth={Platform.OS === "web" ? 2.5 : 3.5}
 					className="text-primary-foreground"

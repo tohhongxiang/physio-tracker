@@ -1,9 +1,9 @@
+import { ChevronLeft, ChevronRight } from "lucide-react-native";
 import { View } from "react-native";
 
 import { Button } from "~/components/ui/button";
+import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
-import { ChevronLeft } from "~/lib/icons/ChevronLeft";
-import { ChevronRight } from "~/lib/icons/ChevronRight";
 
 export default function Header({
 	title,
@@ -17,11 +17,11 @@ export default function Header({
 	return (
 		<View className="relative flex flex-row items-center justify-between">
 			<Button variant="ghost" onPress={onGoToPreviousMonth}>
-				<ChevronLeft className="text-foreground" />
+				<Icon as={ChevronLeft} className="text-foreground" />
 			</Button>
 			<Text className="text-lg font-bold">{title}</Text>
 			<Button variant="ghost" onPress={onGoToNextMonth}>
-				<ChevronRight className="text-foreground" />
+				<Icon as={ChevronRight} className="text-foreground" />
 			</Button>
 		</View>
 	);

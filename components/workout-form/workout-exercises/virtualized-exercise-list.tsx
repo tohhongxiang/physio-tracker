@@ -1,3 +1,4 @@
+import { GripVertical, Pencil, Trash } from "lucide-react-native";
 import { useCallback, useRef } from "react";
 import { FieldArrayWithId } from "react-hook-form";
 import { View } from "react-native";
@@ -5,11 +6,8 @@ import Animated, { useAnimatedRef } from "react-native-reanimated";
 import type { SortableGridRenderItem } from "react-native-sortables";
 import Sortable from "react-native-sortables";
 
-import { GripVertical } from "~/lib/icons/GripVertical";
-import { Pencil } from "~/lib/icons/Pencil";
-import { Trash } from "~/lib/icons/Trash";
-
 import { Button } from "../../ui/button";
+import { Icon } from "../../ui/icon";
 import ExerciseCard from "../../workout-details/exercise-card";
 import { WorkoutFormSchemaType } from "../schema";
 
@@ -108,7 +106,10 @@ function ListItem({
 							variant="ghost"
 							size="sm"
 						>
-							<Pencil className="text-muted-foreground" />
+							<Icon
+								as={Pencil}
+								className="text-muted-foreground h-6 w-6"
+							/>
 						</Button>
 						<Button
 							variant="ghost"
@@ -116,11 +117,17 @@ function ListItem({
 							disabled={!onDelete}
 							onPress={onDelete}
 						>
-							<Trash className="text-destructive opacity-90" />
+							<Icon
+								as={Trash}
+								className="text-destructive opacity-90 h-6 w-6"
+							/>
 						</Button>
 						<Sortable.Handle>
 							<View className="flex h-9 w-9 flex-col items-center justify-center">
-								<GripVertical className="text-muted-foreground" />
+								<Icon
+									as={GripVertical}
+									className="text-muted-foreground h-6 w-6"
+								/>
 							</View>
 						</Sortable.Handle>
 					</View>

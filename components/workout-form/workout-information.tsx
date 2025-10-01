@@ -80,6 +80,7 @@ export default function WorkoutInformation({
 								form.formState.errors.description?.message &&
 								"border-destructive"
 							}
+							numberOfLines={16}
 							onChangeText={onChange}
 							{...field}
 						/>

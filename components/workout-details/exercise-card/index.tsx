@@ -26,7 +26,10 @@ export default function ExerciseCard({
 		>
 			<View>
 				<View className="flex w-full flex-row items-center justify-between gap-4">
-					<Text className="line-clamp-2 shrink text-xl font-bold">
+					<Text
+						className="line-clamp-2 shrink text-xl font-bold"
+						numberOfLines={2}
+					>
 						{exercise.name}
 					</Text>
 					{actions}

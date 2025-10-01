@@ -1,10 +1,11 @@
 import Constants from "expo-constants";
 import { router } from "expo-router";
+import { ArrowLeft } from "lucide-react-native";
 import { View } from "react-native";
 
 import { Button } from "~/components/ui/button";
+import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
-import { ArrowLeft } from "~/lib/icons/ArrowLeft";
 
 export default function NavigationHeader({
 	title,
@@ -31,7 +32,8 @@ export default function NavigationHeader({
 							variant="ghost"
 							size="icon"
 						>
-							<ArrowLeft
+							<Icon
+								as={ArrowLeft}
 								className="text-foreground"
 								size={23}
 								strokeWidth={2.5}

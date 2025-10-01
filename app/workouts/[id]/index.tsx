@@ -4,19 +4,18 @@ import {
 	useNavigation,
 	useRouter
 } from "expo-router";
+import { Pencil, Play, Trash } from "lucide-react-native";
 import { useEffect } from "react";
 import { View } from "react-native";
 import { toast } from "sonner-native";
 
 import { Button } from "~/components/ui/button";
+import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
 import WorkoutDetails from "~/components/workout-details";
 import WorkoutNotFound from "~/components/workout-not-found";
 import useDeleteWorkout from "~/hooks/api/use-delete-workout";
 import useGetWorkout from "~/hooks/api/use-get-workout";
-import { Pencil } from "~/lib/icons/Pencil";
-import { Play } from "~/lib/icons/Play";
-import { Trash } from "~/lib/icons/Trash";
 import { useAlertDialog } from "~/providers/alert-dialog-provider";
 
 export default function SpecificWorkOutRoute() {
@@ -46,7 +45,10 @@ export default function SpecificWorkOutRoute() {
 				<View className="flex flex-row">
 					<Link href={`/workouts/${workout.id}/edit`} asChild>
 						<Button variant="ghost" size="sm">
-							<Pencil className="h-4 w-4 text-secondary-foreground" />
+							<Icon
+								as={Pencil}
+								className="h-6 w-6 text-secondary-foreground"
+							/>
 						</Button>
 					</Link>
 					<Button
@@ -72,7 +74,7 @@ export default function SpecificWorkOutRoute() {
 							})
 						}
 					>
-						<Trash className="h-4 w-4 text-destructive" />
+						<Icon as={Trash} className="h-6 w-6 text-destructive" />
 					</Button>
 				</View>
 			)
@@ -97,7 +99,11 @@ export default function SpecificWorkOutRoute() {
 			<View className="flex flex-col gap-4 p-4">
 				<Link href={`/workouts/${workout.id}/start`} asChild>
 					<Button className="flex w-full flex-row items-center gap-2">
-						<Play className="text-primary-foreground" size={16} />
+						<Icon
+							as={Play}
+							className="text-primary-foreground"
+							size={16}
+						/>
 						<Text>Start Exercise</Text>
 					</Button>
 				</Link>

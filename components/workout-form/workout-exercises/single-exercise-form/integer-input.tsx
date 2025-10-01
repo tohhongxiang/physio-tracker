@@ -1,10 +1,10 @@
+import { Minus, Plus } from "lucide-react-native";
 import { View, ViewProps } from "react-native";
 
-import { Minus } from "~/lib/icons/Minus";
-import { Plus } from "~/lib/icons/Plus";
 import { cn } from "~/lib/utils";
 
 import { Button } from "../../../ui/button";
+import { Icon } from "../../../ui/icon";
 import { Text } from "../../../ui/text";
 
 interface IntegerInputProps extends ViewProps {
@@ -40,7 +40,8 @@ export default function IntegerInput({
 				onPress={() => onChange(value - 1)}
 				disabled={disableDecrement}
 			>
-				<Minus
+				<Icon
+					as={Minus}
 					className={cn(
 						"h-4 w-4 text-foreground",
 						isInvalid && "text-destructive"
@@ -64,7 +65,8 @@ export default function IntegerInput({
 				)}
 				disabled={disableIncrement}
 			>
-				<Plus
+				<Icon
+					as={Plus}
 					className={cn(
 						"text-foreground",
 						isInvalid && "text-destructive"

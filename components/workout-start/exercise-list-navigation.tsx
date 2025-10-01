@@ -1,10 +1,9 @@
+import { ChevronLeft, ChevronRight } from "lucide-react-native";
 import { memo } from "react";
 import { View } from "react-native";
 
-import { ChevronLeft } from "~/lib/icons/ChevronLeft";
-import { ChevronRight } from "~/lib/icons/ChevronRight";
-
 import { Button } from "../ui/button";
+import { Icon } from "../ui/icon";
 import { Text } from "../ui/text";
 
 export default memo(function ExerciseListNavigation({
@@ -30,9 +29,12 @@ export default memo(function ExerciseListNavigation({
 				onPress={onGoToPrevious}
 				className="shrink-0"
 			>
-				<ChevronLeft className="text-foreground" />
+				<Icon as={ChevronLeft} className="text-foreground h-6 w-6" />
 			</Button>
-			<Text className="line-clamp-1 flex shrink text-center text-2xl font-semibold">
+			<Text
+				className="line-clamp-1 flex shrink text-center text-2xl font-semibold"
+				numberOfLines={1}
+			>
 				{currentExerciseName}
 			</Text>
 			<Button
@@ -42,7 +44,7 @@ export default memo(function ExerciseListNavigation({
 				onPress={onGoToNext}
 				className="shrink-0"
 			>
-				<ChevronRight className="text-foreground" />
+				<Icon as={ChevronRight} className="text-foreground h-6 w-6" />
 			</Button>
 		</View>
 	);

@@ -1,14 +1,17 @@
 import { Tabs } from "expo-router";
+import {
+	ClipboardList,
+	Clock,
+	Dumbbell,
+	Home,
+	Info,
+	Settings
+} from "lucide-react-native";
 
 import NavigationHeader from "~/components/navigation-header";
 import { ThemeToggle } from "~/components/theme-toggle";
 import { Button } from "~/components/ui/button";
-import { ClipboardList } from "~/lib/icons/ClipboardList";
-import { Clock } from "~/lib/icons/Clock";
-import { Dumbbell } from "~/lib/icons/Dumbbell";
-import { Home } from "~/lib/icons/Home";
-import { Info } from "~/lib/icons/Info";
-import { Settings } from "~/lib/icons/Settings";
+import { Icon } from "~/components/ui/icon";
 
 const FOCUSED_ICON_STROKE_WIDTH = 2.3;
 const UNFOCUSED_ICON_STROKE_WIDTH = 2;
@@ -42,7 +45,8 @@ export default function TabLayout() {
 				options={{
 					title: "Home",
 					tabBarIcon: ({ color, size, focused }) => (
-						<Home
+						<Icon
+							as={Home}
 							color={color}
 							size={size}
 							strokeWidth={
@@ -60,7 +64,8 @@ export default function TabLayout() {
 					title: "Workouts",
 					headerShown: false,
 					tabBarIcon: ({ color, size, focused }) => (
-						<Dumbbell
+						<Icon
+							as={Dumbbell}
 							color={color}
 							size={size}
 							strokeWidth={
@@ -77,7 +82,8 @@ export default function TabLayout() {
 				options={{
 					title: "Logbook",
 					tabBarIcon: ({ color, size, focused }) => (
-						<ClipboardList
+						<Icon
+							as={ClipboardList}
 							color={color}
 							size={size}
 							strokeWidth={
@@ -94,7 +100,8 @@ export default function TabLayout() {
 				options={{
 					title: "Timer",
 					tabBarIcon: ({ color, size, focused }) => (
-						<Clock
+						<Icon
+							as={Clock}
 							color={color}
 							size={size}
 							strokeWidth={
@@ -111,7 +118,8 @@ export default function TabLayout() {
 				options={{
 					title: "Settings",
 					tabBarIcon: ({ color, size, focused }) => (
-						<Settings
+						<Icon
+							as={Settings}
 							color={color}
 							size={size}
 							strokeWidth={
@@ -129,7 +137,8 @@ export default function TabLayout() {
 					title: "Debug",
 					href: __DEV__ ? undefined : null,
 					tabBarIcon: ({ color, size, focused }) => (
-						<Info
+						<Icon
+							as={Info}
 							color={color}
 							size={size}
 							strokeWidth={

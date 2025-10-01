@@ -1,8 +1,9 @@
+import { SearchX } from "lucide-react-native";
 import { FlatList, FlatListProps, View } from "react-native";
 
+import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
 import WorkoutCard from "~/components/workout-card";
-import { SearchX } from "~/lib/icons/SearchX";
 import { Workout } from "~/types";
 
 import LoadingWorkoutsList from "./loading";
@@ -48,7 +49,11 @@ export default function WorkoutsList({
 			contentContainerClassName="p-4"
 			ListEmptyComponent={
 				<View className="flex flex-col items-center justify-center gap-4 py-8">
-					<SearchX className="text-muted-foreground" size={64} />
+					<Icon
+						as={SearchX}
+						className="text-muted-foreground"
+						size={64}
+					/>
 					<Text className="text-center text-lg text-muted-foreground">
 						No workouts were found...
 					</Text>

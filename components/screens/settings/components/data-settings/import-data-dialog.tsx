@@ -1,5 +1,6 @@
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
+import { File, Info, LoaderCircle, Upload } from "lucide-react-native";
 import { useState } from "react";
 import { ScrollView, View } from "react-native";
 import { toast } from "sonner-native";
@@ -14,12 +15,9 @@ import {
 	DialogTitle,
 	DialogTrigger
 } from "~/components/ui/dialog";
+import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
 import useRestoreBackup from "~/hooks/api/use-restore-backup";
-import { File } from "~/lib/icons/File";
-import { Info } from "~/lib/icons/Info";
-import { LoaderCircle } from "~/lib/icons/LoaderCircle";
-import { Upload } from "~/lib/icons/Upload";
 import { ExportData } from "~/types";
 
 import validateBackupData from "./utils/validate-backup-data";
@@ -113,9 +111,12 @@ export default function ImportDataDialog({
 					<DialogTitle>Restore Backup</DialogTitle>
 					<View className="bg-destructive rounded-md p-4 flex flex-col gap-2 mt-2">
 						<View className="flex flex-row gap-2 items-center">
-							<Info className="text-destructive-foreground" />
+							<Icon
+								as={Info}
+								className="text-destructive-foreground h-6 w-6"
+							/>
 							<Text className="text-destructive-foreground font-bold">
-								Warning: This will overwrite all existing data
+								This will overwrite all existing data
 							</Text>
 						</View>
 						<Text className="opacity-80 text-destructive-foreground">
@@ -130,7 +131,7 @@ export default function ImportDataDialog({
 						className="flex flex-row gap-2 items-center justify-center"
 						onPress={pickFile}
 					>
-						<File className="text-foreground" size={16} />
+						<Icon as={File} className="text-foreground" size={16} />
 						<Text>
 							{selectedFile ? "Change File" : "Choose File"}
 						</Text>
@@ -206,7 +207,8 @@ export default function ImportDataDialog({
 						{isLoading ? (
 							<>
 								<View className="animate-spin">
-									<LoaderCircle
+									<Icon
+										as={LoaderCircle}
 										className="text-primary-foreground"
 										size={16}
 									/>
@@ -215,7 +217,8 @@ export default function ImportDataDialog({
 							</>
 						) : (
 							<>
-								<Upload
+								<Icon
+									as={Upload}
 									className="text-primary-foreground"
 									size={16}
 								/>

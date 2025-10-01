@@ -1,14 +1,17 @@
+import {
+	ChevronLeft,
+	ChevronRight,
+	ChevronsLeft,
+	ChevronsRight,
+	Pause,
+	Play
+} from "lucide-react-native";
 import { memo } from "react";
 import { View } from "react-native";
 
 import { Button } from "~/components/ui/button";
+import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
-import { ChevronLeft } from "~/lib/icons/ChevronLeft";
-import { ChevronRight } from "~/lib/icons/ChevronRight";
-import { ChevronsLeft } from "~/lib/icons/ChevronsLeft";
-import { ChevronsRight } from "~/lib/icons/ChevronsRight";
-import { Pause } from "~/lib/icons/Pause";
-import { Play } from "~/lib/icons/Play";
 
 export default memo(function BottomControls({
 	currentSet,
@@ -41,7 +44,10 @@ export default memo(function BottomControls({
 				disabled={currentSet === 1 || setChangeDisabled}
 				onPress={() => onSetChange(-1)}
 			>
-				<ChevronsLeft className="text-secondary-foreground" />
+				<Icon
+					as={ChevronsLeft}
+					className="text-secondary-foreground h-6 w-6"
+				/>
 				<Text className="text-center">Set</Text>
 			</Button>
 			<Button
@@ -52,18 +58,27 @@ export default memo(function BottomControls({
 				}
 				onPress={() => onRepChange(-1)}
 			>
-				<ChevronLeft className="text-secondary-foreground" />
+				<Icon
+					as={ChevronLeft}
+					className="text-secondary-foreground h-6 w-6"
+				/>
 				<Text className="text-center">Rep</Text>
 			</Button>
 			<Button
 				size="lg"
-				className="native:h-28 native:w-28 h-28 w-28 rounded-full p-4"
+				className="native:h-24 native:w-24 h-24 w-24 rounded-full p-4"
 				onPress={onStart}
 			>
 				{isTimerRunning ? (
-					<Pause className="text-primary-foreground" />
+					<Icon
+						as={Pause}
+						className="text-primary-foreground h-6 w-6"
+					/>
 				) : (
-					<Play className="text-primary-foreground" />
+					<Icon
+						as={Play}
+						className="text-primary-foreground h-6 w-6"
+					/>
 				)}
 			</Button>
 			<Button
@@ -76,7 +91,10 @@ export default memo(function BottomControls({
 				}
 			>
 				<View>
-					<ChevronRight className="text-secondary-foreground" />
+					<Icon
+						as={ChevronRight}
+						className="text-secondary-foreground h-6 w-6"
+					/>
 					<Text className="text-center text-secondary-foreground">
 						Rep
 					</Text>
@@ -89,7 +107,10 @@ export default memo(function BottomControls({
 				disabled={currentSet === totalSets || setChangeDisabled}
 			>
 				<View>
-					<ChevronsRight className="text-secondary-foreground" />
+					<Icon
+						as={ChevronsRight}
+						className="text-secondary-foreground h-6 w-6"
+					/>
 					<Text className="text-center text-secondary-foreground">
 						Set
 					</Text>

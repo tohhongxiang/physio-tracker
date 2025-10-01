@@ -1,5 +1,6 @@
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
+import { Download, LoaderCircle } from "lucide-react-native";
 import { useState } from "react";
 import { View } from "react-native";
 import { toast } from "sonner-native";
@@ -16,11 +17,10 @@ import {
 	DialogTitle,
 	DialogTrigger
 } from "~/components/ui/dialog";
+import { Icon } from "~/components/ui/icon";
 import { Label } from "~/components/ui/label";
 import { Text } from "~/components/ui/text";
 import useGetExportData from "~/hooks/api/use-get-export-data";
-import { Download } from "~/lib/icons/Download";
-import { LoaderCircle } from "~/lib/icons/LoaderCircle";
 
 export default function ExportDataDialog({
 	children
@@ -168,7 +168,8 @@ export default function ExportDataDialog({
 						{isExporting ? (
 							<>
 								<View className="animate-spin">
-									<LoaderCircle
+									<Icon
+										as={LoaderCircle}
 										className="text-primary-foreground"
 										size={16}
 									/>
@@ -177,7 +178,8 @@ export default function ExportDataDialog({
 							</>
 						) : (
 							<>
-								<Download
+								<Icon
+									as={Download}
 									className="text-primary-foreground"
 									size={16}
 								/>

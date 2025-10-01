@@ -1,4 +1,5 @@
 import { Link, Stack, useRouter } from "expo-router";
+import { ClipboardCheck, Pencil, Volume2, VolumeX } from "lucide-react-native";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { Dimensions, View } from "react-native";
 import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
@@ -6,13 +7,10 @@ import Carousel, { ICarouselInstance } from "react-native-reanimated-carousel";
 import goSound from "~/assets/audio/go.mp3";
 import readySound from "~/assets/audio/ready.mp3";
 import { Button } from "~/components/ui/button";
+import { Icon } from "~/components/ui/icon";
 import useSound from "~/hooks/use-sound";
 import hasDurationPerRep from "~/lib/has-duration-per-rep";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
-import { ClipboardCheck } from "~/lib/icons/ClipboardCheck";
-import { Pencil } from "~/lib/icons/Pencil";
-import { Volume2 } from "~/lib/icons/Volume2";
-import { VolumeX } from "~/lib/icons/VolumeOff";
 import { Workout } from "~/types";
 
 import BottomControls from "./bottom-controls";
@@ -119,9 +117,15 @@ export default function WorkoutStartPage({
 									onPress={() => setIsMuted((c) => !c)}
 								>
 									{isMuted ? (
-										<VolumeX className="text-foreground" />
+										<Icon
+											as={VolumeX}
+											className="text-foreground h-6 w-6"
+										/>
 									) : (
-										<Volume2 className="text-foreground" />
+										<Icon
+											as={Volume2}
+											className="text-foreground h-6 w-6"
+										/>
 									)}
 								</Button>
 								<Link
@@ -132,7 +136,10 @@ export default function WorkoutStartPage({
 										variant="ghost"
 										className="flex flex-row gap-2"
 									>
-										<Pencil className="text-foreground" />
+										<Icon
+											as={Pencil}
+											className="text-foreground h-6 w-6"
+										/>
 									</Button>
 								</Link>
 								<Link
@@ -143,7 +150,10 @@ export default function WorkoutStartPage({
 										variant="ghost"
 										className="flex flex-row gap-2"
 									>
-										<ClipboardCheck className="text-foreground" />
+										<Icon
+											as={ClipboardCheck}
+											className="text-foreground h-6 w-6"
+										/>
 									</Button>
 								</Link>
 							</View>

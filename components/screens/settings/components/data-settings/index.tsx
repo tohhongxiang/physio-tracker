@@ -1,3 +1,4 @@
+import { Database, Download, Trash, Upload } from "lucide-react-native";
 import { View } from "react-native";
 
 import { Button } from "~/components/ui/button";
@@ -8,12 +9,9 @@ import {
 	CardHeader,
 	CardTitle
 } from "~/components/ui/card";
+import { Icon } from "~/components/ui/icon";
 import { Separator } from "~/components/ui/separator";
 import { Text } from "~/components/ui/text";
-import { Database } from "~/lib/icons/Database";
-import { Download } from "~/lib/icons/Download";
-import { Trash } from "~/lib/icons/Trash";
-import { Upload } from "~/lib/icons/Upload";
 
 import ExportDataDialog from "./export-data-dialog";
 import ImportDataDialog from "./import-data-dialog";
@@ -23,7 +21,7 @@ export default function Data() {
 		<Card className="bg-background">
 			<CardHeader>
 				<View className="flex flex-row gap-2 items-center mb-1">
-					<Database className="text-card-foreground" />
+					<Icon as={Database} className="text-card-foreground" />
 					<CardTitle className="flex flex-row gap-4">
 						Data and Privacy
 					</CardTitle>
@@ -40,7 +38,8 @@ export default function Data() {
 								variant="secondary"
 								className="flex flex-row gap-2 justify-center items-center"
 							>
-								<Download
+								<Icon
+									as={Download}
 									size={16}
 									className="text-secondary-foreground"
 								/>
@@ -54,7 +53,8 @@ export default function Data() {
 								variant="secondary"
 								className="flex flex-row gap-2 justify-center items-center"
 							>
-								<Upload
+								<Icon
+									as={Upload}
 									size={16}
 									className="text-secondary-foreground"
 								/>
@@ -69,7 +69,8 @@ export default function Data() {
 						variant="destructive"
 						className="flex flex-row gap-2 justify-center items-center"
 					>
-						<Trash
+						<Icon
+							as={Trash}
 							className="text-destructive-foreground"
 							size={16}
 						/>

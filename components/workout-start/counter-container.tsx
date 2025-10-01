@@ -1,12 +1,13 @@
+import { Info } from "lucide-react-native";
 import { memo, useLayoutEffect, useRef, useState } from "react";
 import { View } from "react-native";
 
 import { Button } from "~/components/ui/button";
+import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
 import { useBottomSheet } from "~/hooks/use-bottom-sheet";
 import hasDurationPerRep from "~/lib/has-duration-per-rep";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
-import { Info } from "~/lib/icons/Info";
 import { cn } from "~/lib/utils";
 import { Exercise } from "~/types";
 
@@ -78,7 +79,7 @@ export default memo(function CounterContainer({
 				onPress={bottomSheet.open}
 				className={cn(exercise.description.length === 0 && "opacity-0")}
 			>
-				<Info className="text-primary" />
+				<Icon as={Info} className="text-primary h-6 w-6" />
 			</Button>
 			<CounterDisplay
 				title="SETS"

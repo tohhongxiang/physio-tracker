@@ -1,4 +1,5 @@
 import { Link, useNavigation } from "expo-router";
+import { Plus, SlidersHorizontal } from "lucide-react-native";
 import { useEffect } from "react";
 import { Keyboard, View } from "react-native";
 
@@ -8,14 +9,13 @@ import SearchFiltersForm from "~/components/search-filters-form";
 import { ThemeToggle } from "~/components/theme-toggle";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
+import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
 import WorkoutsList from "~/components/workouts-list";
 import useGetWorkouts from "~/hooks/api/use-get-workouts";
 import { useBottomSheet } from "~/hooks/use-bottom-sheet";
 import usePageParams from "~/hooks/use-page-params";
 import useWorkoutFilterParams from "~/hooks/use-workout-filter-params";
-import { Plus } from "~/lib/icons/Plus";
-import { SlidersHorizontal } from "~/lib/icons/SlidersHorizontal";
 import { WorkoutFilters } from "~/types";
 
 export default function WorkoutList() {
@@ -47,9 +47,9 @@ export default function WorkoutList() {
 						className="aspect-square p-0"
 						onPress={() => bottomSheet.open()}
 					>
-						<SlidersHorizontal
-							className="text-foreground"
-							size={23}
+						<Icon
+							as={SlidersHorizontal}
+							className="text-foreground h-6 w-6"
 						/>
 						{isSearchFilterModified ? (
 							<Badge
@@ -86,8 +86,11 @@ export default function WorkoutList() {
 		<View className="flex flex-1 flex-col">
 			<View className="p-4">
 				<Link href="/(modals)/workouts/add" asChild>
-					<Button className="flex flex-row items-center justify-center gap-4">
-						<Plus className="text-primary-foreground" />
+					<Button className="flex flex-row items-center justify-center gap-2">
+						<Icon
+							as={Plus}
+							className="text-primary-foreground h-5 w-5"
+						/>
 						<Text>Add Workout</Text>
 					</Button>
 				</Link>

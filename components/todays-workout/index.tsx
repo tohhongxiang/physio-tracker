@@ -1,12 +1,12 @@
 import { Link } from "expo-router";
+import { ArrowRight, PartyPopper } from "lucide-react-native";
 import { View } from "react-native";
 
 import { Button } from "~/components/ui/button";
+import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
 import WorkoutCard from "~/components/workout-card";
 import useGetTodaysWorkout from "~/hooks/api/use-get-todays-workout";
-import { ArrowRight } from "~/lib/icons/ArrowRight";
-import { PartyPopper } from "~/lib/icons/PartyPopper";
 
 export default function TodaysWorkout() {
 	const { data: todaysWorkout, isPending: isFetchingTodaysWorkout } =
@@ -27,7 +27,8 @@ export default function TodaysWorkout() {
 				</View>
 			) : (
 				<View className="flex flex-col gap-4 justify-center items-center py-8">
-					<PartyPopper
+					<Icon
+						as={PartyPopper}
 						className="mx-auto text-muted-foreground"
 						size={48}
 					/>
@@ -41,7 +42,8 @@ export default function TodaysWorkout() {
 							<Text className="text-center">
 								See your other workouts
 							</Text>
-							<ArrowRight
+							<Icon
+								as={ArrowRight}
 								size={16}
 								className="text-primary-foreground"
 							/>

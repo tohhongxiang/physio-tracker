@@ -1,11 +1,12 @@
 import { VariantProps } from "class-variance-authority";
+import { Clock } from "lucide-react-native";
 
 import formatBigNumber from "~/lib/format-big-number";
 import getEstimatedWorkoutDurationSeconds from "~/lib/get-estimated-workout-duration-seconds";
-import { Clock } from "~/lib/icons/Clock";
 import { cn } from "~/lib/utils";
 import { Workout } from "~/types";
 
+import { Icon } from "../ui/icon";
 import { Text } from "../ui/text";
 import ExerciseDetailBadge, {
 	exerciseDetailBadgeTextVariants,
@@ -39,7 +40,8 @@ export default function WorkoutDurationBadge({
 			variant={variant}
 			size={size}
 			leftIcon={
-				<Clock
+				<Icon
+					as={Clock}
 					className={exerciseDetailBadgeTextVariants({
 						variant,
 						size

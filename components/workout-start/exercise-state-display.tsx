@@ -37,7 +37,7 @@ export default memo(function ExerciseStateDisplay({
 }) {
 	return (
 		<View className="flex flex-1 flex-col justify-between">
-			<View className="mt-28 flex grow items-center justify-start gap-8">
+			<View className="mt-24 flex grow items-center justify-start gap-8">
 				<TimerDisplay
 					durationMs={remainingTimeMs}
 					className={
