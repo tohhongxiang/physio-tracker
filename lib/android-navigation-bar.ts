@@ -1,7 +1,7 @@
 import * as NavigationBar from "expo-navigation-bar";
 import { Platform } from "react-native";
 
-import { NAV_THEME } from "~/lib/constants";
+import { THEME } from "./theme";
 
 export async function setAndroidNavigationBar(theme: "light" | "dark") {
 	if (Platform.OS !== "android") return;
@@ -9,8 +9,6 @@ export async function setAndroidNavigationBar(theme: "light" | "dark") {
 		theme === "dark" ? "light" : "dark"
 	);
 	await NavigationBar.setBackgroundColorAsync(
-		theme === "dark"
-			? NAV_THEME.dark.background
-			: NAV_THEME.light.background
+		theme === "dark" ? THEME.dark.background : THEME.light.background
 	);
 }

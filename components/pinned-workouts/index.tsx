@@ -1,4 +1,5 @@
 import { Link } from "expo-router";
+import { Pin } from "lucide-react-native";
 import { useCallback } from "react";
 import { View } from "react-native";
 import Animated, { AnimatedRef } from "react-native-reanimated";
@@ -11,8 +12,9 @@ import WorkoutCard from "~/components/workout-card";
 import useEditPinnedWorkoutPosition from "~/hooks/api/use-edit-pinned-workout-position";
 import useGetPinnedWorkouts from "~/hooks/api/use-get-pinned-workouts";
 import { ArrowRight } from "~/lib/icons/ArrowRight";
-import { Pin } from "~/lib/icons/Pin";
 import { Workout } from "~/types";
+
+import { Icon } from "../ui/icon";
 
 export default function PinnedWorkouts({
 	scrollableRef
@@ -57,7 +59,11 @@ export default function PinnedWorkouts({
 				</View>
 			) : !pinnedWorkouts || pinnedWorkouts.length === 0 ? (
 				<View className="flex flex-col gap-4 justify-center items-center py-8">
-					<Pin className="text-muted-foreground" size={48} />
+					<Icon
+						as={Pin}
+						className="text-muted-foreground"
+						size={48}
+					/>
 					<View className="flex flex-col gap-2 justify-center items-center">
 						<Text className="text-lg font-bold">
 							No pinned workouts

@@ -20,7 +20,7 @@ export default function Day({
 	return (
 		<View
 			className={cn(
-				"flex h-16 w-16 flex-1 items-center justify-center rounded-full",
+				"flex h-16 w-16 flex-1 items-center justify-center rounded-full aspect-square",
 				isToday && isInDisplayedMonth
 					? isMarked
 						? "bg-secondary"

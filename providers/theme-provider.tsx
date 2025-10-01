@@ -1,28 +1,13 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-	DarkTheme,
-	DefaultTheme,
-	ThemeProvider as ReactNavigationThemeProvider,
-	Theme
-} from "@react-navigation/native";
+import { ThemeProvider as ReactNavigationThemeProvider } from "@react-navigation/native";
 import { SplashScreen } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import { Platform } from "react-native";
 
 import { setAndroidNavigationBar } from "~/lib/android-navigation-bar";
-import { NAV_THEME } from "~/lib/constants";
+import { NAV_THEME } from "~/lib/theme";
 import { useColorScheme } from "~/lib/use-color-scheme";
-
-const LIGHT_THEME: Theme = {
-	...DefaultTheme,
-	colors: NAV_THEME.light
-};
-
-const DARK_THEME: Theme = {
-	...DarkTheme,
-	colors: NAV_THEME.dark
-};
 
 // Prevent the splash screen from auto-hiding before getting the color scheme.
 SplashScreen.preventAutoHideAsync();
@@ -68,7 +53,7 @@ export default function ThemeProvider({
 
 	return (
 		<ReactNavigationThemeProvider
-			value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}
+			value={isDarkColorScheme ? NAV_THEME.dark : NAV_THEME.light}
 		>
 			<StatusBar style={isDarkColorScheme ? "light" : "dark"} />
 			{children}

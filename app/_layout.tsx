@@ -57,9 +57,9 @@ export default function RootLayout() {
 											}}
 										/>
 									</Stack>
+									<Toaster position="bottom-center" />
+									<PortalHost />
 								</BottomSheetModalProvider>
-								<Toaster position="bottom-center" />
-								<PortalHost />
 							</AlertDialogProvider>
 						</QueryClientProvider>
 					</DatabaseProvider>

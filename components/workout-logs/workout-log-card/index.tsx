@@ -71,7 +71,7 @@ export default function WorkoutLogCard({
 							className="line-clamp-1 text-ellipsis px-2 text-xl font-bold"
 							numberOfLines={2}
 						>
-							{workoutLog.workout.name} {workoutLog.id}
+							{workoutLog.workout.name}
 						</Text>
 						<View className="flex flex-row">
 							<WorkoutDurationBadge
