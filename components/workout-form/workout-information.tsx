@@ -1,6 +1,8 @@
 import { Controller, UseFormReturn } from "react-hook-form";
 import { View } from "react-native";
 
+import { cn } from "~/lib/utils";
+
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -76,11 +78,12 @@ export default function WorkoutInformation({
 					render={({ field: { onChange, ...field } }) => (
 						<Textarea
 							aria-labelledby="description"
-							className={
+							numberOfLines={8}
+							className={cn(
+								"max-h-64",
 								form.formState.errors.description?.message &&
-								"border-destructive"
-							}
-							numberOfLines={16}
+									"border-destructive"
+							)}
 							onChangeText={onChange}
 							{...field}
 						/>

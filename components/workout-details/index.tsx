@@ -20,7 +20,10 @@ export default function WorkoutDetails({
 		<ScrollView className="flex h-full w-full max-w-lg flex-1 flex-col gap-2">
 			<View className="p-4">
 				{showTitle ? (
-					<Text className="text-3xl font-semibold">
+					<Text
+						className="text-3xl font-semibold mb-2"
+						numberOfLines={3}
+					>
 						{workout.name}
 					</Text>
 				) : null}
