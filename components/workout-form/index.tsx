@@ -26,29 +26,30 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 	const navigator = useNavigation();
 	const alert = useAlertDialog();
 
+	const [step, setStep] = useState(0);
 	const form = useWorkoutForm(data);
-	usePreventRemove(
-		form.formState.isDirty &&
-			!form.formState.isSubmitting &&
-			!form.formState.isSubmitted, // when submitting, we can allow redirects
-		({ data }) => {
-			if (step > 0) {
-				setStep((c) => c - 1);
-				return;
-			}
+	usePreventRemove(true, ({ data }) => {
+		const { action } = data;
+		const { isSubmitted, isDirty } = form.formState;
 
+		if (isSubmitted) {
+			navigator.dispatch(action);
+		} else if (step > 0) {
+			setStep((c) => c - 1);
+		} else if (isDirty) {
 			alert({
 				title: "Discard Changes?",
 				description:
 					"You have unsaved changes. Discard them and leave?",
 				variant: "destructive",
 				actionText: "Discard",
-				onSuccess: () => navigator.dispatch(data.action)
+				onSuccess: () => navigator.dispatch(action)
 			});
+		} else {
+			navigator.dispatch(action);
 		}
-	);
+	});
 
-	const [step, setStep] = useState(0);
 	function handleGoToPreviousStep() {
 		if (step === 0) {
 			navigator.goBack();
