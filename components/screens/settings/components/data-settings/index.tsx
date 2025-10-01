@@ -21,7 +21,10 @@ export default function Data() {
 		<Card className="bg-background">
 			<CardHeader>
 				<View className="flex flex-row gap-2 items-center mb-1">
-					<Icon as={Database} className="text-card-foreground" />
+					<Icon
+						as={Database}
+						className="text-card-foreground h-6 w-6"
+					/>
 					<CardTitle className="flex flex-row gap-4">
 						Data and Privacy
 					</CardTitle>
