@@ -1,5 +1,5 @@
 import { Link } from "expo-router";
-import { Eye, Pin, Play } from "lucide-react-native";
+import { Pin, Play } from "lucide-react-native";
 import { Pressable, View, ViewProps } from "react-native";
 import { toast } from "sonner-native";
 
@@ -61,24 +61,12 @@ export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {
 						>
 							<Icon
 								as={Pin}
-								className={cn("text-secondary-foreground")}
+								className={
+									"text-secondary-foreground h-5 w-5 rotate-45"
+								}
 								fill={pinnedWorkout ? "currentColor" : "none"}
-								size={16}
 							/>
 						</Button>
-						<Link
-							href={`/workouts/${workout.id}`}
-							asChild
-							className="shrink-0"
-						>
-							<Button variant="ghost">
-								<Icon
-									as={Eye}
-									size={16}
-									className="text-secondary-foreground"
-								/>
-							</Button>
-						</Link>
 					</CardHeader>
 					<CardContent className="flex flex-col gap-4">
 						{workout.description && (
