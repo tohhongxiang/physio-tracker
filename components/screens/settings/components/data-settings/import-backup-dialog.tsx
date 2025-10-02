@@ -19,6 +19,7 @@ import {
 import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
 import useRestoreBackup from "~/hooks/api/use-restore-backup";
+import useDeleteAlert from "~/hooks/use-delete-alert";
 import { ExportData } from "~/types";
 
 import validateBackupData from "./utils/validate-backup-data";
@@ -92,18 +93,32 @@ export default function ImportDataDialog({
 			setSelectedFile(null);
 		},
 		onError: (error) => {
-			console.error(error);
 			setErrorMessages([`Failed to import data: ${error.message}`]);
 		}
 	});
+
+	const alert = useDeleteAlert();
 	async function handleSubmit() {
 		if (!parsedData) {
 			setErrorMessages(["No file selected"]);
 			return;
 		}
 
-		// Pass data to your DB import function
-		restoreBackup(parsedData);
+		alert({
+			title: "Overwrite your Data?",
+			description:
+				"This action is permanent. Are you sure to want to overwrite all your data?",
+			actionIcon: Upload,
+			actionText: "Overwrite my data",
+			loadingText: "Restoring",
+			onConfirm: async () => {
+				await new Promise<void>((res) => setTimeout(() => res(), 100));
+				await restoreBackup(parsedData);
+			},
+			onSuccess: () => {
+				setIsOpen(false);
+			}
+		});
 	}
 
 	return (
@@ -140,7 +155,10 @@ export default function ImportDataDialog({
 						</Text>
 					</Button>
 					{selectedFile && (
-						<Text className="text-xs text-muted-foreground mb-2">
+						<Text
+							className="text-xs text-muted-foreground mb-2"
+							numberOfLines={2}
+						>
 							Selected file: {selectedFile.name}
 						</Text>
 					)}
@@ -160,7 +178,7 @@ export default function ImportDataDialog({
 									timeStyle: "short"
 								}).format(new Date(parsedData.timestamp))}
 							</Text>
-							<Text>{`Contents: ${parsedData.data.workouts.length} workout(s), ${parsedData.data.pinned.length} pinned, ${parsedData.data.logs.length} log(s)`}</Text>
+							<Text>{`${parsedData.data.workouts.length} workout(s), ${parsedData.data.pinned.length} pinned, ${parsedData.data.logs.length} log(s)`}</Text>
 						</View>
 					)}
 					{restoreBackupError && (

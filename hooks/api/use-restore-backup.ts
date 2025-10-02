@@ -13,7 +13,7 @@ export default function useRestoreBackup({
 	) => void;
 	onError?: (error: Error) => void;
 } = {}) {
-	const { isPending, mutate, error } = useMutation({
+	const { isPending, mutateAsync, error } = useMutation({
 		mutationFn: async (data: ExportData) => {
 			await new Promise<void>((res) => setTimeout(() => res(), 1000));
 			await deleteAll();
@@ -25,5 +25,5 @@ export default function useRestoreBackup({
 		onError
 	});
 
-	return { isLoading: isPending, restoreBackup: mutate, error };
+	return { isLoading: isPending, restoreBackup: mutateAsync, error };
 }

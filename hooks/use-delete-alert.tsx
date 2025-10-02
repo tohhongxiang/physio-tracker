@@ -1,4 +1,4 @@
-import { Trash } from "lucide-react-native";
+import { LucideIcon, Trash } from "lucide-react-native";
 import { useCallback } from "react";
 import { View } from "react-native";
 
@@ -14,7 +14,9 @@ type DeleteAlertOptions<T> = Omit<
 	AlertOptions<T>,
 	"actionContent" | "loadingContent" | "variant"
 > & {
+	actionIcon?: LucideIcon;
 	actionText?: React.ReactNode | string;
+	loadingIcon?: LucideIcon;
 	loadingText?: React.ReactNode | string;
 };
 
@@ -25,7 +27,9 @@ export default function useDeleteAlert() {
 		<T,>({
 			title,
 			description,
+			actionIcon,
 			actionText,
+			loadingIcon,
 			loadingText,
 			onConfirm,
 			onSuccess,
@@ -36,7 +40,7 @@ export default function useDeleteAlert() {
 				typeof actionText === "string" || actionText == null ? (
 					<View className="flex flex-row gap-2 items-center justify-center">
 						<Icon
-							as={Trash}
+							as={actionIcon ?? Trash}
 							className="text-destructive-foreground"
 						/>
 						<Text>{actionText ?? "Delete"}</Text>
@@ -48,7 +52,14 @@ export default function useDeleteAlert() {
 			const loadingContent =
 				typeof loadingText === "string" || loadingText == null ? (
 					<View className="flex flex-row gap-2 items-center justify-center">
-						<LoadingSpinner iconClassName="text-destructive-foreground" />
+						{loadingIcon ? (
+							<Icon
+								as={loadingIcon}
+								className="text-destructive-foreground"
+							/>
+						) : (
+							<LoadingSpinner iconClassName="text-destructive-foreground" />
+						)}
 						<Text>{loadingText ?? "Loading"}</Text>
 					</View>
 				) : (
