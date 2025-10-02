@@ -11,14 +11,14 @@ import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
-import WorkoutsList from "~/components/workouts-list";
+import WorkoutList from "~/components/workout-list";
 import useGetWorkouts from "~/hooks/api/use-get-workouts";
 import { useBottomSheet } from "~/hooks/use-bottom-sheet";
 import usePageParams from "~/hooks/use-page-params";
 import useWorkoutFilterParams from "~/hooks/use-workout-filter-params";
 import { WorkoutFilters } from "~/types";
 
-export default function WorkoutList() {
+export default function WorkoutsScreen() {
 	const {
 		isSearchFilterModified,
 		filters,
@@ -78,7 +78,7 @@ export default function WorkoutList() {
 	}
 
 	if (isPending) {
-		return <WorkoutsList.Loading />;
+		return <WorkoutList.Loading />;
 	}
 
 	const workouts = data ?? [];
@@ -95,7 +95,7 @@ export default function WorkoutList() {
 					</Button>
 				</Link>
 			</View>
-			<WorkoutsList
+			<WorkoutList
 				workouts={workouts}
 				refreshing={isRefetching}
 				onRefresh={refetch}

@@ -1,5 +1,5 @@
-import SettingsScreen from "~/components/screens/settings";
+import SettingsList from "~/components/settings-list";
 
 export default function Settings() {
-	return <SettingsScreen />;
+	return <SettingsList />;
 }

@@ -6,7 +6,7 @@ import { Text } from "~/components/ui/text";
 import WorkoutCard from "~/components/workout-card";
 import { Workout } from "~/types";
 
-import LoadingWorkoutsList from "./loading";
+import LoadingWorkoutList from "./loading";
 
 function renderItem({ item }: { item: Workout }) {
 	return <WorkoutCard workout={item} />;
@@ -35,7 +35,7 @@ interface WorkoutsListProps
 	refreshing?: boolean;
 	onRefresh?: () => Promise<unknown>;
 }
-export default function WorkoutsList({
+export default function WorkoutList({
 	workouts = [],
 	...props
 }: WorkoutsListProps) {
@@ -65,4 +65,4 @@ export default function WorkoutsList({
 	);
 }
 
-WorkoutsList.Loading = LoadingWorkoutsList;
+WorkoutList.Loading = LoadingWorkoutList;

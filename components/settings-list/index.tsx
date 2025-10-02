@@ -1,8 +1,8 @@
 import { View } from "react-native";
 
-import DataSettings from "./components/data-settings";
+import DataSettings from "./data-settings";
 
-export default function SettingsScreen() {
+export default function SettingsList() {
 	return (
 		<View className="p-4">
 			<DataSettings />
