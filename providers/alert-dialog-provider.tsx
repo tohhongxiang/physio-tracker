@@ -19,7 +19,7 @@ import {
 import { Button, buttonVariants } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
 
-type AlertOptions<T> = {
+export type AlertOptions<T> = {
 	title?: string;
 	description?: string | React.ReactNode;
 	actionContent?: React.ReactNode;

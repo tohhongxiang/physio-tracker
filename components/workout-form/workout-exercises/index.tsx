@@ -4,7 +4,7 @@ import { View } from "react-native";
 
 import BottomSheetModal from "~/components/bottom-sheet-modal";
 import { useBottomSheet } from "~/hooks/use-bottom-sheet";
-import { useAlertDialog } from "~/providers/alert-dialog-provider";
+import useDeleteAlert from "~/hooks/use-delete-alert";
 import { CreateExercise } from "~/types";
 
 import { Button } from "../../ui/button";
@@ -36,7 +36,7 @@ export default function WorkoutExercises({
 		keyName: "key"
 	});
 
-	const alert = useAlertDialog();
+	const alert = useDeleteAlert();
 	const handleDeleteExercise = useCallback(
 		(index: number) => {
 			alert({
@@ -52,8 +52,8 @@ export default function WorkoutExercises({
 						</Text>
 					</View>
 				),
-				variant: "destructive",
-				actionContent: "Delete",
+				actionText: "Delete",
+				loadingText: "Deleting",
 				onConfirm() {
 					remove(index);
 				}

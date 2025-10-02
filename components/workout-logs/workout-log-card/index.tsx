@@ -6,7 +6,7 @@ import { toast } from "sonner-native";
 import NumberOfExercisesBadge from "~/components/exercise-detail-badges/number-of-exercises-badge";
 import WorkoutDurationBadge from "~/components/exercise-detail-badges/workout-duration-badge";
 import useDeleteWorkoutLog from "~/hooks/api/use-delete-workout-log";
-import { useAlertDialog } from "~/providers/alert-dialog-provider";
+import useDeleteAlert from "~/hooks/use-delete-alert";
 import { WorkoutLog } from "~/types";
 
 import { Button } from "../../ui/button";
@@ -31,15 +31,14 @@ export default function WorkoutLogCard({
 			toast.error(error.message);
 		}
 	});
-	const alert = useAlertDialog();
+	const alert = useDeleteAlert();
 
 	function handleDeleteDialogPress() {
 		alert({
-			variant: "destructive",
 			title: "Delete Log?",
 			description: "This action is permanent.",
-			actionContent: "Delete",
-			loadingContent: "Deleting...",
+			actionText: "Delete",
+			loadingText: "Deleting",
 			onConfirm: async () => {
 				deleteWorkoutLog(workoutLog.id);
 			}

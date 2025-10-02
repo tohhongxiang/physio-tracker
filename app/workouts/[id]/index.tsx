@@ -16,7 +16,7 @@ import WorkoutDetails from "~/components/workout-details";
 import WorkoutNotFound from "~/components/workout-not-found";
 import useDeleteWorkout from "~/hooks/api/use-delete-workout";
 import useGetWorkout from "~/hooks/api/use-get-workout";
-import { useAlertDialog } from "~/providers/alert-dialog-provider";
+import useDeleteAlert from "~/hooks/use-delete-alert";
 
 export default function SpecificWorkOutRoute() {
 	const { id } = useLocalSearchParams<{ id: string }>();
@@ -29,7 +29,7 @@ export default function SpecificWorkOutRoute() {
 		onSuccess: () => toast.success("Successfully deleted workout!"),
 		onError: (error) => toast.error(error.message)
 	});
-	const alert = useAlertDialog();
+	const alert = useDeleteAlert();
 	const router = useRouter();
 
 	const navigation = useNavigation();
@@ -56,12 +56,11 @@ export default function SpecificWorkOutRoute() {
 						size="sm"
 						onPress={() =>
 							alert({
-								variant: "destructive",
 								title: "Delete Workout?",
 								description:
 									"This action is permanent. You will lose all data regarding this workout.",
-								actionContent: "Delete",
-								loadingContent: "Deleting...",
+								actionText: "Delete",
+								loadingText: "Deleting",
 								onConfirm: async () => {
 									await new Promise<void>((res) =>
 										setTimeout(() => res(), 100)

@@ -3,7 +3,7 @@ import { useNavigation } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
 
-import { useAlertDialog } from "~/providers/alert-dialog-provider";
+import useDeleteAlert from "~/hooks/use-delete-alert";
 import { Workout } from "~/types";
 
 import ConfirmWorkout from "./confirm-workout";
@@ -24,7 +24,7 @@ type WorkoutFormProps =
 
 export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 	const navigator = useNavigation();
-	const alert = useAlertDialog();
+	const alert = useDeleteAlert();
 
 	const [step, setStep] = useState(0);
 	const form = useWorkoutForm(data);
@@ -41,8 +41,8 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 				title: "Discard Changes?",
 				description:
 					"You have unsaved changes. Discard them and leave?",
-				variant: "destructive",
-				actionContent: "Discard",
+				actionText: "Discard",
+				loadingText: "Discarding",
 				onSuccess: () => navigator.dispatch(action)
 			});
 		} else {
