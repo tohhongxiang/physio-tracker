@@ -141,7 +141,12 @@ export default function ExportDataDialog({
 							checked={options.pinned}
 							onCheckedChange={toggleCheckedState("pinned")}
 						/>
-						<Label htmlFor="pinned">Pinned Workouts</Label>
+						<Label
+							htmlFor="pinned"
+							onPress={toggleCheckedState("pinned")}
+						>
+							Pinned Workouts
+						</Label>
 					</View>
 
 					<View className="flex flex-row items-center gap-2">
@@ -150,7 +155,12 @@ export default function ExportDataDialog({
 							checked={options.logs}
 							onCheckedChange={toggleCheckedState("logs")}
 						/>
-						<Label htmlFor="logs">Workout Logs</Label>
+						<Label
+							htmlFor="logs"
+							onPress={toggleCheckedState("logs")}
+						>
+							Workout Logs
+						</Label>
 					</View>
 				</View>
 

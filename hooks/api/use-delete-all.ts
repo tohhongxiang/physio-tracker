@@ -2,11 +2,11 @@ import { useMutation } from "@tanstack/react-query";
 
 import deleteAll from "~/api/delete-all";
 
-export default function useDeleteWorkout({
+export default function useDeleteAll({
 	onSuccess,
 	onError
 }: {
-	onSuccess?: (deletedWorkout: Awaited<ReturnType<typeof deleteAll>>) => void;
+	onSuccess?: (deleteResult: Awaited<ReturnType<typeof deleteAll>>) => void;
 	onError?: (error: Error) => void;
 } = {}) {
 	const { isPending, mutateAsync, error } = useMutation({

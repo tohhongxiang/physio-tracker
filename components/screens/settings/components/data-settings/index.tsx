@@ -13,8 +13,9 @@ import { Icon } from "~/components/ui/icon";
 import { Separator } from "~/components/ui/separator";
 import { Text } from "~/components/ui/text";
 
-import ExportDataDialog from "./export-data-dialog";
-import ImportDataDialog from "./import-data-dialog";
+import DeleteAllDataDialog from "./delete-all-data-dialog";
+import ExportBackupDialog from "./export-backup-dialog";
+import ImportBackupDialog from "./import-backup-dialog";
 
 export default function Data() {
 	return (
@@ -36,7 +37,7 @@ export default function Data() {
 			<CardContent className="flex flex-col gap-4 w-full">
 				<View className="flex flex-row gap-4 w-full justify-center items-center">
 					<View className="flex-1">
-						<ExportDataDialog>
+						<ExportBackupDialog>
 							<Button
 								variant="secondary"
 								className="flex flex-row gap-2 justify-center items-center"
@@ -48,10 +49,10 @@ export default function Data() {
 								/>
 								<Text>Export Backup</Text>
 							</Button>
-						</ExportDataDialog>
+						</ExportBackupDialog>
 					</View>
 					<View className="flex-1">
-						<ImportDataDialog>
+						<ImportBackupDialog>
 							<Button
 								variant="secondary"
 								className="flex flex-row gap-2 justify-center items-center"
@@ -63,22 +64,24 @@ export default function Data() {
 								/>
 								<Text>Restore Backup</Text>
 							</Button>
-						</ImportDataDialog>
+						</ImportBackupDialog>
 					</View>
 				</View>
 				<Separator />
 				<View>
-					<Button
-						variant="destructive"
-						className="flex flex-row gap-2 justify-center items-center"
-					>
-						<Icon
-							as={Trash}
-							className="text-destructive-foreground"
-							size={16}
-						/>
-						<Text>Clear All Data</Text>
-					</Button>
+					<DeleteAllDataDialog>
+						<Button
+							variant="destructive"
+							className="flex flex-row gap-2 justify-center items-center"
+						>
+							<Icon
+								as={Trash}
+								className="text-destructive-foreground"
+								size={16}
+							/>
+							<Text>Clear All Data</Text>
+						</Button>
+					</DeleteAllDataDialog>
 				</View>
 			</CardContent>
 		</Card>

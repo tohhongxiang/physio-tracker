@@ -87,6 +87,8 @@ export default function ImportDataDialog({
 				`Restored ${data.workouts.length} workout(s), ${data.pinned.length} pinned workout(s) and ${data.logs.length} workout logs`
 			);
 			setIsOpen(false);
+			setParsedData(null);
+			setSelectedFile(null);
 		},
 		onError: (error) => {
 			console.error(error);
