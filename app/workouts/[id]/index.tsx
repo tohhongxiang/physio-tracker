@@ -60,8 +60,8 @@ export default function SpecificWorkOutRoute() {
 								title: "Delete Workout?",
 								description:
 									"This action is permanent. You will lose all data regarding this workout.",
-								actionText: "Delete",
-								loadingText: "Deleting...",
+								actionContent: "Delete",
+								loadingContent: "Deleting...",
 								onConfirm: async () => {
 									await new Promise<void>((res) =>
 										setTimeout(() => res(), 100)

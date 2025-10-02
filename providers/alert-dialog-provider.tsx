@@ -22,9 +22,9 @@ import { Text } from "~/components/ui/text";
 type AlertOptions<T> = {
 	title?: string;
 	description?: string | React.ReactNode;
-	actionText?: string;
-	cancelText?: string;
-	loadingText?: string;
+	actionContent?: React.ReactNode;
+	cancelContent?: React.ReactNode;
+	loadingContent?: React.ReactNode;
 	variant?: VariantProps<typeof buttonVariants>["variant"];
 	onConfirm?: () => T | Promise<T>;
 	onSuccess?: (data: T) => void;
@@ -38,9 +38,9 @@ const DialogContext = createContext<{
 
 const DEFAULT_TITLE = "";
 const DEFAULT_DESCRIPTION = "";
-const DEFAULT_ACTION_TEXT = "Confirm";
-const DEFAULT_CANCEL_TEXT = "Cancel";
-const DEFAULT_LOADING_TEXT = "Loading...";
+const DEFAULT_ACTION_CONTENT = "Confirm";
+const DEFAULT_CANCEL_CONTENT = "Cancel";
+const DEFAULT_LOADING_CONTENT = "Loading";
 const DEFAULT_VARIANT = "default";
 
 function DEFAULT_CONFIRM_HANDLER() {}
@@ -54,9 +54,9 @@ function DEFAULT_ERROR_HANDLER() {}
 type AlertDialogUIState = {
 	title: string;
 	description: string | React.ReactNode;
-	actionText: string;
-	cancelText: string;
-	loadingText: string;
+	actionContent: React.ReactNode;
+	cancelContent: React.ReactNode;
+	loadingContent: React.ReactNode;
 	variant: VariantProps<typeof buttonVariants>["variant"];
 };
 
@@ -69,9 +69,9 @@ export default function AlertDialogProvider({
 	const [state, setState] = useState<AlertDialogUIState>({
 		title: DEFAULT_TITLE,
 		description: DEFAULT_DESCRIPTION,
-		actionText: DEFAULT_ACTION_TEXT,
-		cancelText: DEFAULT_CANCEL_TEXT,
-		loadingText: DEFAULT_LOADING_TEXT,
+		actionContent: DEFAULT_ACTION_CONTENT,
+		cancelContent: DEFAULT_CANCEL_CONTENT,
+		loadingContent: DEFAULT_LOADING_CONTENT,
 		variant: DEFAULT_VARIANT
 	});
 
@@ -86,9 +86,9 @@ export default function AlertDialogProvider({
 		<T,>({
 			title,
 			description,
-			actionText,
-			cancelText,
-			loadingText,
+			actionContent,
+			cancelContent,
+			loadingContent,
 			variant,
 			onConfirm,
 			onSuccess,
@@ -98,9 +98,9 @@ export default function AlertDialogProvider({
 			setState({
 				title: title ?? DEFAULT_TITLE,
 				description: description ?? DEFAULT_DESCRIPTION,
-				actionText: actionText ?? DEFAULT_ACTION_TEXT,
-				cancelText: cancelText ?? DEFAULT_CANCEL_TEXT,
-				loadingText: loadingText ?? DEFAULT_LOADING_TEXT,
+				actionContent: actionContent ?? DEFAULT_ACTION_CONTENT,
+				cancelContent: cancelContent ?? DEFAULT_CANCEL_CONTENT,
+				loadingContent: loadingContent ?? DEFAULT_LOADING_CONTENT,
 				variant: variant ?? DEFAULT_VARIANT
 			});
 
@@ -157,18 +157,28 @@ export default function AlertDialogProvider({
 							onPress={onCancelRef.current}
 							disabled={isLoading}
 						>
-							<Text>{state.cancelText}</Text>
+							{typeof state.cancelContent === "string" ? (
+								<Text>{state.cancelContent}</Text>
+							) : (
+								state.cancelContent
+							)}
 						</AlertDialogCancel>
 						<Button
 							onPress={handleDialogAction}
 							variant={state.variant}
 							disabled={isLoading}
 						>
-							<Text>
-								{isLoading
-									? state.loadingText
-									: state.actionText}
-							</Text>
+							{isLoading ? (
+								typeof state.loadingContent === "string" ? (
+									<Text>{state.loadingContent}</Text>
+								) : (
+									state.loadingContent
+								)
+							) : typeof state.actionContent === "string" ? (
+								<Text>{state.actionContent}</Text>
+							) : (
+								state.actionContent
+							)}
 						</Button>
 					</AlertDialogFooter>
 				</AlertDialogContent>

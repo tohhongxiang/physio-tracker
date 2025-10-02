@@ -1,10 +1,11 @@
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";
-import { Download, LoaderCircle } from "lucide-react-native";
+import { Download } from "lucide-react-native";
 import { useState } from "react";
 import { View } from "react-native";
 import { toast } from "sonner-native";
 
+import { LoadingSpinner } from "~/components/loading-spinner";
 import { Button } from "~/components/ui/button";
 import { Checkbox } from "~/components/ui/checkbox";
 import {
@@ -177,13 +178,10 @@ export default function ExportDataDialog({
 					>
 						{isExporting ? (
 							<>
-								<View className="animate-spin">
-									<Icon
-										as={LoaderCircle}
-										className="text-primary-foreground"
-										size={16}
-									/>
-								</View>
+								<LoadingSpinner
+									iconClassName="text-primary-foreground"
+									size={16}
+								/>
 								<Text>Loading</Text>
 							</>
 						) : (

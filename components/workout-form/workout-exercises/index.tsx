@@ -53,7 +53,7 @@ export default function WorkoutExercises({
 					</View>
 				),
 				variant: "destructive",
-				actionText: "Delete",
+				actionContent: "Delete",
 				onConfirm() {
 					remove(index);
 				}

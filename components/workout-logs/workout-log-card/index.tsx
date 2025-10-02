@@ -38,8 +38,8 @@ export default function WorkoutLogCard({
 			variant: "destructive",
 			title: "Delete Log?",
 			description: "This action is permanent.",
-			actionText: "Delete",
-			loadingText: "Deleting...",
+			actionContent: "Delete",
+			loadingContent: "Deleting...",
 			onConfirm: async () => {
 				deleteWorkoutLog(workoutLog.id);
 			}

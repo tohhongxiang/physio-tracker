@@ -1,10 +1,11 @@
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
-import { File, Info, LoaderCircle, Upload } from "lucide-react-native";
+import { File, Info, Upload } from "lucide-react-native";
 import { useState } from "react";
 import { ScrollView, View } from "react-native";
 import { toast } from "sonner-native";
 
+import { LoadingSpinner } from "~/components/loading-spinner";
 import { Button } from "~/components/ui/button";
 import {
 	Dialog,
@@ -208,13 +209,10 @@ export default function ImportDataDialog({
 					>
 						{isLoading ? (
 							<>
-								<View className="animate-spin">
-									<Icon
-										as={LoaderCircle}
-										className="text-primary-foreground"
-										size={16}
-									/>
-								</View>
+								<LoadingSpinner
+									iconClassName="text-primary-foreground"
+									size={16}
+								/>
 								<Text>Loading</Text>
 							</>
 						) : (

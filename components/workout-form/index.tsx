@@ -42,7 +42,7 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 				description:
 					"You have unsaved changes. Discard them and leave?",
 				variant: "destructive",
-				actionText: "Discard",
+				actionContent: "Discard",
 				onSuccess: () => navigator.dispatch(action)
 			});
 		} else {

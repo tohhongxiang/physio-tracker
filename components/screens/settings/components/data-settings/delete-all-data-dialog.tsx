@@ -3,6 +3,7 @@ import { useState } from "react";
 import { View } from "react-native";
 import { toast } from "sonner-native";
 
+import { LoadingSpinner } from "~/components/loading-spinner";
 import { Button } from "~/components/ui/button";
 import {
 	Dialog,
@@ -16,6 +17,7 @@ import {
 import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
 import useDeleteAll from "~/hooks/api/use-delete-all";
+import { useAlertDialog } from "~/providers/alert-dialog-provider";
 
 export default function DeleteAllDataDialog({
 	children
@@ -35,8 +37,33 @@ export default function DeleteAllDataDialog({
 		}
 	});
 
+	const alert = useAlertDialog();
 	function handleSubmit() {
-		deleteAll();
+		alert({
+			variant: "destructive",
+			title: "Delete All Data?",
+			description:
+				"This action is permanent. Are you sure to want to delete all your data?",
+			actionContent: (
+				<View className="flex flex-row gap-2 items-center justify-center">
+					<Icon as={Trash} className="text-destructive-foreground" />
+					<Text>Delete Data</Text>
+				</View>
+			),
+			loadingContent: (
+				<View className="flex flex-row gap-2 items-center justify-center">
+					<LoadingSpinner iconClassName="text-destructive-foreground" />
+					<Text>Deleting...</Text>
+				</View>
+			),
+			onConfirm: async () => {
+				await new Promise<void>((res) => setTimeout(() => res(), 100));
+				await deleteAll();
+			},
+			onSuccess: () => {
+				setIsOpen(false);
+			}
+		});
 	}
 
 	return (
