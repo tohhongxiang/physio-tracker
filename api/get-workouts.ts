@@ -1,4 +1,4 @@
-import { count } from "drizzle-orm";
+import { count, like } from "drizzle-orm";
 
 import { db } from "~/db/initalize";
 import { workouts } from "~/db/schema";
@@ -27,13 +27,31 @@ export default async function getWorkouts(
 			}
 		},
 		offset: (filters.page ?? 0) * filters.limit,
-		orderBy: (workouts, { desc, asc }) =>
-			filters.sortBy === "name" ? asc(workouts.name) : desc(workouts.id),
+		orderBy: (workouts, { desc, asc }) => {
+			if (filters.sortBy === "") {
+				return desc(workouts.id);
+			}
+
+			const sortColumn = filters.sortBy.includes("name")
+				? workouts.name
+				: workouts.id;
+			const sortDirection = filters.sortBy.includes("desc") ? desc : asc;
+			return sortDirection(sortColumn);
+		},
 		limit: filters.limit
 	});
 
 	const { count: workoutCount } = (
-		await db.select({ count: count() }).from(workouts)
+		await db
+			.select({
+				count: count()
+			})
+			.from(workouts)
+			.where(
+				filters.search
+					? like(workouts.name, `%${filters.search}%`)
+					: undefined
+			)
 	)[0];
 
 	return { count: workoutCount, data: result };

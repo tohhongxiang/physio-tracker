@@ -17,8 +17,10 @@ import { WorkoutFilters } from "~/types";
 
 const SELECT_OPTIONS = [
 	{ label: "No sort", value: "" },
-	{ label: "Name", value: "name" },
-	{ label: "Date created", value: "dateCreated" }
+	{ label: "Name (A - Z)", value: "name_asc" },
+	{ label: "Name (Z - A)", value: "name_desc" },
+	{ label: "Date created (Earliest - Latest)", value: "dateCreated_asc" },
+	{ label: "Date created (Latest - Earliest)", value: "dateCreated_desc" }
 ] as const;
 
 const LIMIT_OPTIONS = [2, 10, 25, DEFAULT_LIMIT] as const;

@@ -11,7 +11,12 @@ export type Workout = {
 
 export type WorkoutFilters = {
 	search: string;
-	sortBy: "name" | "dateCreated" | "";
+	sortBy:
+		| "name_asc"
+		| "name_desc"
+		| "dateCreated_asc"
+		| "dateCreated_desc"
+		| "";
 	limit: number;
 };
 
