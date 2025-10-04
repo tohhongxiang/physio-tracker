@@ -1,21 +1,28 @@
-import { AudioSource, useAudioPlayer } from "expo-audio";
-import { useCallback, useEffect } from "react";
+import { AVPlaybackSource, Audio } from "expo-av";
+import { useCallback, useEffect, useMemo } from "react";
 
-export default function useSound(audioSource: AudioSource, isMuted?: boolean) {
-	const player = useAudioPlayer(audioSource);
+export default function useSound(
+	audioSource: AVPlaybackSource,
+	isMuted?: boolean
+) {
+	const player = useMemo(() => new Audio.Sound(), []);
 
 	useEffect(() => {
-		player.muted = Boolean(isMuted);
-	}, [isMuted, player]);
+		player.loadAsync(audioSource);
 
-	const play = useCallback(() => {
-		if (player.muted) {
+		return () => {
+			player.unloadAsync();
+		};
+	}, [audioSource, player]);
+
+	const play = useCallback(async () => {
+		if (isMuted) {
 			return;
 		}
 
-		player.seekTo(0);
-		player.play();
-	}, [player]);
+		await player.setPositionAsync(0);
+		await player.playAsync();
+	}, [player, isMuted]);
 
 	return { play };
 }

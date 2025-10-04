@@ -35,7 +35,7 @@ export default {
 		output: "static",
 		favicon: "./assets/images/favicon.png"
 	},
-	plugins: ["expo-router", "expo-sqlite", "expo-audio"],
+	plugins: ["expo-router", "expo-sqlite", "expo-av"],
 	experiments: {
 		typedRoutes: true
 	},

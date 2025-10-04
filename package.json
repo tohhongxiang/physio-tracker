@@ -54,6 +54,7 @@
 		"drizzle-orm": "^0.37.0",
 		"expo": "~52.0.47",
 		"expo-audio": "~0.3.5",
+		"expo-av": "~15.0.2",
 		"expo-constants": "~17.0.8",
 		"expo-dev-client": "~5.0.20",
 		"expo-document-picker": "~13.0.3",

@@ -47,7 +47,7 @@ eas build --profile production --platform ios # Build for production on ios
 
 [x] Pinned workouts
 [x] Able to mute sound
-[] Backup workouts
+[x] Backup workouts
 [] Settings tab 
 - Audio and sound settings 
   - Enable/disable timer completion sounds and countdown warning sounds 
@@ -68,8 +68,6 @@ eas build --profile production --platform ios # Build for production on ios
   - Color scheme 
   - Timer display style 
   - Data and privacy settings 
-  - Data export 
-  - Data import 
 - Backup settings 
   - Clear data 
   - Analytics 
