@@ -4,11 +4,17 @@ import { toast } from "sonner-native";
 
 import { Button } from "~/components/ui/button";
 import { Text } from "~/components/ui/text";
+import { DATABASE_NAME, db } from "~/db/initalize";
 
 export default function TestPage() {
 	const handleResetDb = async () => {
-		await deleteDatabaseAsync("db.db");
-		toast.success("DB reset successfully");
+		try {
+			await db.$client.closeAsync();
+			await deleteDatabaseAsync(DATABASE_NAME);
+			toast.success("DB reset successfully");
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (

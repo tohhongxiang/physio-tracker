@@ -27,8 +27,13 @@ export default function DatabaseProvider({
 	const [isResettingDb, setIsResettingDb] = useState(false);
 	const handleResetDb = async () => {
 		setIsResettingDb(true);
-		await deleteDatabaseAsync(DATABASE_NAME);
-		toast.success("DB reset successfully");
+		try {
+			await db.$client.closeAsync();
+			await deleteDatabaseAsync(DATABASE_NAME);
+			toast.success("DB reset successfully");
+		} catch (error) {
+			console.error(error);
+		}
 		setIsResettingDb(false);
 	};
 
