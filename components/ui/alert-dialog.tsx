@@ -52,8 +52,8 @@ const AlertDialogOverlayNative = React.forwardRef<
 			asChild
 		>
 			<Animated.View
-				entering={FadeIn.duration(150)}
-				exiting={FadeOut.duration(150)}
+				entering={FadeIn.duration(50)}
+				exiting={FadeOut.duration(50)}
 			>
 				{children}
 			</Animated.View>

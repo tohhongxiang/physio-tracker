@@ -355,10 +355,7 @@ export default function SingleExerciseForm({
 													"border-destructive"
 											)}
 										>
-											<SelectValue
-												className="native:text-lg text-foreground"
-												placeholder=""
-											/>
+											<SelectValue placeholder="" />
 										</SelectTrigger>
 										<SelectContent
 											className="border-none"

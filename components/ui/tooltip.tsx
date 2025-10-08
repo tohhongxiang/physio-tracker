@@ -19,8 +19,14 @@ const TooltipContent = React.forwardRef<
 			style={Platform.OS !== "web" ? StyleSheet.absoluteFill : undefined}
 		>
 			<Animated.View
-				entering={Platform.select({ web: undefined, default: FadeIn })}
-				exiting={Platform.select({ web: undefined, default: FadeOut })}
+				entering={Platform.select({
+					web: undefined,
+					default: FadeIn.duration(50)
+				})}
+				exiting={Platform.select({
+					web: undefined,
+					default: FadeOut.duration(50)
+				})}
 			>
 				<TextClassContext.Provider value="text-sm native:text-base text-popover-foreground">
 					<TooltipPrimitive.Content

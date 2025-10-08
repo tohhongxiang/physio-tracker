@@ -80,10 +80,7 @@ export default function SearchFiltersForm({
 					}
 				>
 					<SelectTrigger>
-						<SelectValue
-							className="native:text-lg text-sm text-foreground"
-							placeholder=""
-						/>
+						<SelectValue placeholder="" />
 					</SelectTrigger>
 					<SelectContent className="pr-4">
 						{SELECT_OPTIONS.map((option) => (
@@ -111,10 +108,7 @@ export default function SearchFiltersForm({
 					}
 				>
 					<SelectTrigger>
-						<SelectValue
-							className="native:text-lg text-sm text-foreground"
-							placeholder=""
-						/>
+						<SelectValue placeholder="" />
 					</SelectTrigger>
 					<SelectContent className="pr-4">
 						{LIMIT_OPTIONS.map((option) => (
