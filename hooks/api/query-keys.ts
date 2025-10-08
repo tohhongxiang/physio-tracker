@@ -1,4 +1,4 @@
-import { Exercise, ExportDataOptions, Workout, WorkoutFilters } from "~/types";
+import { Exercise, ExportDataOptions, Workout, WorkoutFilters } from "~/db/dto";
 
 export const workoutQueryKeys = {
 	all: ["workouts"] as const,

@@ -1,10 +1,10 @@
 import { VariantProps } from "class-variance-authority";
 import { Clock } from "lucide-react-native";
 
+import { WorkoutWithExercises } from "~/db/dto";
 import formatBigNumber from "~/lib/format-big-number";
 import getEstimatedWorkoutDurationSeconds from "~/lib/get-estimated-workout-duration-seconds";
 import { cn } from "~/lib/utils";
-import { Workout } from "~/types";
 
 import { Icon } from "../ui/icon";
 import { Text } from "../ui/text";
@@ -18,7 +18,7 @@ export default function WorkoutDurationBadge({
 	workout,
 	size,
 	className
-}: { workout: Workout; className?: string } & VariantProps<
+}: { workout: WorkoutWithExercises; className?: string } & VariantProps<
 	typeof exerciseDetailBadgeVariants
 >) {
 	const estimatedWorkoutDurationMinutes = Math.floor(

@@ -1,5 +1,7 @@
+import { prettifyError } from "zod";
+
+import { WorkoutWithExercisesSchema } from "~/db/dto";
 import { db } from "~/db/initalize";
-import { Workout } from "~/types";
 
 export default async function getWorkout(id: number) {
 	const result = await db.query.workouts.findFirst({
@@ -18,5 +20,10 @@ export default async function getWorkout(id: number) {
 		return null;
 	}
 
-	return result as Workout;
+	const { data, error } = WorkoutWithExercisesSchema.safeParse(result);
+	if (error) {
+		throw new Error(prettifyError(error));
+	}
+
+	return data;
 }

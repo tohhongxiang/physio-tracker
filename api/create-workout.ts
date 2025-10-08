@@ -1,10 +1,24 @@
+import { prettifyError } from "zod";
+
+import {
+	CreateWorkout,
+	CreateWorkoutSchema,
+	WorkoutWithExercises,
+	WorkoutWithExercisesSchema
+} from "~/db/dto";
 import { db } from "~/db/initalize";
 import { exercises, workouts } from "~/db/schema";
-import { CreateWorkout, Workout } from "~/types";
 
-export default async function createWorkout(workout: CreateWorkout) {
-	const { exercises: exercisesToCreate, ...restOfWorkout } = workout;
+export default async function createWorkout(
+	workout: CreateWorkout
+): Promise<WorkoutWithExercises> {
+	const { data: validatedWorkout, error: parseWorkoutError } =
+		CreateWorkoutSchema.safeParse(workout);
+	if (parseWorkoutError) {
+		throw new Error(prettifyError(parseWorkoutError));
+	}
 
+	const { exercises: exercisesToCreate, ...restOfWorkout } = validatedWorkout;
 	const response = await db.transaction(async (tx) => {
 		const createdWorkout = (
 			await tx.insert(workouts).values(restOfWorkout).returning()
@@ -21,8 +35,14 @@ export default async function createWorkout(workout: CreateWorkout) {
 			)
 			.returning();
 
-		return { ...createdWorkout, exercises: createdExercises } as Workout;
+		return { ...createdWorkout, exercises: createdExercises };
 	});
 
-	return response;
+	const { data: validatedCreatedWorkout, error: createWorkoutError } =
+		WorkoutWithExercisesSchema.safeParse(response);
+	if (createWorkoutError) {
+		throw new Error(prettifyError(createWorkoutError));
+	}
+
+	return validatedCreatedWorkout as WorkoutWithExercises;
 }

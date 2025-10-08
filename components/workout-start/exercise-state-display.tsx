@@ -4,10 +4,10 @@ import { View } from "react-native";
 import { Text } from "~/components/ui/text";
 import ExerciseEffortDetails from "~/components/workout-details/exercise-card/exercise-effort-details";
 import ExerciseRestDetails from "~/components/workout-details/exercise-card/exercise-rest-details";
+import { Exercise } from "~/db/dto";
 import hasDurationPerRep from "~/lib/has-duration-per-rep";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
 import hasRestBetweenSets from "~/lib/has-rest-between-sets";
-import { Exercise } from "~/types";
 
 import CounterContainer from "./counter-container";
 import TimerDisplay from "./timer-display";

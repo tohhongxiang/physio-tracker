@@ -1,5 +1,7 @@
-import { Controller, UseFormReturn } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { View } from "react-native";
+import { toast } from "sonner-native";
+import { ZodError, prettifyError } from "zod";
 
 import { cn } from "~/lib/utils";
 
@@ -8,25 +10,35 @@ import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Text } from "../ui/text";
 import { Textarea } from "../ui/textarea";
-import { WorkoutFormSchemaType } from "./schema";
+import useWorkoutForm from "./use-workout-form";
 
 export default function WorkoutInformation({
 	form,
 	onSuccessfulSubmit,
 	onGoToPreviousStep
 }: {
-	form: UseFormReturn<WorkoutFormSchemaType>;
+	form: ReturnType<typeof useWorkoutForm>;
 	onSuccessfulSubmit: () => void;
 	onGoToPreviousStep: () => void;
 }) {
 	async function handleSubmit() {
-		const isValid = await form.trigger(["name", "description"]);
+		try {
+			const isValid = await form.trigger(["name", "description"]);
 
-		if (!isValid) {
-			return;
+			if (!isValid) {
+				return;
+			}
+
+			onSuccessfulSubmit();
+		} catch (error) {
+			if (error instanceof ZodError) {
+				toast.error(prettifyError(error));
+			} else if (error instanceof Error) {
+				toast.error(error.message);
+			} else {
+				toast.error("Unexpected error");
+			}
 		}
-
-		onSuccessfulSubmit();
 	}
 
 	return (
@@ -94,6 +106,11 @@ export default function WorkoutInformation({
 						{form.formState.errors.description.message}
 					</Text>
 				)}
+			</View>
+			<View>
+				<Text className="text-destructive">
+					{form.formState.errors.root?.message}
+				</Text>
 			</View>
 			<View className="mt-auto flex flex-row gap-4">
 				<Button

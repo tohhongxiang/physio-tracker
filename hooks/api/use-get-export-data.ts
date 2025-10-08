@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import getExportData from "~/api/get-export-data";
-import { ExportDataOptions } from "~/types";
+import { ExportDataOptions } from "~/db/dto";
 
 import { exportDataQueryKeys } from "./query-keys";
 

@@ -3,10 +3,10 @@ import { Pin, Play } from "lucide-react-native";
 import { Pressable, View, ViewProps } from "react-native";
 import { toast } from "sonner-native";
 
+import { WorkoutWithExercises } from "~/db/dto";
 import useGetPinnedWorkout from "~/hooks/api/use-get-pinned-workout";
 import useTogglePinnedWorkout from "~/hooks/api/use-toggle-pinned-workout";
 import { cn } from "~/lib/utils";
-import { Workout } from "~/types";
 
 import NumberOfExercisesBadge from "../exercise-detail-badges/number-of-exercises-badge";
 import WorkoutDurationBadge from "../exercise-detail-badges/workout-duration-badge";
@@ -24,7 +24,7 @@ import { Text } from "../ui/text";
 import LoadingWorkoutCard from "./loading";
 
 interface WorkoutCardProps extends ViewProps {
-	workout: Workout;
+	workout: WorkoutWithExercises;
 }
 
 export default function WorkoutCard({ workout, ...props }: WorkoutCardProps) {

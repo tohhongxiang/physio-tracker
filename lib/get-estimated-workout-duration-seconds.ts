@@ -1,4 +1,4 @@
-import { Workout } from "~/types";
+import { WorkoutWithExercises } from "~/db/dto";
 
 const MINIMUM_ESTIMATED_DURATION_SECONDS = 60;
 
@@ -6,7 +6,9 @@ const ESTIMATED_REP_DURATION_SECONDS = 2;
 const ESTIMATED_REST_BETWEEN_SETS_SECONDS = 30;
 const ESTIMATED_REST_BETWEEN_EXERCISES_SECONDS = 30;
 
-export default function getEstimatedWorkoutDurationSeconds(workout: Workout) {
+export default function getEstimatedWorkoutDurationSeconds(
+	workout: WorkoutWithExercises
+) {
 	let rawEstimatedDurationSeconds = 0;
 
 	workout.exercises.forEach((exercise) => {

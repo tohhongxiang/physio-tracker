@@ -1,10 +1,13 @@
 import { count, eq, gt, lt, sql } from "drizzle-orm";
+import { prettifyError } from "zod";
 
+import { PinnedWorkoutSchema, WorkoutWithExercises } from "~/db/dto";
 import { db } from "~/db/initalize";
 import { pinnedWorkouts } from "~/db/schema";
-import { Workout } from "~/types";
 
-export default async function togglePinnedWorkout(workoutId: Workout["id"]) {
+export default async function togglePinnedWorkout(
+	workoutId: WorkoutWithExercises["id"]
+) {
 	const workout = await db.query.pinnedWorkouts.findFirst({
 		where: (pinnedWorkout, { eq }) => eq(pinnedWorkout.workoutId, workoutId)
 	});
@@ -47,5 +50,10 @@ export default async function togglePinnedWorkout(workoutId: Workout["id"]) {
 		return deletedPinnedWorkout;
 	});
 
-	return result;
+	const { data, error } = PinnedWorkoutSchema.safeParse(result);
+	if (error) {
+		throw new Error(prettifyError(error));
+	}
+
+	return data;
 }

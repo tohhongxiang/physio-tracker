@@ -1,4 +1,4 @@
-import { Exercise } from "~/types";
+import { Exercise } from "~/db/dto";
 
 import { STATES } from "../constants";
 import {

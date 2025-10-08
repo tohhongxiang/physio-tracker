@@ -1,14 +1,15 @@
 import { between, eq, lt, sql } from "drizzle-orm";
+import { prettifyError } from "zod";
 
+import { PinnedWorkoutSchema, WorkoutWithExercises } from "~/db/dto";
 import { db } from "~/db/initalize";
 import { pinnedWorkouts } from "~/db/schema";
-import { Workout } from "~/types";
 
 export default async function editPinnedWorkoutPosition({
 	workoutId,
 	newIndex
 }: {
-	workoutId: Workout["id"];
+	workoutId: WorkoutWithExercises["id"];
 	newIndex: number;
 }) {
 	const pinnedWorkout = await db.query.pinnedWorkouts.findFirst({
@@ -41,6 +42,14 @@ export default async function editPinnedWorkoutPosition({
 				)
 			);
 
+		// Shift affected workouts to the correct position
+		const isPinnedWorkoutMovedBack = currentIndex < newIndex;
+		const shift = isPinnedWorkoutMovedBack ? -1 : 1;
+		await tx
+			.update(pinnedWorkouts)
+			.set({ position: sql`-${pinnedWorkouts.position} - 1 + ${shift}` })
+			.where(lt(pinnedWorkouts.position, 0));
+
 		const updatedPinnedWorkoutResult = await tx
 			.update(pinnedWorkouts)
 			.set({ position: newIndex })
@@ -52,14 +61,13 @@ export default async function editPinnedWorkoutPosition({
 			throw new Error("Unable to update pinned workout");
 		}
 
-		// Shift affected workouts to the correct position
-		const isPinnedWorkoutMovedBack = currentIndex < newIndex;
-		const shift = isPinnedWorkoutMovedBack ? -1 : 1;
-		await tx
-			.update(pinnedWorkouts)
-			.set({ position: sql`-${pinnedWorkouts.position} - 1 + ${shift}` })
-			.where(lt(pinnedWorkouts.position, 0));
+		const { data: validatedPinnedWorkout, error } =
+			PinnedWorkoutSchema.safeParse(updatedPinnedWorkout);
 
-		return updatedPinnedWorkout;
+		if (error) {
+			throw new Error(prettifyError(error));
+		}
+
+		return validatedPinnedWorkout;
 	});
 }

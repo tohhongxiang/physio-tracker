@@ -1,9 +1,15 @@
+import { prettifyError } from "zod";
+
+import {
+	PinnedWorkoutWithWorkoutSchema,
+	Workout,
+	WorkoutWithExercises
+} from "~/db/dto";
 import { db } from "~/db/initalize";
-import { Workout } from "~/types";
 
 export default async function getPinnedWorkout(
 	workoutId: Workout["id"]
-): Promise<Workout | null> {
+): Promise<WorkoutWithExercises | null> {
 	const result = await db.query.pinnedWorkouts.findFirst({
 		where: (pinnedWorkout, { eq }) =>
 			eq(pinnedWorkout.workoutId, workoutId),
@@ -20,11 +26,17 @@ export default async function getPinnedWorkout(
 		}
 	});
 
-	const pinnedWorkout = result?.workout;
+	const pinnedWorkout = result;
 
 	if (!pinnedWorkout) {
 		return null;
 	}
 
-	return pinnedWorkout;
+	const { data, error } =
+		PinnedWorkoutWithWorkoutSchema.safeParse(pinnedWorkout);
+	if (error) {
+		throw new Error(prettifyError(error));
+	}
+
+	return data.workout;
 }

@@ -11,6 +11,8 @@ export const workouts = sqliteTable("workouts", {
 	id: int().primaryKey({ autoIncrement: true }),
 	name: text().notNull(),
 	description: text().notNull().default("")
+	// createdAt: text("created_at").notNull().default("CURRENT_TIMESTAMP"),
+	// updatedAt: text("updated_at").notNull().default("CURRENT_TIMESTAMP")
 });
 
 export const exercises = sqliteTable(

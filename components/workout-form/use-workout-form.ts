@@ -1,10 +1,10 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-import { WorkoutFormSchema, WorkoutFormSchemaType } from "./schema";
+import { WorkoutFormInput, WorkoutFormSchema } from "./schema";
 
-export default function useWorkoutForm(data?: WorkoutFormSchemaType) {
-	return useForm<WorkoutFormSchemaType>({
+export default function useWorkoutForm(data?: WorkoutFormInput) {
+	return useForm({
 		resolver: zodResolver(WorkoutFormSchema),
 		values: data,
 		defaultValues: {

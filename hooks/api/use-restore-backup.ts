@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 
 import deleteAll from "~/api/delete-all";
 import restoreBackup from "~/api/restore-backup";
-import { ExportData } from "~/types";
+import { ExportData } from "~/db/dto";
 
 export default function useRestoreBackup({
 	onSuccess,

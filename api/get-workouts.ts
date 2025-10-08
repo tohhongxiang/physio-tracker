@@ -1,22 +1,41 @@
 import { count, like } from "drizzle-orm";
+import { prettifyError } from "zod";
 
+import {
+	WorkoutFilters,
+	WorkoutFiltersSchema,
+	WorkoutWithExercisesSchema
+} from "~/db/dto";
 import { db } from "~/db/initalize";
 import { workouts } from "~/db/schema";
 import { DEFAULT_LIMIT } from "~/hooks/use-workout-filter-params";
-import { Workout, WorkoutFilters } from "~/types";
 
 export default async function getWorkouts(
 	filters: WorkoutFilters & { page?: number } = {
 		search: "",
 		sortBy: "",
+		offset: 0,
 		limit: DEFAULT_LIMIT,
 		page: 0
 	}
 ) {
-	const result: Workout[] = await db.query.workouts.findMany({
+	// Option 1: Validate input filters using DTO
+	const { data: validatedFilters, error: filtersError } =
+		WorkoutFiltersSchema.safeParse({
+			search: filters.search,
+			sortBy: filters.sortBy,
+			limit: filters.limit,
+			offset: (filters.page ?? 0) * filters.limit
+		});
+
+	if (filtersError) {
+		throw new Error(prettifyError(filtersError));
+	}
+
+	const result = await db.query.workouts.findMany({
 		where: (workouts, { like }) =>
-			filters.search
-				? like(workouts.name, `%${filters.search}%`)
+			validatedFilters.search
+				? like(workouts.name, `%${validatedFilters.search}%`)
 				: undefined,
 		with: {
 			exercises: {
@@ -26,19 +45,21 @@ export default async function getWorkouts(
 				]
 			}
 		},
-		offset: (filters.page ?? 0) * filters.limit,
+		offset: validatedFilters.offset,
 		orderBy: (workouts, { desc, asc }) => {
-			if (filters.sortBy === "") {
+			if (!validatedFilters.sortBy) {
 				return desc(workouts.id);
 			}
 
-			const sortColumn = filters.sortBy.includes("name")
+			const sortColumn = validatedFilters.sortBy.includes("name")
 				? workouts.name
 				: workouts.id;
-			const sortDirection = filters.sortBy.includes("desc") ? desc : asc;
+			const sortDirection = validatedFilters.sortBy.includes("desc")
+				? desc
+				: asc;
 			return sortDirection(sortColumn);
 		},
-		limit: filters.limit
+		limit: validatedFilters.limit
 	});
 
 	const { count: workoutCount } = (
@@ -48,11 +69,20 @@ export default async function getWorkouts(
 			})
 			.from(workouts)
 			.where(
-				filters.search
-					? like(workouts.name, `%${filters.search}%`)
+				validatedFilters.search
+					? like(workouts.name, `%${validatedFilters.search}%`)
 					: undefined
 			)
 	)[0];
 
-	return { count: workoutCount, data: result };
+	// Transform string dates to Date objects using DTO
+	const transformedResult = result.map((workout) => {
+		const { data, error } = WorkoutWithExercisesSchema.safeParse(workout);
+		if (error) {
+			throw new Error(prettifyError(error));
+		}
+		return data;
+	});
+
+	return { count: workoutCount, data: transformedResult };
 }

@@ -1,9 +1,10 @@
+import { FieldArrayWithId } from "react-hook-form";
 import { View } from "react-native";
 
 import ReadMoreText from "~/components/read-more-text";
 import { Text } from "~/components/ui/text";
+import { WorkoutFormInput } from "~/components/workout-form/schema";
 import { cn } from "~/lib/utils";
-import { CreateExercise, Exercise } from "~/types";
 
 import ExerciseEffortDetails from "./exercise-effort-details";
 import ExerciseRestDetails from "./exercise-rest-details";
@@ -13,7 +14,7 @@ export default function ExerciseCard({
 	className,
 	actions
 }: {
-	exercise: Exercise | CreateExercise;
+	exercise: FieldArrayWithId<WorkoutFormInput, "exercises", "key">;
 	className?: string;
 	actions?: React.ReactNode;
 }) {
@@ -34,7 +35,8 @@ export default function ExerciseCard({
 					</Text>
 					{actions}
 				</View>
-				{exercise.description.length > 0 ? (
+				{exercise.description &&
+				(exercise.description?.length ?? 0) > 0 ? (
 					<ReadMoreText
 						text={exercise.description}
 						className="text-muted-foreground"

@@ -1,10 +1,13 @@
 import { asc } from "drizzle-orm";
+import { prettifyError } from "zod";
 
+import { PinnedWorkoutWithWorkoutSchema, WorkoutWithExercises } from "~/db/dto";
 import { db } from "~/db/initalize";
 import { pinnedWorkouts } from "~/db/schema";
-import { Workout } from "~/types";
 
-export default async function getPinnedWorkouts(): Promise<Workout[]> {
+export default async function getPinnedWorkouts(): Promise<
+	WorkoutWithExercises[]
+> {
 	const result = await db.query.pinnedWorkouts.findMany({
 		orderBy: asc(pinnedWorkouts.position),
 		with: {
@@ -20,5 +23,13 @@ export default async function getPinnedWorkouts(): Promise<Workout[]> {
 		}
 	});
 
-	return result.map((pinnedWorkout) => pinnedWorkout.workout as Workout);
+	return result.map((item) => {
+		const { data: pinnedWorkout, error: pinnedWorkoutError } =
+			PinnedWorkoutWithWorkoutSchema.safeParse(item);
+		if (pinnedWorkoutError) {
+			throw new Error(prettifyError(pinnedWorkoutError));
+		}
+
+		return pinnedWorkout.workout;
+	});
 }

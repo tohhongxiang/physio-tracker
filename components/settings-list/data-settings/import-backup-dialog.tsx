@@ -18,9 +18,9 @@ import {
 } from "~/components/ui/dialog";
 import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
+import { ExportData } from "~/db/dto";
 import useRestoreBackup from "~/hooks/api/use-restore-backup";
 import useDeleteAlert from "~/hooks/use-delete-alert";
-import { ExportData } from "~/types";
 
 import validateBackupData from "./utils/validate-backup-data";
 
@@ -33,7 +33,7 @@ export default function ImportDataDialog({
 	const [selectedFile, setSelectedFile] =
 		useState<DocumentPicker.DocumentPickerAsset | null>(null);
 	const [parsedData, setParsedData] = useState<ExportData | null>(null);
-	const [errorMessages, setErrorMessages] = useState<string[]>([]);
+	const [errorMessage, setErrorMessage] = useState<string>("");
 
 	async function pickFile() {
 		try {
@@ -42,7 +42,7 @@ export default function ImportDataDialog({
 				copyToCacheDirectory: true
 			});
 
-			setErrorMessages([]);
+			setErrorMessage("");
 			setParsedData(null);
 
 			if (result.canceled) {
@@ -58,24 +58,24 @@ export default function ImportDataDialog({
 			try {
 				data = JSON.parse(jsonString);
 			} catch {
-				setErrorMessages(["Invalid JSON file"]);
+				setErrorMessage("Invalid JSON file");
 				return;
 			}
 
-			const errorMessages = validateBackupData(data);
-			if (errorMessages.length > 0) {
-				setErrorMessages(errorMessages);
+			const validationError = validateBackupData(data);
+			if (validationError) {
+				setErrorMessage(validationError);
 				return;
 			}
 
 			setParsedData(data as ExportData);
 			setSelectedFile(file);
-			setErrorMessages([]);
+			setErrorMessage("");
 		} catch (err) {
 			console.error(err);
-			const errorMessage =
+			const errMessage =
 				err instanceof Error ? err.message : "Unknown error";
-			setErrorMessages([`Failed to pick a file: ${errorMessage}`]);
+			setErrorMessage(`Failed to pick a file: ${errMessage}`);
 		}
 	}
 
@@ -93,14 +93,14 @@ export default function ImportDataDialog({
 			setSelectedFile(null);
 		},
 		onError: (error) => {
-			setErrorMessages([`Failed to import data: ${error.message}`]);
+			setErrorMessage(`Failed to import data: ${error.message}`);
 		}
 	});
 
 	const alert = useDeleteAlert();
 	async function handleSubmit() {
 		if (!parsedData) {
-			setErrorMessages(["No file selected"]);
+			setErrorMessage("No file selected");
 			return;
 		}
 
@@ -191,23 +191,16 @@ export default function ImportDataDialog({
 							</Text>
 						</View>
 					)}
-					{errorMessages.length > 0 && (
+					{errorMessage && (
 						<View className="flex flex-col gap-2 max-h-32 w-full max-w-full">
 							<Text className="text-destructive font-medium">
-								Import Errors ({errorMessages.length}):
+								Import Error:
 							</Text>
 							<ScrollView>
 								<View onStartShouldSetResponder={() => true}>
-									{errorMessages.map(
-										(errorMessage, index) => (
-											<Text
-												className="text-destructive text-xs"
-												key={index}
-											>
-												{`${index + 1}. ${errorMessage}`}
-											</Text>
-										)
-									)}
+									<Text className="text-destructive text-xs">
+										{errorMessage}
+									</Text>
 								</View>
 							</ScrollView>
 						</View>

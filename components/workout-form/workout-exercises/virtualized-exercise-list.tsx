@@ -9,9 +9,9 @@ import Sortable from "react-native-sortables";
 import { Button } from "../../ui/button";
 import { Icon } from "../../ui/icon";
 import ExerciseCard from "../../workout-details/exercise-card";
-import { WorkoutFormSchemaType } from "../schema";
+import { WorkoutFormInput } from "../schema";
 
-type ExerciseData = FieldArrayWithId<WorkoutFormSchemaType, "exercises", "key">;
+type ExerciseData = FieldArrayWithId<WorkoutFormInput, "exercises", "key">;
 export default function VirtualizedExerciseList({
 	data,
 	onMove,

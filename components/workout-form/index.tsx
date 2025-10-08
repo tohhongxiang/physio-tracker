@@ -3,23 +3,22 @@ import { useNavigation } from "expo-router";
 import { useState } from "react";
 import { View } from "react-native";
 
+import { WorkoutWithExercises } from "~/db/dto";
 import useDeleteAlert from "~/hooks/use-delete-alert";
-import { Workout } from "~/types";
 
 import ConfirmWorkout from "./confirm-workout";
-import { WorkoutFormSchemaType } from "./schema";
 import useWorkoutForm from "./use-workout-form";
 import WorkoutExercises from "./workout-exercises";
 import WorkoutInformation from "./workout-information";
 
 type WorkoutFormProps =
 	| {
-			data: Workout;
-			onSubmit: (data: Workout) => unknown;
+			data: WorkoutWithExercises;
+			onSubmit: (data: WorkoutWithExercises) => unknown;
 	  }
 	| {
 			data?: never;
-			onSubmit: (data: WorkoutFormSchemaType) => unknown;
+			onSubmit: (data: WorkoutWithExercises) => unknown;
 	  };
 
 export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
@@ -61,7 +60,7 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 
 	function handleSubmit() {
 		form.handleSubmit(async (data) => {
-			await onSubmit?.(data as Workout);
+			await onSubmit?.(data as WorkoutWithExercises);
 		})();
 	}
 
@@ -83,7 +82,7 @@ export default function WorkoutForm({ data, onSubmit }: WorkoutFormProps) {
 			) : null}
 			{step === 2 ? (
 				<ConfirmWorkout
-					workout={form.getValues() as Workout}
+					workout={form.getValues() as WorkoutWithExercises}
 					onGoToPreviousStep={handleGoToPreviousStep}
 					onSuccessfulSubmit={handleSubmit}
 					isSubmitting={form.formState.isSubmitting}

@@ -1,9 +1,15 @@
 import { endOfMonth, startOfMonth } from "date-fns";
 import { between } from "drizzle-orm";
+import { prettifyError } from "zod";
 
+import {
+	WorkoutLog,
+	WorkoutLogSchema,
+	WorkoutLogWithWorkout,
+	WorkoutLogWithWorkoutSchema
+} from "~/db/dto";
 import { db } from "~/db/initalize";
 import { workoutLogs } from "~/db/schema";
-import { WorkoutLog } from "~/types";
 
 /**
  *
@@ -15,18 +21,18 @@ export default async function getWorkoutsDoneByYearMonth(
 	year: number,
 	month: number,
 	includeWorkoutData?: false
-): Promise<Prettify<Omit<WorkoutLog, "workout">>[]>;
+): Promise<WorkoutLog[]>;
 export default async function getWorkoutsDoneByYearMonth(
 	year: number,
 	month: number,
 	includeWorkoutData?: true
-): Promise<Prettify<WorkoutLog[]>>;
+): Promise<WorkoutLogWithWorkout[]>;
 
 export default async function getWorkoutsDoneByYearMonth(
 	year: number,
 	month: number,
 	includeWorkoutData: boolean = false
-) {
+): Promise<(WorkoutLogWithWorkout | WorkoutLog)[]> {
 	const start = startOfMonth(
 		new Date(`${year}-${month.toString().padStart(2, "0")}-01`)
 	).toISOString();
@@ -35,13 +41,8 @@ export default async function getWorkoutsDoneByYearMonth(
 	).toISOString();
 	const condition = between(workoutLogs.completedAt, start, end);
 
-	let result: (Omit<WorkoutLog, "workout" | "completedAt"> & {
-		completedAt: string;
-	})[] = [];
-
 	if (includeWorkoutData) {
-		result = await db.query.workoutLogs.findMany({
-			columns: { workoutId: false },
+		const result = await db.query.workoutLogs.findMany({
 			where: condition,
 			with: {
 				workout: {
@@ -57,15 +58,28 @@ export default async function getWorkoutsDoneByYearMonth(
 			},
 			orderBy: (workoutLogs, { desc }) => desc(workoutLogs.completedAt)
 		});
+
+		return result.map((log) => {
+			const { data, error } = WorkoutLogWithWorkoutSchema.safeParse(log);
+			if (error) {
+				throw new Error(prettifyError(error));
+			}
+
+			return data;
+		});
 	} else {
-		result = await db.query.workoutLogs.findMany({
+		const result = await db.query.workoutLogs.findMany({
 			where: condition,
 			orderBy: (workoutLogs, { desc }) => desc(workoutLogs.completedAt)
 		});
-	}
 
-	return result.map((log) => ({
-		...log,
-		completedAt: new Date(log.completedAt)
-	}));
+		return result.map((log) => {
+			const { data, error } = WorkoutLogSchema.safeParse(log);
+			if (error) {
+				throw new Error(prettifyError(error));
+			}
+
+			return data;
+		});
+	}
 }

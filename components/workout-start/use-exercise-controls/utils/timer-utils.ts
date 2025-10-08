@@ -1,4 +1,4 @@
-import { Exercise } from "~/types";
+import { Exercise } from "~/db/dto";
 
 import { STARTING_TIME_SECONDS, STATES } from "../constants";
 import {

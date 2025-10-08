@@ -1,8 +1,8 @@
 import { useFocusEffect } from "expo-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import { Exercise } from "~/db/dto";
 import useCountdownTimer from "~/hooks/use-countdown-timer";
-import { Exercise } from "~/types";
 
 import { STATES } from "./constants";
 import {

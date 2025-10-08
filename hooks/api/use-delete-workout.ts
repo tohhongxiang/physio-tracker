@@ -1,13 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { deleteWorkout } from "~/api/delete-workout";
-import { Workout } from "~/types";
 
 export default function useDeleteWorkout({
 	onSuccess,
 	onError
 }: {
-	onSuccess?: (deletedWorkout: Omit<Workout, "exercises">) => void;
+	onSuccess?: (
+		deletedWorkout: Awaited<ReturnType<typeof deleteWorkout>>
+	) => void;
 	onError?: (error: Error) => void;
 } = {}) {
 	const { isPending, mutateAsync, error } = useMutation({

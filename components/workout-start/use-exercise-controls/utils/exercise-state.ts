@@ -1,4 +1,4 @@
-import { Exercise } from "~/types";
+import { Exercise } from "~/db/dto";
 
 export const hasTimedReps = (exercise: Exercise) => {
 	return exercise.durationPerRepSeconds > 0;

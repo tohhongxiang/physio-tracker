@@ -4,9 +4,9 @@ import { toast } from "sonner-native";
 
 import NotFound from "~/components/not-found";
 import SingleExerciseForm from "~/components/workout-form/workout-exercises/single-exercise-form";
+import { Exercise } from "~/db/dto";
 import useEditExercise from "~/hooks/api/use-edit-exercise";
 import useGetExercise from "~/hooks/api/use-get-exercise";
-import { Exercise } from "~/types";
 
 export default function EditExercise() {
 	const { id: workoutId, exercise_id: exerciseId } = useLocalSearchParams<{

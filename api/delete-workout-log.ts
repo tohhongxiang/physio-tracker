@@ -1,10 +1,13 @@
 import { eq } from "drizzle-orm";
+import { prettifyError } from "zod";
 
+import { WorkoutLogSchema, WorkoutLogWithWorkout } from "~/db/dto";
 import { db } from "~/db/initalize";
 import { workoutLogs } from "~/db/schema";
-import { WorkoutLog } from "~/types";
 
-export async function deleteWorkoutLog(workoutLogId: WorkoutLog["id"]) {
+export async function deleteWorkoutLog(
+	workoutLogId: WorkoutLogWithWorkout["id"]
+) {
 	const result = await db
 		.delete(workoutLogs)
 		.where(eq(workoutLogs.id, workoutLogId))
@@ -16,8 +19,10 @@ export async function deleteWorkoutLog(workoutLogId: WorkoutLog["id"]) {
 		throw new Error("Workout Log not found!");
 	}
 
-	return {
-		...deletedWorkoutLog,
-		completedAt: new Date(deletedWorkoutLog.completedAt)
-	};
+	const { data, error } = WorkoutLogSchema.safeParse(deletedWorkoutLog);
+	if (error) {
+		throw new Error(prettifyError(error));
+	}
+
+	return data;
 }

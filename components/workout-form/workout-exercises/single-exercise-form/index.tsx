@@ -21,11 +21,11 @@ import {
 import { Separator } from "~/components/ui/separator";
 import { Text } from "~/components/ui/text";
 import { Textarea } from "~/components/ui/textarea";
+import { CreateExercise, Exercise } from "~/db/dto";
 import formatDuration from "~/lib/format-duration";
 import { cn } from "~/lib/utils";
-import { CreateExercise, Exercise } from "~/types";
 
-import { ExerciseFormSchema, ExerciseFormSchemaType } from "../../schema";
+import { ExerciseFormInput, ExerciseFormSchema } from "../../schema";
 import FullWidthInput from "./full-width-input";
 import IntegerInput from "./integer-input";
 import LoadingSingleExercise from "./loading";
@@ -44,12 +44,12 @@ type SingleExerciseFormBaseProps = {
 };
 
 interface CreateNewExerciseProps extends SingleExerciseFormBaseProps {
-	initialData?: CreateExercise | null | undefined;
+	initialData?: null;
 	onSubmit?: (exercise: CreateExercise) => void;
 }
 
 interface UpdateExistingExerciseProps extends SingleExerciseFormBaseProps {
-	initialData: Exercise;
+	initialData: ExerciseFormInput;
 	onSubmit?: (exercise: Exercise) => void;
 }
 
@@ -60,7 +60,7 @@ export default function SingleExerciseForm({
 	onCancel,
 	onSubmit
 }: CreateNewExerciseProps | UpdateExistingExerciseProps) {
-	const form = useForm<ExerciseFormSchemaType>({
+	const form = useForm({
 		resolver: zodResolver(ExerciseFormSchema),
 		defaultValues: {
 			name: "",
@@ -168,7 +168,9 @@ export default function SingleExerciseForm({
 												"text-destructive"
 											}
 										>
-											{formatDuration(value * 1000)}
+											{formatDuration(
+												(value ?? 0) * 1000
+											)}
 										</Text>
 									</Button>
 								</TimerInput>
@@ -223,7 +225,9 @@ export default function SingleExerciseForm({
 												"text-destructive"
 											}
 										>
-											{formatDuration(value * 1000)}
+											{formatDuration(
+												(value ?? 0) * 1000
+											)}
 										</Text>
 									</Button>
 								</TimerInput>
@@ -261,7 +265,9 @@ export default function SingleExerciseForm({
 												"text-destructive"
 											}
 										>
-											{formatDuration(value * 1000)}
+											{formatDuration(
+												(value ?? 0) * 1000
+											)}
 										</Text>
 									</Button>
 								</TimerInput>
@@ -299,7 +305,9 @@ export default function SingleExerciseForm({
 													.weightUnit) &&
 												"border-destructive"
 										)}
-										value={value.toString()}
+										value={(
+											value as number | string
+										).toString()}
 										onChangeText={(text) => {
 											const parsedValue = Number(text);
 											if (

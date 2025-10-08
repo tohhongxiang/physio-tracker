@@ -1,13 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 
 import { deleteWorkoutLog } from "~/api/delete-workout-log";
-import { WorkoutLog } from "~/types";
 
 export default function useDeleteWorkoutLog({
 	onSuccess,
 	onError
 }: {
-	onSuccess?: (deletedWorkoutLog: Omit<WorkoutLog, "workout">) => void;
+	onSuccess?: (
+		deletedWorkoutLog: Awaited<ReturnType<typeof deleteWorkoutLog>>
+	) => void;
 	onError?: (error: Error) => void;
 } = {}) {
 	const { isPending, mutate, error } = useMutation({

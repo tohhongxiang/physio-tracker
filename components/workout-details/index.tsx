@@ -2,7 +2,7 @@ import { ScrollView, View } from "react-native";
 
 import { Text } from "~/components/ui/text";
 import ExerciseCard from "~/components/workout-details/exercise-card";
-import { Workout } from "~/types";
+import { WorkoutWithExercises } from "~/db/dto";
 
 import WorkoutDurationBadge from "../exercise-detail-badges/workout-duration-badge";
 import ReadMoreText from "../read-more-text";
@@ -13,7 +13,7 @@ export default function WorkoutDetails({
 	workout,
 	showTitle = false
 }: {
-	workout: Workout | Omit<Workout, "id">;
+	workout: WorkoutWithExercises | Omit<WorkoutWithExercises, "id">;
 	showTitle?: boolean;
 }) {
 	return (
@@ -41,7 +41,7 @@ export default function WorkoutDetails({
 					Exercises ({workout.exercises.length})
 				</Text>
 				<WorkoutDurationBadge
-					workout={workout as Workout}
+					workout={workout as WorkoutWithExercises}
 					variant="secondary"
 				/>
 			</View>

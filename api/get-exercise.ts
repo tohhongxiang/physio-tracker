@@ -1,5 +1,7 @@
+import { prettifyError } from "zod";
+
+import { Exercise, ExerciseSchema, Workout } from "~/db/dto";
 import { db } from "~/db/initalize";
-import { Exercise, Workout } from "~/types";
 
 export default async function getExercise(
 	workoutId: Workout["id"],
@@ -17,5 +19,10 @@ export default async function getExercise(
 		return null;
 	}
 
-	return result as Exercise;
+	const { data, error } = ExerciseSchema.safeParse(result);
+	if (error) {
+		throw new Error(prettifyError(error));
+	}
+
+	return data;
 }

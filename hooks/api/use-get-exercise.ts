@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 
 import getExercise from "~/api/get-exercise";
-import { Exercise, Workout } from "~/types";
+import { Exercise, Workout } from "~/db/dto";
 
 import { workoutQueryKeys } from "./query-keys";
 

@@ -12,8 +12,8 @@ import {
 	SelectValue
 } from "~/components/ui/select";
 import { Text } from "~/components/ui/text";
+import { WorkoutFilters } from "~/db/dto";
 import { DEFAULT_LIMIT } from "~/hooks/use-workout-filter-params";
-import { WorkoutFilters } from "~/types";
 
 const SELECT_OPTIONS = [
 	{ label: "No sort", value: "" },

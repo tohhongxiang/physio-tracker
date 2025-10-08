@@ -1,13 +1,13 @@
 import { View } from "react-native";
 
-import { Workout } from "~/types";
+import { WorkoutWithExercises } from "~/db/dto";
 
 import { Button } from "../ui/button";
 import { Text } from "../ui/text";
 import WorkoutDetails from "../workout-details";
 
 interface ConfirmWorkoutProps {
-	workout: Workout;
+	workout: WorkoutWithExercises;
 	onSuccessfulSubmit: () => void;
 	onGoToPreviousStep: () => void;
 	isSubmitting: boolean;

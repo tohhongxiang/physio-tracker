@@ -1,13 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 
 import createWorkout from "~/api/create-workout";
-import { Workout } from "~/types";
 
 export default function useCreateWorkout({
 	onSuccess,
 	onError
 }: {
-	onSuccess?: (data: Workout) => void;
+	onSuccess?: (data: Awaited<ReturnType<typeof createWorkout>>) => void;
 	onError?: (error: Error) => void;
 } = {}) {
 	const { isPending, mutate, error } = useMutation({

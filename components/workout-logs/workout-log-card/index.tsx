@@ -5,9 +5,9 @@ import { toast } from "sonner-native";
 
 import NumberOfExercisesBadge from "~/components/exercise-detail-badges/number-of-exercises-badge";
 import WorkoutDurationBadge from "~/components/exercise-detail-badges/workout-duration-badge";
+import { WorkoutLogWithWorkout } from "~/db/dto";
 import useDeleteWorkoutLog from "~/hooks/api/use-delete-workout-log";
 import useDeleteAlert from "~/hooks/use-delete-alert";
-import { WorkoutLog } from "~/types";
 
 import { Button } from "../../ui/button";
 import { Icon } from "../../ui/icon";
@@ -15,7 +15,7 @@ import { Text } from "../../ui/text";
 import Loading from "./loading";
 
 interface WorkoutLogCardProps extends ViewProps {
-	workoutLog: WorkoutLog;
+	workoutLog: WorkoutLogWithWorkout;
 }
 
 export default function WorkoutLogCard({

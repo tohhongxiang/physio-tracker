@@ -1,8 +1,9 @@
 import { and, eq } from "drizzle-orm";
+import { prettifyError } from "zod";
 
+import { Exercise, ExerciseSchema, Workout } from "~/db/dto";
 import { db } from "~/db/initalize";
 import { exercises } from "~/db/schema";
-import { Exercise, Workout } from "~/types";
 
 export default async function editExercise({
 	workoutId,
@@ -12,7 +13,7 @@ export default async function editExercise({
 	workoutId: Workout["id"];
 	exerciseId: Exercise["id"];
 	exercise: Exercise;
-}) {
+}): Promise<Exercise> {
 	const existingExercise = await db.query.exercises.findFirst({
 		where: (exercises, { eq, and }) =>
 			and(
@@ -39,5 +40,10 @@ export default async function editExercise({
 		.returning()
 		.then((updatedRows) => updatedRows[0]);
 
-	return result as Exercise;
+	const { data: validatedExercise, error } = ExerciseSchema.safeParse(result);
+	if (error) {
+		throw new Error(prettifyError(error));
+	}
+
+	return validatedExercise;
 }

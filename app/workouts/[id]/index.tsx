@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { View } from "react-native";
 import { toast } from "sonner-native";
 
+import ErrorScreen from "~/components/error-screen";
 import { Button } from "~/components/ui/button";
 import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
@@ -21,7 +22,12 @@ import useDeleteAlert from "~/hooks/use-delete-alert";
 export default function SpecificWorkOutRoute() {
 	const { id } = useLocalSearchParams<{ id: string }>();
 
-	const { data: workout, isPending: isLoadingWorkout } = useGetWorkout({
+	const {
+		data: workout,
+		isPending: isLoadingWorkout,
+		error,
+		refetch
+	} = useGetWorkout({
 		id: parseInt(id)
 	});
 
@@ -82,6 +88,10 @@ export default function SpecificWorkOutRoute() {
 
 	if (isLoadingWorkout) {
 		return <WorkoutDetails.Loading />;
+	}
+
+	if (error) {
+		return <ErrorScreen error={error} onRetry={refetch} />;
 	}
 
 	if (!workout) {

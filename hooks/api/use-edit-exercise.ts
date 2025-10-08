@@ -1,13 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 
 import editExercise from "~/api/edit-exercise";
-import { Exercise } from "~/types";
 
 export default function useEditExercise({
 	onSuccess,
 	onError
 }: {
-	onSuccess?: (data: Exercise) => void;
+	onSuccess?: (data: Awaited<ReturnType<typeof editExercise>>) => void;
 	onError?: (error: Error) => void;
 }) {
 	const { isPending, mutate, error } = useMutation({

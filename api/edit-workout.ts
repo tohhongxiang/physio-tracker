@@ -1,12 +1,16 @@
 import { eq, sql } from "drizzle-orm";
+import { prettifyError } from "zod";
 
+import {
+	CreateExercise,
+	EditExercise,
+	EditWorkout,
+	EditWorkoutSchema,
+	Workout,
+	WorkoutWithExercisesSchema
+} from "~/db/dto";
 import { db } from "~/db/initalize";
 import { exercises, workouts } from "~/db/schema";
-import { CreateExercise, Exercise, Workout } from "~/types";
-
-type EditWorkout = Omit<Workout, "exercises"> & {
-	exercises: (CreateExercise | Exercise)[];
-};
 
 export default async function editWorkout({
 	id,
@@ -15,7 +19,13 @@ export default async function editWorkout({
 	id: Workout["id"];
 	workout: EditWorkout;
 }) {
-	const { exercises: updatedExercises, ...updatedWorkout } = workout;
+	const { data: validatedWorkout, error: parseWorkoutError } =
+		EditWorkoutSchema.safeParse(workout);
+	if (parseWorkoutError) {
+		throw new Error(prettifyError(parseWorkoutError));
+	}
+
+	const { exercises: updatedExercises, ...updatedWorkout } = validatedWorkout;
 
 	const existingWorkout = await db.query.workouts.findFirst({
 		where: eq(workouts.id, id),
@@ -79,14 +89,20 @@ export default async function editWorkout({
 		return {
 			...finalUpdatedWorkout,
 			exercises: finalUpdatedExercises
-		} as Workout;
+		};
 	});
 
-	return result;
+	const { data: validatedWorkoutWithExercises, error } =
+		WorkoutWithExercisesSchema.safeParse(result);
+	if (error) {
+		throw new Error(prettifyError(error));
+	}
+
+	return validatedWorkoutWithExercises;
 }
 
 function isExistingExercise(
-	exercise: Exercise | CreateExercise
-): exercise is Exercise {
-	return Object.prototype.hasOwnProperty.call(exercise, "id");
+	exercise: CreateExercise | EditExercise
+): exercise is EditExercise {
+	return (exercise as EditExercise).id !== undefined;
 }

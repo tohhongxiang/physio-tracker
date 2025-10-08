@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { Keyboard, View } from "react-native";
 
 import BottomSheetModal from "~/components/bottom-sheet-modal";
+import ErrorScreen from "~/components/error-screen";
 import Pagination from "~/components/pagination";
 import SearchFiltersForm from "~/components/search-filters-form";
 import { ThemeToggle } from "~/components/theme-toggle";
@@ -12,11 +13,11 @@ import { Button } from "~/components/ui/button";
 import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
 import WorkoutList from "~/components/workout-list";
+import { WorkoutFilters } from "~/db/dto";
 import useGetWorkouts from "~/hooks/api/use-get-workouts";
 import { useBottomSheet } from "~/hooks/use-bottom-sheet";
 import usePageParams from "~/hooks/use-page-params";
 import useWorkoutFilterParams from "~/hooks/use-workout-filter-params";
-import { WorkoutFilters } from "~/types";
 
 export default function WorkoutsScreen() {
 	const {
@@ -32,7 +33,8 @@ export default function WorkoutsScreen() {
 		data: { count, data } = { count: 0, data: [] },
 		isPending,
 		isRefetching,
-		refetch
+		refetch,
+		error
 	} = useGetWorkouts({ ...filters, page });
 
 	const bottomSheet = useBottomSheet();
@@ -81,7 +83,12 @@ export default function WorkoutsScreen() {
 		return <WorkoutList.Loading />;
 	}
 
+	if (error) {
+		return <ErrorScreen error={error} onRetry={refetch} />;
+	}
+
 	const workouts = data ?? [];
+
 	return (
 		<View className="flex flex-1 flex-col">
 			<View className="p-4">

@@ -1,12 +1,33 @@
-import { like, sql } from "drizzle-orm";
+import { and, gte, lt, sql } from "drizzle-orm";
+import { prettifyError } from "zod";
 
+import { WorkoutWithExercisesSchema } from "~/db/dto";
 import { db } from "~/db/initalize";
 import { workoutLogs } from "~/db/schema";
 
 export default async function getWorkoutToday() {
-	const today = new Date().toISOString().split("T")[0];
+	// Get start and end of today in local timezone
+	const now = new Date();
+	const startOfToday = new Date(
+		now.getFullYear(),
+		now.getMonth(),
+		now.getDate()
+	);
+	const startOfTomorrow = new Date(
+		now.getFullYear(),
+		now.getMonth(),
+		now.getDate() + 1
+	);
+
+	// Convert to ISO strings (these will be in UTC)
+	const startOfTodayUTC = startOfToday.toISOString();
+	const startOfTomorrowUTC = startOfTomorrow.toISOString();
+
 	const workoutToday = await db.query.workoutLogs.findFirst({
-		where: like(workoutLogs.completedAt, `${today}%`)
+		where: and(
+			gte(workoutLogs.completedAt, startOfTodayUTC),
+			lt(workoutLogs.completedAt, startOfTomorrowUTC)
+		)
 	});
 
 	// If we already did a workout today, return null
@@ -30,5 +51,11 @@ export default async function getWorkoutToday() {
 		return null;
 	}
 
-	return randomWorkout;
+	const { data: workout, error: workoutError } =
+		WorkoutWithExercisesSchema.safeParse(randomWorkout);
+	if (workoutError) {
+		throw new Error(prettifyError(workoutError));
+	}
+
+	return workout;
 }

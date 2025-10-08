@@ -4,15 +4,15 @@ import { FlatList, FlatListProps, View } from "react-native";
 import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
 import WorkoutCard from "~/components/workout-card";
-import { Workout } from "~/types";
+import { WorkoutWithExercises } from "~/db/dto";
 
 import LoadingWorkoutList from "./loading";
 
-function renderItem({ item }: { item: Workout }) {
+function renderItem({ item }: { item: WorkoutWithExercises }) {
 	return <WorkoutCard workout={item} />;
 }
 
-function keyExtractor(item: Workout) {
+function keyExtractor(item: WorkoutWithExercises) {
 	return item.id.toString();
 }
 
@@ -22,7 +22,7 @@ function itemSeparatorComponent() {
 
 interface WorkoutsListProps
 	extends Omit<
-		FlatListProps<Workout>,
+		FlatListProps<WorkoutWithExercises>,
 		| "data"
 		| "key"
 		| "ItemSeparatorComponent"
@@ -31,7 +31,7 @@ interface WorkoutsListProps
 		| "renderItem"
 		| "keyExtractor"
 	> {
-	workouts: Workout[];
+	workouts: WorkoutWithExercises[];
 	refreshing?: boolean;
 	onRefresh?: () => Promise<unknown>;
 }

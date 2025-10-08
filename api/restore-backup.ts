@@ -1,45 +1,74 @@
+import {
+	ExportData,
+	PinnedWorkout,
+	PinnedWorkoutSchema,
+	WorkoutLog,
+	WorkoutLogSchema,
+	WorkoutWithExercises
+} from "~/db/dto";
 import { db } from "~/db/initalize";
 import { exercises, pinnedWorkouts, workoutLogs, workouts } from "~/db/schema";
-import { ExportData } from "~/types";
 
 export default async function restoreBackup(backupData: ExportData) {
+	const { data } = backupData;
 	return db.transaction(async (tx) => {
 		// Restore workouts and exercises
-		const createdWorkouts = await Promise.all(
-			backupData.data.workouts.map(async (workout) => {
-				const { exercises: workoutExercises, ...restOfWorkout } =
-					workout;
+		let createdWorkouts: WorkoutWithExercises[] = [];
+		let createdPinnedWorkouts: PinnedWorkout[] = [];
+		let createdWorkoutLogs: WorkoutLog[] = [];
 
-				const createdWorkout = await tx
-					.insert(workouts)
-					.values(restOfWorkout)
-					.returning();
+		if (data.workouts.length > 0) {
+			createdWorkouts = await Promise.all(
+				data.workouts.map(async (workout) => {
+					const { exercises: workoutExercises, ...restOfWorkout } =
+						workout;
 
-				const createdExercises = await tx
-					.insert(exercises)
-					.values(
-						workoutExercises.map((ex) => ({
-							...ex,
-							workoutId: workout.id
-						}))
-					)
-					.returning();
+					const createdWorkout = await tx
+						.insert(workouts)
+						.values(restOfWorkout)
+						.returning();
 
-				return { ...createdWorkout[0], exercises: createdExercises };
-			})
-		);
+					const createdExercises = await tx
+						.insert(exercises)
+						.values(
+							workoutExercises.map((ex) => ({
+								...ex,
+								workoutId: workout.id
+							}))
+						)
+						.returning();
+
+					return {
+						...createdWorkout[0],
+						exercises: createdExercises
+					};
+				})
+			);
+		}
 
 		// Restore pinned workouts
-		const createdPinnedWorkouts = await tx
-			.insert(pinnedWorkouts)
-			.values(backupData.data.pinned)
-			.returning();
+		if (data.pinned.length > 0) {
+			const result = await tx
+				.insert(pinnedWorkouts)
+				.values(data.pinned)
+				.returning();
+
+			createdPinnedWorkouts = result.map((pinned) =>
+				PinnedWorkoutSchema.parse(pinned)
+			);
+		}
 
 		// Restore workout logs
-		const createdWorkoutLogs = await tx
-			.insert(workoutLogs)
-			.values(backupData.data.logs)
-			.returning();
+		if (data.logs.length > 0) {
+			const result = await tx
+				.insert(workoutLogs)
+				.values(data.logs)
+				.returning();
+
+			createdWorkoutLogs = result.map((log) =>
+				WorkoutLogSchema.parse(log)
+			);
+		}
 
 		return {
 			workouts: createdWorkouts,

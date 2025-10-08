@@ -1,14 +1,24 @@
+import { prettifyError } from "zod";
+
+import { WorkoutLog, WorkoutLogSchema, WorkoutWithExercises } from "~/db/dto";
 import { db } from "~/db/initalize";
 import { workoutLogs } from "~/db/schema";
-import { Workout } from "~/types";
 
 export default async function createWorkoutLog({
 	workoutId,
 	date = new Date()
 }: {
-	workoutId: Workout["id"];
+	workoutId: WorkoutWithExercises["id"];
 	date?: Date;
-}) {
+}): Promise<WorkoutLog> {
+	const workout = await db.query.workouts.findFirst({
+		where: (workouts, { eq }) => eq(workouts.id, workoutId)
+	});
+
+	if (!workout) {
+		throw new Error("Workout not found");
+	}
+
 	const dateString = date.toISOString();
 
 	const result = await db
@@ -22,8 +32,10 @@ export default async function createWorkoutLog({
 		throw new Error("Failed to create workout log");
 	}
 
-	return {
-		...createdWorkoutLog,
-		completedAt: new Date(createdWorkoutLog.completedAt)
-	};
+	const { data, error } = WorkoutLogSchema.safeParse(createdWorkoutLog);
+	if (error) {
+		throw new Error(prettifyError(error));
+	}
+
+	return data;
 }

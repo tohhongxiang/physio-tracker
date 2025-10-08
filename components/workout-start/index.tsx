@@ -8,10 +8,10 @@ import goSound from "~/assets/audio/go.mp3";
 import readySound from "~/assets/audio/ready.mp3";
 import { Button } from "~/components/ui/button";
 import { Icon } from "~/components/ui/icon";
+import { WorkoutWithExercises } from "~/db/dto";
 import useSound from "~/hooks/use-sound";
 import hasDurationPerRep from "~/lib/has-duration-per-rep";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
-import { Workout } from "~/types";
 
 import BottomControls from "./bottom-controls";
 import ExerciseListNavigation from "./exercise-list-navigation";
@@ -26,7 +26,7 @@ const width = Dimensions.get("window").width;
 export default function WorkoutStartPage({
 	workout: { id: workoutId, exercises, name }
 }: {
-	workout: Workout;
+	workout: WorkoutWithExercises;
 }) {
 	const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
 	const currentExercise = useMemo(() => {

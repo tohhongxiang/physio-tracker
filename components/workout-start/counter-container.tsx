@@ -5,11 +5,11 @@ import { View } from "react-native";
 import { Button } from "~/components/ui/button";
 import { Icon } from "~/components/ui/icon";
 import { Text } from "~/components/ui/text";
+import { Exercise } from "~/db/dto";
 import { useBottomSheet } from "~/hooks/use-bottom-sheet";
 import hasDurationPerRep from "~/lib/has-duration-per-rep";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
 import { cn } from "~/lib/utils";
-import { Exercise } from "~/types";
 
 import BottomSheetModal from "../bottom-sheet-modal";
 import CounterDisplay from "./counter-display";

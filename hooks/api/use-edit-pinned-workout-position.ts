@@ -1,13 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 
 import editPinnedWorkoutPosition from "~/api/edit-pinned-workout-position";
-import { Workout } from "~/types";
 
 export default function useEditPinnedWorkoutPosition({
 	onSuccess,
 	onError
 }: {
-	onSuccess?: (data: { workoutId: Workout["id"]; position: number }) => void;
+	onSuccess?: (
+		data: Awaited<ReturnType<typeof editPinnedWorkoutPosition>>
+	) => void;
 	onError?: (error: Error) => void;
 } = {}) {
 	const { isPending, mutate, error } = useMutation({

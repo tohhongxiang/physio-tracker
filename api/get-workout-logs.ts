@@ -1,8 +1,12 @@
+import { prettifyError } from "zod";
+
+import { WorkoutLogWithWorkout, WorkoutLogWithWorkoutSchema } from "~/db/dto";
 import { db } from "~/db/initalize";
 
-export default async function getWorkoutLogs() {
+export default async function getWorkoutLogs(): Promise<
+	WorkoutLogWithWorkout[]
+> {
 	const result = await db.query.workoutLogs.findMany({
-		columns: { workoutId: false },
 		with: {
 			workout: {
 				with: {
@@ -13,8 +17,12 @@ export default async function getWorkoutLogs() {
 		orderBy: (workoutLogs, { desc }) => [desc(workoutLogs.completedAt)]
 	});
 
-	return result.map((log) => ({
-		...log,
-		completedAt: new Date(log.completedAt)
-	}));
+	return result.map((log) => {
+		const { data, error } = WorkoutLogWithWorkoutSchema.safeParse(log);
+		if (error) {
+			throw new Error(prettifyError(error));
+		}
+
+		return data;
+	});
 }

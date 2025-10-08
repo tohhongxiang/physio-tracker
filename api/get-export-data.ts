@@ -1,7 +1,7 @@
 import { Platform } from "react-native";
 
+import { ExportData, ExportDataOptions } from "~/db/dto";
 import { db } from "~/db/initalize";
-import { ExportData, ExportDataOptions } from "~/types";
 
 export default async function getExportData(
 	options: ExportDataOptions = {

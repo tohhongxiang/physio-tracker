@@ -1,16 +1,21 @@
 import { useCallback, useState } from "react";
-import { UseFormReturn, useFieldArray } from "react-hook-form";
+import { FieldArrayWithId, useFieldArray } from "react-hook-form";
 import { View } from "react-native";
 
 import BottomSheetModal from "~/components/bottom-sheet-modal";
+import { CreateExercise } from "~/db/dto";
 import { useBottomSheet } from "~/hooks/use-bottom-sheet";
 import useDeleteAlert from "~/hooks/use-delete-alert";
-import { CreateExercise } from "~/types";
 
 import { Button } from "../../ui/button";
 import { Text } from "../../ui/text";
 import ExerciseCard from "../../workout-details/exercise-card";
-import { WorkoutFormSchemaType } from "../schema";
+import {
+	ExerciseFormInput,
+	ExerciseFormOutput,
+	WorkoutFormInput
+} from "../schema";
+import useWorkoutForm from "../use-workout-form";
 import SingleExerciseForm from "./single-exercise-form";
 import VirtualizedExerciseList from "./virtualized-exercise-list";
 
@@ -26,7 +31,7 @@ export default function WorkoutExercises({
 	onGoToPreviousStep,
 	onSuccessfulSubmit
 }: {
-	form: UseFormReturn<WorkoutFormSchemaType>;
+	form: ReturnType<typeof useWorkoutForm>;
 	onGoToPreviousStep: () => void;
 	onSuccessfulSubmit: () => void;
 }) {
@@ -132,12 +137,14 @@ function useEditOrAddExercise({
 	onAddExercise,
 	onUpdateExercise
 }: {
-	exercises: CreateExercise[];
-	onAddExercise: (exercise: CreateExercise) => void;
-	onUpdateExercise: (index: number, exercise: CreateExercise) => void;
+	exercises: FieldArrayWithId<WorkoutFormInput, "exercises", "key">[];
+	onAddExercise: (exercise: ExerciseFormOutput) => void;
+	onUpdateExercise: (index: number, exercise: ExerciseFormOutput) => void;
 }) {
 	const [editingIndex, setEditingIndex] = useState(EMPTY_INDEX);
-	const [initialData, setInitialData] = useState<CreateExercise | null>(null);
+	const [initialData, setInitialData] = useState<ExerciseFormInput | null>(
+		null
+	);
 
 	const bottomSheet = useBottomSheet();
 	const handleStartAddExercise = () => {
