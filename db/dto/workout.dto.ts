@@ -49,8 +49,7 @@ export const WorkoutFiltersSchema = z.object({
 			""
 		])
 		.optional(),
-	limit: z.number().int().positive(),
-	offset: z.number().int().min(0).default(0)
+	limit: z.number().int().positive()
 });
 
 // Type exports

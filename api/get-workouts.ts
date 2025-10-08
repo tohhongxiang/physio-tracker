@@ -14,7 +14,6 @@ export default async function getWorkouts(
 	filters: WorkoutFilters & { page?: number } = {
 		search: "",
 		sortBy: "",
-		offset: 0,
 		limit: DEFAULT_LIMIT,
 		page: 0
 	}
@@ -24,8 +23,7 @@ export default async function getWorkouts(
 		WorkoutFiltersSchema.safeParse({
 			search: filters.search,
 			sortBy: filters.sortBy,
-			limit: filters.limit,
-			offset: (filters.page ?? 0) * filters.limit
+			limit: filters.limit
 		});
 
 	if (filtersError) {
@@ -45,7 +43,7 @@ export default async function getWorkouts(
 				]
 			}
 		},
-		offset: validatedFilters.offset,
+		offset: (filters.page ?? 0) * validatedFilters.limit,
 		orderBy: (workouts, { desc, asc }) => {
 			if (!validatedFilters.sortBy) {
 				return desc(workouts.id);

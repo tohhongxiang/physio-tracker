@@ -52,8 +52,8 @@ export default function WorkoutDetails({
 						index // if exercise has no ID (in create form), use index as key
 					) => (
 						<ExerciseCard
-							exercise={exercise}
 							key={exercise.id ?? `index-${index}`}
+							exercise={exercise}
 						/>
 					)
 				)}

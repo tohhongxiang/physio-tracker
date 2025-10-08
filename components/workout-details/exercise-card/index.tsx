@@ -1,20 +1,38 @@
-import { FieldArrayWithId } from "react-hook-form";
 import { View } from "react-native";
 
 import ReadMoreText from "~/components/read-more-text";
 import { Text } from "~/components/ui/text";
-import { WorkoutFormInput } from "~/components/workout-form/schema";
+import { CreateExercise } from "~/db/dto";
 import { cn } from "~/lib/utils";
 
 import ExerciseEffortDetails from "./exercise-effort-details";
 import ExerciseRestDetails from "./exercise-rest-details";
+
+// Flexible type that accepts both form data and saved exercises
+// Makes fields optional that may be undefined in form input, and weight accepts unknown (for form's coerced type)
+type ExerciseCardProps = Omit<
+	CreateExercise,
+	| "weight"
+	| "description"
+	| "weightUnit"
+	| "durationPerRepSeconds"
+	| "restBetweenRepsSeconds"
+	| "restBetweenSetsSeconds"
+> & {
+	weight: unknown;
+	description?: string;
+	weightUnit?: "kg" | "lbs" | "%BW";
+	durationPerRepSeconds?: number;
+	restBetweenRepsSeconds?: number;
+	restBetweenSetsSeconds?: number;
+};
 
 export default function ExerciseCard({
 	exercise,
 	className,
 	actions
 }: {
-	exercise: FieldArrayWithId<WorkoutFormInput, "exercises", "key">;
+	exercise: ExerciseCardProps;
 	className?: string;
 	actions?: React.ReactNode;
 }) {
@@ -47,7 +65,7 @@ export default function ExerciseCard({
 				<ExerciseEffortDetails
 					reps={exercise.reps}
 					sets={exercise.sets}
-					weight={exercise.weight}
+					weight={exercise.weight as number} // In the form, weight is coerced to number
 					weightUnit={exercise.weightUnit}
 					durationPerRepSeconds={exercise.durationPerRepSeconds}
 				/>
