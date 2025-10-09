@@ -62,13 +62,14 @@ export default function ImportDataDialog({
 				return;
 			}
 
-			const validationError = validateBackupData(data);
+			const { error: validationError, data: validatedData } =
+				validateBackupData(data);
 			if (validationError) {
-				setErrorMessage(validationError);
+				setErrorMessage(validationError.message);
 				return;
 			}
 
-			setParsedData(data as ExportData);
+			setParsedData(validatedData);
 			setSelectedFile(file);
 			setErrorMessage("");
 		} catch (err) {

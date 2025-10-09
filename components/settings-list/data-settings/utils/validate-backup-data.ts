@@ -1,20 +1,24 @@
 import { prettifyError } from "zod";
 
-import { ExportDataSchema } from "~/db/dto";
+import { ExportData, ExportDataSchema } from "~/db/dto";
 
-export default function validateBackupData(data: unknown): string {
+type ValidationResult =
+	| { error: Error; data: null }
+	| { error: null; data: ExportData };
+export default function validateBackupData(data: unknown): ValidationResult {
 	if (
 		!data ||
 		typeof data !== "object" ||
 		!(data as Record<string, unknown>)["data"]
 	) {
-		return "Invalid backup file";
+		return { data: null, error: new Error("Invalid backup file") };
 	}
 
-	const { error } = ExportDataSchema.safeParse(data);
+	const { data: validatedExportData, error } =
+		ExportDataSchema.safeParse(data);
 	if (error) {
-		return prettifyError(error);
+		return { data: null, error: new Error(prettifyError(error)) };
 	}
 
-	return "";
+	return { data: validatedExportData, error: null };
 }
