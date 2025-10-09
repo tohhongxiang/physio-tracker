@@ -20,50 +20,55 @@ const DialogClose = DialogPrimitive.Close;
 const FullWindowOverlay =
 	Platform.OS === "ios" ? RNFullWindowOverlay : React.Fragment;
 
-function DialogOverlay({
-	className,
-	children,
-	...props
-}: Omit<DialogPrimitive.OverlayProps, "asChild"> &
-	React.RefAttributes<DialogPrimitive.OverlayRef> & {
+const DialogOverlay = React.forwardRef<
+	DialogPrimitive.OverlayRef,
+	Omit<DialogPrimitive.OverlayProps, "asChild"> & {
 		children?: React.ReactNode;
-	}) {
+	}
+>(({ className, children, ...props }, ref) => {
 	return (
 		<FullWindowOverlay>
-			<DialogPrimitive.Overlay
-				className={cn(
-					"absolute bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center bg-black/50 p-2",
-					Platform.select({
-						web: "animate-in fade-in-0 fixed cursor-default [&>*]:cursor-auto"
-					}),
-					className
-				)}
-				{...props}
-				asChild={Platform.OS !== "web"}
+			<NativeOnlyAnimatedView
+				entering={FadeIn.duration(150)}
+				exiting={FadeOut.duration(150)}
+				style={{
+					position: "absolute",
+					top: 0,
+					bottom: 0,
+					left: 0,
+					right: 0
+				}}
 			>
-				<NativeOnlyAnimatedView
-					entering={FadeIn.duration(150)}
-					exiting={FadeOut.duration(150)}
+				<DialogPrimitive.Overlay
+					ref={ref}
+					className={cn(
+						"absolute bottom-0 left-0 right-0 top-0 z-50 flex items-center justify-center bg-black/50 p-2",
+						Platform.select({
+							web: "animate-in fade-in-0 fixed cursor-default [&>*]:cursor-auto"
+						}),
+						className
+					)}
+					closeOnPress
+					{...props}
 				>
 					<>{children}</>
-				</NativeOnlyAnimatedView>
-			</DialogPrimitive.Overlay>
+				</DialogPrimitive.Overlay>
+			</NativeOnlyAnimatedView>
 		</FullWindowOverlay>
 	);
-}
-function DialogContent({
-	className,
-	portalHost,
-	children,
-	...props
-}: DialogPrimitive.ContentProps &
-	React.RefAttributes<DialogPrimitive.ContentRef> & {
+});
+DialogOverlay.displayName = "DialogOverlay";
+const DialogContent = React.forwardRef<
+	DialogPrimitive.ContentRef,
+	DialogPrimitive.ContentProps & {
 		portalHost?: string;
-	}) {
+	}
+>(({ className, portalHost, children, ...props }, ref) => {
 	return (
 		<DialogPortal hostName={portalHost}>
 			<DialogOverlay>
 				<DialogPrimitive.Content
+					ref={ref}
 					className={cn(
 						"bg-background border-border z-50 mx-auto flex w-full max-w-[calc(100%-2rem)] flex-col gap-4 rounded-lg border p-6 shadow-lg shadow-black/5 sm:max-w-lg",
 						Platform.select({
@@ -95,7 +100,8 @@ function DialogContent({
 			</DialogOverlay>
 		</DialogPortal>
 	);
-}
+});
+DialogContent.displayName = "DialogContent";
 
 function DialogHeader({ className, ...props }: ViewProps) {
 	return (
@@ -121,12 +127,13 @@ function DialogFooter({ className, ...props }: ViewProps) {
 	);
 }
 
-function DialogTitle({
-	className,
-	...props
-}: DialogPrimitive.TitleProps & React.RefAttributes<DialogPrimitive.TitleRef>) {
+const DialogTitle = React.forwardRef<
+	DialogPrimitive.TitleRef,
+	DialogPrimitive.TitleProps
+>(({ className, ...props }, ref) => {
 	return (
 		<DialogPrimitive.Title
+			ref={ref}
 			className={cn(
 				"text-foreground text-lg font-semibold leading-none",
 				className
@@ -134,20 +141,22 @@ function DialogTitle({
 			{...props}
 		/>
 	);
-}
+});
+DialogTitle.displayName = "DialogTitle";
 
-function DialogDescription({
-	className,
-	...props
-}: DialogPrimitive.DescriptionProps &
-	React.RefAttributes<DialogPrimitive.DescriptionRef>) {
+const DialogDescription = React.forwardRef<
+	DialogPrimitive.DescriptionRef,
+	DialogPrimitive.DescriptionProps
+>(({ className, ...props }, ref) => {
 	return (
 		<DialogPrimitive.Description
+			ref={ref}
 			className={cn("text-muted-foreground text-sm", className)}
 			{...props}
 		/>
 	);
-}
+});
+DialogDescription.displayName = "DialogDescription";
 
 export {
 	Dialog,
