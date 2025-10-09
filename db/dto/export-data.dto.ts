@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 import { PinnedWorkoutSchema } from "./pinned-workout.dto";
-import { WorkoutLogRawSchema } from "./workout-log.dto";
+import { WorkoutLogSchema } from "./workout-log.dto";
 import { WorkoutWithExercisesSchema } from "./workout.dto";
 
 // Export Data Options Schema
@@ -20,7 +20,7 @@ export const ExportDataSchema = z.object({
 	}),
 	data: z.object({
 		workouts: z.array(WorkoutWithExercisesSchema),
-		logs: z.array(WorkoutLogRawSchema),
+		logs: z.array(WorkoutLogSchema),
 		pinned: z.array(PinnedWorkoutSchema)
 	})
 });

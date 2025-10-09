@@ -62,7 +62,12 @@ export default async function restoreBackup(backupData: ExportData) {
 		if (data.logs.length > 0) {
 			const result = await tx
 				.insert(workoutLogs)
-				.values(data.logs)
+				.values(
+					data.logs.map((log) => ({
+						...log,
+						completedAt: log.completedAt.toISOString()
+					}))
+				)
 				.returning();
 
 			createdWorkoutLogs = result.map((log) =>

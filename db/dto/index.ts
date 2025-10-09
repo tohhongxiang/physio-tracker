@@ -27,12 +27,10 @@ export {
 	CreateWorkoutLogSchema,
 	EditWorkoutLogSchema,
 	WorkoutLogSchema,
-	WorkoutLogRawSchema,
 	WorkoutLogWithWorkoutSchema,
 	type CreateWorkoutLog,
 	type EditWorkoutLog,
 	type WorkoutLog,
-	type WorkoutLogRaw,
 	type WorkoutLogWithWorkout
 } from "./workout-log.dto";
 

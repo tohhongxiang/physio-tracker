@@ -72,7 +72,6 @@ export default function ImportDataDialog({
 			setSelectedFile(file);
 			setErrorMessage("");
 		} catch (err) {
-			console.error(err);
 			const errMessage =
 				err instanceof Error ? err.message : "Unknown error";
 			setErrorMessage(`Failed to pick a file: ${errMessage}`);

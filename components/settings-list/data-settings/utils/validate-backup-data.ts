@@ -11,9 +11,9 @@ export default function validateBackupData(data: unknown): string {
 		return "Invalid backup file";
 	}
 
-	const result = ExportDataSchema.safeParse(data);
-	if (!result.success) {
-		return prettifyError(result.error);
+	const { error } = ExportDataSchema.safeParse(data);
+	if (error) {
+		return prettifyError(error);
 	}
 
 	return "";

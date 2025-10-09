@@ -1,6 +1,13 @@
 import { Platform } from "react-native";
+import { prettifyError } from "zod";
 
-import { ExportData, ExportDataOptions } from "~/db/dto";
+import {
+	ExportData,
+	ExportDataOptions,
+	PinnedWorkoutSchema,
+	WorkoutLogSchema,
+	WorkoutWithExercisesSchema
+} from "~/db/dto";
 import { db } from "~/db/initalize";
 
 export default async function getExportData(
@@ -38,7 +45,16 @@ export default async function getExportData(
 			orderBy: (workouts, { asc }) => [asc(workouts.id)]
 		});
 
-		data.data.workouts = workouts;
+		const validatedWorkouts = workouts.map((workout) => {
+			const { data, error } =
+				WorkoutWithExercisesSchema.safeParse(workout);
+			if (error) {
+				throw new Error(prettifyError(error));
+			}
+			return data;
+		});
+
+		data.data.workouts = validatedWorkouts;
 	}
 
 	if (options.logs) {
@@ -46,7 +62,15 @@ export default async function getExportData(
 			orderBy: (workoutLogs, { desc }) => [desc(workoutLogs.completedAt)]
 		});
 
-		data.data.logs = workoutLogs;
+		const validatedWorkoutLogs = workoutLogs.map((log) => {
+			const { data, error } = WorkoutLogSchema.safeParse(log);
+			if (error) {
+				throw new Error(prettifyError(error));
+			}
+			return data;
+		});
+
+		data.data.logs = validatedWorkoutLogs;
 	}
 
 	// Export pinned workouts
@@ -55,7 +79,15 @@ export default async function getExportData(
 			orderBy: (pinnedWorkouts, { asc }) => [asc(pinnedWorkouts.position)]
 		});
 
-		data.data.pinned = pinnedWorkouts;
+		const validatedPinnedWorkouts = pinnedWorkouts.map((workout) => {
+			const { data, error } = PinnedWorkoutSchema.safeParse(workout);
+			if (error) {
+				throw new Error(prettifyError(error));
+			}
+			return data;
+		});
+
+		data.data.pinned = validatedPinnedWorkouts;
 	}
 
 	return data;
