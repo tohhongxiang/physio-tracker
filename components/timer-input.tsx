@@ -5,6 +5,7 @@ import {
 	Dialog,
 	DialogClose,
 	DialogContent,
+	DialogDescription,
 	DialogFooter,
 	DialogHeader,
 	DialogTitle,
@@ -22,12 +23,14 @@ export default function TimerInput({
 	onConfirm,
 	children,
 	title = DEFAULT_TITLE,
+	description = "",
 	allowZeroDuration = false
 }: {
 	value?: number;
 	onConfirm?: (durationSeconds: number) => void;
 	children?: React.ReactNode;
 	title?: string;
+	description?: string;
 	allowZeroDuration?: boolean;
 }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -39,9 +42,8 @@ export default function TimerInput({
 		value ? secondsToInputString(value) : ZERO_DURATION_INPUT
 	);
 	const inputRef = useRef<TextInput | null>(null);
-
 	function handleFocusInput() {
-		inputRef.current?.blur();
+		inputRef.current?.blur(); // TODO: Do not blur and refocus if already focused
 		inputRef.current?.focus();
 	}
 
@@ -80,16 +82,19 @@ export default function TimerInput({
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle>{title}</DialogTitle>
+					{description && (
+						<DialogDescription>{description}</DialogDescription>
+					)}
 				</DialogHeader>
 				<TouchableWithoutFeedback
 					onPress={() => inputRef.current?.blur()}
 				>
-					<View>
+					<View className="flex flex-col items-center justify-center">
 						<TouchableWithoutFeedback
 							onPress={handleFocusInput}
 							onBlur={() => inputRef.current?.blur()}
 						>
-							<View className="flex w-full flex-row items-baseline gap-3 p-4">
+							<View className="flex w-full flex-row items-baseline gap-3 px-4 justify-center">
 								<View className="flex flex-row items-baseline gap-1">
 									<Text className="text-7xl font-bold">
 										{durationInput.hours
@@ -129,7 +134,7 @@ export default function TimerInput({
 								onChangeText={handleChangeText}
 								keyboardType="number-pad"
 								placeholder="00"
-								className="native:h-0 native:w-0 left-[300em] h-0 w-0 border-none opacity-0 outline-none"
+								className="native:h-0 native:w-0 left-[300em] h-0 w-0 border-none opacity-0 outline-none p-0 m-0"
 								autoFocus
 							/>
 						</View>
