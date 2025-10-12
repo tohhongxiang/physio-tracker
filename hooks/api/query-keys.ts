@@ -30,3 +30,7 @@ export const exportDataQueryKeys = {
 	filtered: (filters: ExportDataOptions) =>
 		[...exportDataQueryKeys.all, filters] as const
 };
+
+export const workoutSettingsQueryKeys = {
+	all: ["workout-settings"] as const
+};

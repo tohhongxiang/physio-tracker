@@ -31,7 +31,8 @@ export default function ExportDataDialog({
 	const [options, setOptions] = useState({
 		workouts: true, // always included
 		pinned: true,
-		logs: true
+		logs: true,
+		settings: true
 	});
 
 	function toggleCheckedState(key: keyof typeof options) {
@@ -46,7 +47,8 @@ export default function ExportDataDialog({
 			return {
 				workouts: true, // always stay included
 				pinned: !allSelected,
-				logs: !allSelected
+				logs: !allSelected,
+				settings: !allSelected
 			};
 		});
 	}
@@ -161,6 +163,20 @@ export default function ExportDataDialog({
 							onPress={toggleCheckedState("logs")}
 						>
 							Workout Logs
+						</Label>
+					</View>
+
+					<View className="flex flex-row items-center gap-2">
+						<Checkbox
+							id="settings"
+							checked={options.settings}
+							onCheckedChange={toggleCheckedState("settings")}
+						/>
+						<Label
+							htmlFor="settings"
+							onPress={toggleCheckedState("settings")}
+						>
+							Workout Settings
 						</Label>
 					</View>
 				</View>

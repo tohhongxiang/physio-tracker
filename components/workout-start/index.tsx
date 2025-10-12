@@ -1,3 +1,4 @@
+import * as Haptics from "expo-haptics";
 import { Link, Stack, useRouter } from "expo-router";
 import { ClipboardCheck, Pencil, Volume2, VolumeX } from "lucide-react-native";
 import { useCallback, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -9,6 +10,7 @@ import readySound from "~/assets/audio/ready.mp3";
 import { Button } from "~/components/ui/button";
 import { Icon } from "~/components/ui/icon";
 import { WorkoutWithExercises } from "~/db/dto";
+import useGetWorkoutSettings from "~/hooks/api/use-get-workout-settings";
 import useSound from "~/hooks/use-sound";
 import hasDurationPerRep from "~/lib/has-duration-per-rep";
 import hasRestBetweenReps from "~/lib/has-rest-between-reps";
@@ -23,11 +25,15 @@ import { getDurationForTimer } from "./use-exercise-controls/utils";
 import WorkoutProgressIndicator from "./workout-progress-indicator";
 
 const width = Dimensions.get("window").width;
+const DEFAULT_WARNING_TIME_SECONDS = 3;
 export default function WorkoutStartPage({
 	workout: { id: workoutId, exercises, name }
 }: {
 	workout: WorkoutWithExercises;
 }) {
+	// Fetch workout settings
+	const { data: settings } = useGetWorkoutSettings();
+
 	const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
 	const currentExercise = useMemo(() => {
 		return exercises[currentExerciseIndex];
@@ -54,7 +60,10 @@ export default function WorkoutStartPage({
 		});
 	}, [currentExerciseIndex, exercises.length, router, workoutId]);
 
-	const [isMuted, setIsMuted] = useState(false);
+	// Initialize mute state from settings
+	const [isMuted, setIsMuted] = useState(
+		settings?.soundsMutedByDefault ?? false
+	);
 	const goSoundPlayer = useSound(goSound, isMuted);
 	const readySoundPlayer = useSound(readySound, isMuted);
 
@@ -66,14 +75,40 @@ export default function WorkoutStartPage({
 			remainingTimeMs: number;
 			totalDurationMs: number;
 		}) => {
+			const warningTimeMs =
+				(settings?.countdownWarningSeconds ??
+					DEFAULT_WARNING_TIME_SECONDS) * 1000;
+
 			if (
-				remainingTimeMs < Math.min(3000, totalDurationMs - 1000) // make sure readySound and goSound do not play at the same time
+				remainingTimeMs <
+				Math.min(warningTimeMs, totalDurationMs - 1000) // make sure readySound and goSound do not play at the same time
 			) {
 				readySoundPlayer.play();
+
+				// Haptic feedback on warning
+				if (settings?.hapticOnWarning) {
+					Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+				}
 			}
 		},
-		[readySoundPlayer]
+		[readySoundPlayer, settings]
 	);
+
+	const handleTimerComplete = useCallback(() => {
+		goSoundPlayer.play();
+
+		// Haptic feedback on complete
+		if (settings?.hapticOnComplete) {
+			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+		}
+	}, [goSoundPlayer, settings]);
+
+	const handleTimerStart = useCallback(() => {
+		// Haptic feedback on timer start
+		if (settings?.hapticOnTimerStart) {
+			Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+		}
+	}, [settings]);
 
 	const {
 		state,
@@ -87,9 +122,11 @@ export default function WorkoutStartPage({
 		restart
 	} = useExerciseControls({
 		exercise: currentExercise,
-		onTimerComplete: goSoundPlayer.play,
+		onTimerComplete: handleTimerComplete,
 		onTimerUpdate: handleTimerUpdate,
-		onExerciseComplete: handleGoToNextExercise
+		onTimerStart: handleTimerStart,
+		onExerciseComplete: handleGoToNextExercise,
+		readyUpDurationSeconds: settings?.readyUpDurationSeconds ?? 10
 	});
 
 	const previousExerciseIndex = useRef(0);
@@ -202,7 +239,8 @@ export default function WorkoutStartPage({
 									? remainingTimeMs
 									: getDurationForTimer(
 											exercise,
-											STATES.READY
+											STATES.READY,
+											settings?.readyUpDurationSeconds
 										) * 1000
 							}
 							state={isActiveExercise ? state : STATES.READY}

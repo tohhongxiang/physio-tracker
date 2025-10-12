@@ -23,12 +23,13 @@ export const resetTimer = ({
 
 export const getDurationForTimer = (
 	exercise: Exercise,
-	state: keyof typeof STATES
+	state: keyof typeof STATES,
+	readyUpDurationSeconds: number = STARTING_TIME_SECONDS
 ) => {
 	if (state === STATES.READY) {
 		// When in READY state, predict what the first timer duration will be
 		if (hasTimedReps(exercise)) {
-			return STARTING_TIME_SECONDS;
+			return readyUpDurationSeconds;
 		} else if (hasRestBetweenReps(exercise)) {
 			return exercise.restBetweenRepsSeconds;
 		} else if (hasRestBetweenSets(exercise)) {
@@ -40,7 +41,7 @@ export const getDurationForTimer = (
 	}
 
 	if (state === STATES.STARTING) {
-		return STARTING_TIME_SECONDS;
+		return readyUpDurationSeconds;
 	}
 
 	if (state === STATES.RUNNING) {

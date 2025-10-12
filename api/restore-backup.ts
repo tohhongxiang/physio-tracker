@@ -1,13 +1,23 @@
+import { eq } from "drizzle-orm";
+
 import {
 	ExportData,
 	PinnedWorkout,
 	PinnedWorkoutSchema,
 	WorkoutLog,
 	WorkoutLogSchema,
+	WorkoutSettings,
+	WorkoutSettingsSchema,
 	WorkoutWithExercises
 } from "~/db/dto";
 import { db } from "~/db/initalize";
-import { exercises, pinnedWorkouts, workoutLogs, workouts } from "~/db/schema";
+import {
+	exercises,
+	pinnedWorkouts,
+	workoutLogs,
+	workoutSettings,
+	workouts
+} from "~/db/schema";
 
 export default async function restoreBackup(backupData: ExportData) {
 	const { data } = backupData;
@@ -16,6 +26,7 @@ export default async function restoreBackup(backupData: ExportData) {
 		let createdWorkouts: WorkoutWithExercises[] = [];
 		let createdPinnedWorkouts: PinnedWorkout[] = [];
 		let createdWorkoutLogs: WorkoutLog[] = [];
+		let restoredSettings: WorkoutSettings | null = null;
 
 		if (data.workouts.length > 0) {
 			createdWorkouts = await Promise.all(
@@ -75,10 +86,40 @@ export default async function restoreBackup(backupData: ExportData) {
 			);
 		}
 
+		// Restore workout settings (if provided)
+		if (data.settings) {
+			// Check if settings already exist
+			const existingSettings = await tx.query.workoutSettings.findFirst();
+
+			if (existingSettings) {
+				// Update existing settings, merging with backup data
+				await tx
+					.update(workoutSettings)
+					.set({
+						...data.settings,
+						id: 1 // Ensure singleton ID
+					})
+					.where(eq(workoutSettings.id, 1));
+			} else {
+				// Insert new settings from backup
+				await tx.insert(workoutSettings).values({
+					...data.settings,
+					id: 1 // Ensure singleton ID
+				});
+			}
+
+			// Fetch the settings back to get the correct types (booleans from SQLite)
+			const restored = await tx.query.workoutSettings.findFirst();
+			if (restored) {
+				restoredSettings = WorkoutSettingsSchema.parse(restored);
+			}
+		}
+
 		return {
 			workouts: createdWorkouts,
 			pinned: createdPinnedWorkouts,
-			logs: createdWorkoutLogs
+			logs: createdWorkoutLogs,
+			settings: restoredSettings
 		};
 	});
 }

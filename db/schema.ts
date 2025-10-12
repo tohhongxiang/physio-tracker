@@ -63,6 +63,31 @@ export const pinnedWorkouts = sqliteTable("pinned_workouts", {
 	position: int().notNull().unique()
 });
 
+export const workoutSettings = sqliteTable("workout_settings", {
+	id: int().primaryKey().notNull().default(1),
+	// Timer Settings
+	readyUpDurationSeconds: int("ready_up_duration_seconds")
+		.notNull()
+		.default(10),
+	countdownWarningSeconds: int("countdown_warning_seconds")
+		.notNull()
+		.default(3),
+	// Sound Settings
+	soundsMutedByDefault: int("sounds_muted_by_default", { mode: "boolean" })
+		.notNull()
+		.default(false),
+	// Haptic Settings
+	hapticOnTimerStart: int("haptic_on_timer_start", { mode: "boolean" })
+		.notNull()
+		.default(false),
+	hapticOnWarning: int("haptic_on_warning", { mode: "boolean" })
+		.notNull()
+		.default(true),
+	hapticOnComplete: int("haptic_on_complete", { mode: "boolean" })
+		.notNull()
+		.default(true)
+});
+
 export const workoutsRelations = relations(workouts, ({ many }) => ({
 	exercises: many(exercises),
 	workoutLogs: many(workoutLogs)

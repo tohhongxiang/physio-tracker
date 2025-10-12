@@ -6,6 +6,7 @@ import {
 	ExportDataOptions,
 	PinnedWorkoutSchema,
 	WorkoutLogSchema,
+	WorkoutSettingsSchema,
 	WorkoutWithExercisesSchema
 } from "~/db/dto";
 import { db } from "~/db/initalize";
@@ -14,7 +15,8 @@ export default async function getExportData(
 	options: ExportDataOptions = {
 		workouts: true,
 		logs: true,
-		pinned: true
+		pinned: true,
+		settings: true
 	}
 ) {
 	const timestamp = new Date().toISOString();
@@ -28,7 +30,8 @@ export default async function getExportData(
 		data: {
 			workouts: [],
 			logs: [],
-			pinned: []
+			pinned: [],
+			settings: null
 		}
 	} as ExportData;
 
@@ -88,6 +91,20 @@ export default async function getExportData(
 		});
 
 		data.data.pinned = validatedPinnedWorkouts;
+	}
+
+	// Export workout settings
+	if (options.settings) {
+		const settings = await db.query.workoutSettings.findFirst();
+
+		if (settings) {
+			const { data: validatedSettings, error } =
+				WorkoutSettingsSchema.safeParse(settings);
+			if (error) {
+				throw new Error(prettifyError(error));
+			}
+			data.data.settings = validatedSettings;
+		}
 	}
 
 	return data;

@@ -53,3 +53,11 @@ export {
 	type ExportDataOptions,
 	type ExportData
 } from "./export-data.dto";
+
+// Workout Settings DTOs
+export {
+	WorkoutSettingsSchema,
+	UpdateWorkoutSettingsSchema,
+	type WorkoutSettings,
+	type UpdateWorkoutSettings
+} from "./workout-settings.dto";

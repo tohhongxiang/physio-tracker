@@ -85,9 +85,15 @@ export default function ImportDataDialog({
 		error: restoreBackupError
 	} = useRestoreBackup({
 		onSuccess: (data) => {
-			toast.success(
-				`Restored ${data.workouts.length} workout(s), ${data.pinned.length} pinned workout(s) and ${data.logs.length} workout logs`
-			);
+			const parts = [
+				`${data.workouts.length} workout(s)`,
+				`${data.pinned.length} pinned workout(s)`,
+				`${data.logs.length} workout logs`
+			];
+			if (data.settings) {
+				parts.push("workout settings");
+			}
+			toast.success(`Restored ${parts.join(", ")}`);
 			setIsOpen(false);
 			setParsedData(null);
 			setSelectedFile(null);
@@ -138,8 +144,8 @@ export default function ImportDataDialog({
 							</Text>
 						</View>
 						<Text className="opacity-80 text-destructive-foreground">
-							Your current workouts, logs, and pinned workouts
-							will be permanently deleted.
+							Your current workouts, logs, pinned workouts, and
+							settings will be permanently deleted.
 						</Text>
 					</View>
 				</DialogHeader>
@@ -178,7 +184,7 @@ export default function ImportDataDialog({
 									timeStyle: "short"
 								}).format(new Date(parsedData.timestamp))}
 							</Text>
-							<Text>{`${parsedData.data.workouts.length} workout(s), ${parsedData.data.pinned.length} pinned, ${parsedData.data.logs.length} log(s)`}</Text>
+							<Text>{`${parsedData.data.workouts.length} workout(s), ${parsedData.data.pinned.length} pinned, ${parsedData.data.logs.length} log(s)${parsedData.data.settings ? ", settings" : ""}`}</Text>
 						</View>
 					)}
 					{restoreBackupError && (

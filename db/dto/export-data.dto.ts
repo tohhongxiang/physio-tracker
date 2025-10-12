@@ -2,13 +2,15 @@ import { z } from "zod";
 
 import { PinnedWorkoutSchema } from "./pinned-workout.dto";
 import { WorkoutLogSchema } from "./workout-log.dto";
+import { WorkoutSettingsSchema } from "./workout-settings.dto";
 import { WorkoutWithExercisesSchema } from "./workout.dto";
 
 // Export Data Options Schema
 export const ExportDataOptionsSchema = z.object({
 	workouts: z.boolean().default(true),
 	logs: z.boolean().default(true),
-	pinned: z.boolean().default(true)
+	pinned: z.boolean().default(true),
+	settings: z.boolean().default(true)
 });
 
 // Export Data Schema
@@ -21,7 +23,8 @@ export const ExportDataSchema = z.object({
 	data: z.object({
 		workouts: z.array(WorkoutWithExercisesSchema),
 		logs: z.array(WorkoutLogSchema),
-		pinned: z.array(PinnedWorkoutSchema)
+		pinned: z.array(PinnedWorkoutSchema),
+		settings: WorkoutSettingsSchema.nullable().optional() // Optional for backwards compatibility with old backups
 	})
 });
 

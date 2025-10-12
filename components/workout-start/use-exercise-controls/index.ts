@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Exercise } from "~/db/dto";
 import useCountdownTimer from "~/hooks/use-countdown-timer";
 
-import { STATES } from "./constants";
+import { STARTING_TIME_SECONDS, STATES } from "./constants";
 import {
 	canNavigate,
 	getDurationForTimer,
@@ -24,7 +24,9 @@ export default function useExerciseControls({
 	exercise,
 	onExerciseComplete,
 	onTimerUpdate,
-	onTimerComplete
+	onTimerComplete,
+	onTimerStart,
+	readyUpDurationSeconds = STARTING_TIME_SECONDS
 }: {
 	exercise: Exercise;
 	onExerciseComplete?: () => unknown;
@@ -36,6 +38,8 @@ export default function useExerciseControls({
 		totalDurationMs: number;
 	}) => unknown;
 	onTimerComplete?: () => unknown;
+	onTimerStart?: () => unknown;
+	readyUpDurationSeconds?: number;
 }) {
 	const [isRunning, setIsRunning] = useState(false);
 	const [state, setState] = useState<keyof typeof STATES>(STATES.READY);
@@ -110,8 +114,8 @@ export default function useExerciseControls({
 	}, [exercise, state, handleExerciseComplete]);
 
 	const durationSeconds = useMemo(
-		() => getDurationForTimer(exercise, state),
-		[exercise, state]
+		() => getDurationForTimer(exercise, state, readyUpDurationSeconds),
+		[exercise, state, readyUpDurationSeconds]
 	);
 	const handleTimerComplete = useCallback(() => {
 		switch (state) {
@@ -197,6 +201,7 @@ export default function useExerciseControls({
 		durationMs: durationSeconds * 1000,
 		onTimerComplete: handleTimerComplete,
 		onTimerUpdate: handleTimerUpdate,
+		onTimerStart,
 		key: timerKey
 	});
 
