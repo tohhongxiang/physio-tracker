@@ -42,19 +42,20 @@ export default async function editPinnedWorkoutPosition({
 				)
 			);
 
-		// Shift affected workouts to the correct position
+		// Move the pinned workout to the new position
+		const updatedPinnedWorkoutResult = await tx
+			.update(pinnedWorkouts)
+			.set({ position: newIndex })
+			.where(eq(pinnedWorkouts.workoutId, workoutId))
+			.returning();
+
+		// All remaining affected workouts have negative index, and need to be shifted to the correct position
 		const isPinnedWorkoutMovedBack = currentIndex < newIndex;
 		const shift = isPinnedWorkoutMovedBack ? -1 : 1;
 		await tx
 			.update(pinnedWorkouts)
 			.set({ position: sql`-${pinnedWorkouts.position} - 1 + ${shift}` })
 			.where(lt(pinnedWorkouts.position, 0));
-
-		const updatedPinnedWorkoutResult = await tx
-			.update(pinnedWorkouts)
-			.set({ position: newIndex })
-			.where(eq(pinnedWorkouts.workoutId, workoutId))
-			.returning();
 
 		const updatedPinnedWorkout = updatedPinnedWorkoutResult[0];
 		if (!updatedPinnedWorkout) {

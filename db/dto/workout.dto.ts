@@ -25,12 +25,9 @@ export const EditWorkoutSchema = WorkoutBase.partial().extend({
 
 // Response = base + id + transformed timestamps
 export const WorkoutSchema = WorkoutBase.extend({
-	id: z.number().int().positive()
-	// createdAt: z.iso.datetime().transform((str) => new Date(str)),
-	// updatedAt: z
-	// 	.string()
-	// 	.datetime()
-	// 	.transform((str) => new Date(str)),
+	id: z.number().int().positive(),
+	createdAt: z.coerce.date(),
+	updatedAt: z.coerce.date()
 });
 
 export const WorkoutWithExercisesSchema = WorkoutSchema.extend({

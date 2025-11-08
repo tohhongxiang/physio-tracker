@@ -48,39 +48,39 @@ eas build --profile production --platform ios # Build for production on ios
 [x] Pinned workouts
 [x] Able to mute sound
 [x] Backup workouts
-[] Settings tab 
-- Audio and sound settings 
-  - Enable/disable timer completion sounds and countdown warning sounds 
-  - Adjust volume level for workout sounds 
-  - Enable/disable haptic feedback for timer events 
-  - Custom sound selection 
-- Timer and workout settings 
-  - Default timer duration 
-  - Countdown warning time 
-  - Auto start next exercise 
-- Exercise and weight settings 
-  - Default weight unit 
-  - Default sets and reps 
-  - Set user's body weight for %BW calculations?? 
-  - Exercise display order?? 
-- Appearance settings 
-  - Theme 
-  - Color scheme 
-  - Timer display style 
-  - Data and privacy settings 
-- Backup settings 
-  - Clear data 
-  - Analytics 
-  - App behavior settings 
-  - Keep screen on 
-  - Auto-pause on phone calls 
-  - Startup screen: Choose which tab to open when launching the application 
-  - Calendar and scheduling 
-  - Week start day 
-  - Date format 
-  - Workout reminders 
-  - Goal tracking
-[] Haptic feedback for workout start
+[x] Settings tab 
+  - Audio and sound settings 
+    [x] Enable/disable timer completion sounds and countdown warning sounds 
+    [] Adjust volume level for workout sounds 
+    [x] Enable/disable haptic feedback for timer events 
+    [x] Custom sound selection 
+  [x] Timer and workout settings 
+    [x] Default timer duration 
+    [x] Countdown warning time 
+    - Auto start next exercise 
+  - Exercise and weight settings 
+    - Default weight unit 
+    - Default sets and reps 
+    - Set user's body weight for %BW calculations?? 
+    - Exercise display order?? 
+  - Appearance settings 
+    - Theme 
+    - Color scheme 
+    - Timer display style 
+    - Data and privacy settings 
+  - Backup settings 
+    - Clear data 
+    - Analytics 
+    - App behavior settings 
+    - Keep screen on 
+    - Auto-pause on phone calls 
+    - Startup screen: Choose which tab to open when launching the application 
+    - Calendar and scheduling 
+    - Week start day 
+    - Date format 
+    - Workout reminders 
+    - Goal tracking
+[x] Haptic feedback for workout start
 
 # Resources
 

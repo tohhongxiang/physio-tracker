@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import {
 	int,
 	real,
@@ -10,9 +10,14 @@ import {
 export const workouts = sqliteTable("workouts", {
 	id: int().primaryKey({ autoIncrement: true }),
 	name: text().notNull(),
-	description: text().notNull().default("")
-	// createdAt: text("created_at").notNull().default("CURRENT_TIMESTAMP"),
-	// updatedAt: text("updated_at").notNull().default("CURRENT_TIMESTAMP")
+	description: text().notNull().default(""),
+	createdAt: text("created_at")
+		.notNull()
+		.default(sql`CURRENT_TIMESTAMP`),
+	updatedAt: text("updated_at")
+		.notNull()
+		.default(sql`CURRENT_TIMESTAMP`)
+		.$onUpdate(() => sql`CURRENT_TIMESTAMP`)
 });
 
 export const exercises = sqliteTable(
@@ -39,7 +44,14 @@ export const exercises = sqliteTable(
 		workoutId: int("workout_id")
 			.references(() => workouts.id, { onDelete: "cascade" })
 			.notNull(),
-		position: int().notNull().default(0)
+		position: int().notNull().default(0),
+		createdAt: text("created_at")
+			.notNull()
+			.default(sql`CURRENT_TIMESTAMP`),
+		updatedAt: text("updated_at")
+			.notNull()
+			.default(sql`CURRENT_TIMESTAMP`)
+			.$onUpdate(() => sql`CURRENT_TIMESTAMP`)
 	},
 	(table) => ({
 		execisesWorkoutPositionUnique: uniqueIndex(
@@ -53,14 +65,28 @@ export const workoutLogs = sqliteTable("workout_logs", {
 	workoutId: int("workout_id")
 		.references(() => workouts.id, { onDelete: "cascade" })
 		.notNull(),
-	completedAt: text("completed_at").notNull() // Store dates as ISO string e.g. '2025-05-31T16:00:00.000Z'
+	completedAt: text("completed_at").notNull(), // Store dates as ISO string e.g. '2025-05-31T16:00:00.000Z'
+	createdAt: text("created_at")
+		.notNull()
+		.default(sql`CURRENT_TIMESTAMP`),
+	updatedAt: text("updated_at")
+		.notNull()
+		.default(sql`CURRENT_TIMESTAMP`)
+		.$onUpdate(() => sql`CURRENT_TIMESTAMP`)
 });
 
 export const pinnedWorkouts = sqliteTable("pinned_workouts", {
 	workoutId: int("workout_id")
 		.primaryKey()
 		.references(() => workouts.id, { onDelete: "cascade" }),
-	position: int().notNull().unique()
+	position: int().notNull().unique(),
+	createdAt: text("created_at")
+		.notNull()
+		.default(sql`CURRENT_TIMESTAMP`),
+	updatedAt: text("updated_at")
+		.notNull()
+		.default(sql`CURRENT_TIMESTAMP`)
+		.$onUpdate(() => sql`CURRENT_TIMESTAMP`)
 });
 
 export const workoutSettings = sqliteTable("workout_settings", {
@@ -85,7 +111,14 @@ export const workoutSettings = sqliteTable("workout_settings", {
 		.default(true),
 	hapticOnComplete: int("haptic_on_complete", { mode: "boolean" })
 		.notNull()
-		.default(true)
+		.default(true),
+	createdAt: text("created_at")
+		.notNull()
+		.default(sql`CURRENT_TIMESTAMP`),
+	updatedAt: text("updated_at")
+		.notNull()
+		.default(sql`CURRENT_TIMESTAMP`)
+		.$onUpdate(() => sql`CURRENT_TIMESTAMP`)
 });
 
 export const workoutsRelations = relations(workouts, ({ many }) => ({

@@ -11,21 +11,16 @@ const PinnedWorkoutBase = z.object({
 	position: z.number().int().min(0, "Position cannot be negative")
 });
 
-// Create = base
 export const CreatePinnedWorkoutSchema = PinnedWorkoutBase;
 
-// Update = base (same shape, full payload)
 export const EditPinnedWorkoutSchema = PinnedWorkoutBase;
 
-// Response = base
-export const PinnedWorkoutSchema = PinnedWorkoutBase;
+export const PinnedWorkoutSchema = PinnedWorkoutBase.extend({
+	createdAt: z.coerce.date(),
+	updatedAt: z.coerce.date()
+});
 
-/**
- * DTO for pinned workout with workout details
- */
-export const PinnedWorkoutWithWorkoutSchema = z.object({
-	workoutId: z.number().int().positive(),
-	position: z.number().int().min(0),
+export const PinnedWorkoutWithWorkoutSchema = PinnedWorkoutSchema.extend({
 	workout: WorkoutWithExercisesSchema
 });
 

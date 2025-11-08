@@ -20,7 +20,8 @@ export default function PinnedWorkouts({
 	const {
 		data: pinnedWorkouts,
 		isPending: isFetchingPinnedWorkouts,
-		error: fetchPinnedWorkoutsError
+		error: fetchPinnedWorkoutsError,
+		refetch: refetchPinnedWorkouts
 	} = useGetPinnedWorkouts();
 
 	const { isLoading: isEditingPinnedWorkoutOrder, editPinnedWorkoutOrder } =
@@ -54,7 +55,7 @@ export default function PinnedWorkouts({
 			) : fetchPinnedWorkoutsError ? (
 				<ErrorScreen
 					error={fetchPinnedWorkoutsError}
-					onRetry={() => {}}
+					onRetry={refetchPinnedWorkouts}
 					showBackButton={false}
 					descriptionText="Something went wrong while loading the pinned workouts. Please try again or come back later."
 				/>

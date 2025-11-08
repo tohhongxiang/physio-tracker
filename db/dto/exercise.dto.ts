@@ -52,9 +52,9 @@ export const ExerciseSchema = ExerciseBase.extend({
 		.number()
 		.int()
 		.positive("Workout ID must be a positive integer"),
-	position: z.number().int().min(0, "Position cannot be negative").default(0)
-	// createdAt: z.iso.datetime().transform((str) => new Date(str)),
-	// updatedAt: z.iso.datetime().transform((str) => new Date(str))
+	position: z.number().int().min(0, "Position cannot be negative").default(0),
+	createdAt: z.coerce.date(),
+	updatedAt: z.coerce.date()
 });
 
 // Type exports

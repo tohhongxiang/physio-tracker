@@ -1,4 +1,3 @@
-// Workout DTOs
 export {
 	CreateWorkoutSchema,
 	EditWorkoutSchema,
@@ -12,7 +11,6 @@ export {
 	type WorkoutFilters
 } from "./workout.dto";
 
-// Exercise DTOs
 export {
 	CreateExerciseSchema,
 	EditExerciseSchema,
@@ -22,7 +20,6 @@ export {
 	type Exercise
 } from "./exercise.dto";
 
-// Workout Log DTOs
 export {
 	CreateWorkoutLogSchema,
 	EditWorkoutLogSchema,
@@ -34,7 +31,6 @@ export {
 	type WorkoutLogWithWorkout
 } from "./workout-log.dto";
 
-// Pinned Workout DTOs
 export {
 	CreatePinnedWorkoutSchema,
 	EditPinnedWorkoutSchema,
@@ -46,7 +42,6 @@ export {
 	type PinnedWorkoutWithWorkout
 } from "./pinned-workout.dto";
 
-// Export Data DTOs
 export {
 	ExportDataOptionsSchema,
 	ExportDataSchema,
@@ -54,7 +49,6 @@ export {
 	type ExportData
 } from "./export-data.dto";
 
-// Workout Settings DTOs
 export {
 	WorkoutSettingsSchema,
 	UpdateWorkoutSettingsSchema,
