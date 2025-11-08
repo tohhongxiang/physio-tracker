@@ -25,6 +25,12 @@ When changing the database schema, run this command before starting the applicat
 npx drizzle-kit generate
 ```
 
+Drop a database migration with:
+
+```sh
+npx drizzle-kit drop
+```
+
 # Build
 
 Make sure `eas` is installed.

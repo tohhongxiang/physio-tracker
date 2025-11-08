@@ -188,14 +188,14 @@ export default function ImportDataDialog({
 						</View>
 					)}
 					{restoreBackupError && (
-						<View>
+						<ScrollView className="max-h-64">
 							<Text className="text-destructive font-medium">
 								Backup error:
 							</Text>
 							<Text className="text-destructive">
 								{restoreBackupError.message}
 							</Text>
-						</View>
+						</ScrollView>
 					)}
 					{errorMessage && (
 						<View className="flex flex-col gap-2 max-h-32 w-full max-w-full">
