@@ -130,7 +130,7 @@ export default function ExportDataDialog({
 						<Checkbox
 							id="workouts"
 							checked={options.workouts}
-							onCheckedChange={() => {}}
+							onCheckedChange={() => {}} // Do nothing, always checked
 							disabled
 						/>
 						<Label htmlFor="workouts" disabled>

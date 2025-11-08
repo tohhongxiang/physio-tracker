@@ -31,8 +31,8 @@ export default function RootLayout() {
 		<SafeAreaProvider>
 			<GestureHandlerRootView>
 				<ThemeProvider>
-					<DatabaseProvider>
-						<QueryClientProvider>
+					<QueryClientProvider>
+						<DatabaseProvider>
 							<AlertDialogProvider>
 								<BottomSheetModalProvider>
 									<Stack
@@ -58,11 +58,11 @@ export default function RootLayout() {
 										/>
 									</Stack>
 								</BottomSheetModalProvider>
-								<PortalHost />
-								<Toaster position="bottom-center" />
 							</AlertDialogProvider>
-						</QueryClientProvider>
-					</DatabaseProvider>
+						</DatabaseProvider>
+					</QueryClientProvider>
+					<PortalHost />
+					<Toaster position="bottom-center" />
 				</ThemeProvider>
 			</GestureHandlerRootView>
 		</SafeAreaProvider>
