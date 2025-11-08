@@ -84,7 +84,15 @@ export default function WorkoutsScreen() {
 	}
 
 	if (error) {
-		return <ErrorScreen error={error} onRetry={refetch} />;
+		return (
+			<View className="flex flex-1 flex-col items-center justify-center py-16">
+				<ErrorScreen
+					error={error}
+					showBackButton={false}
+					onRetry={refetch}
+				/>
+			</View>
+		);
 	}
 
 	const workouts = data ?? [];

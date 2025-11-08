@@ -43,7 +43,7 @@ export default function ErrorScreen({
 		<View
 			{...props}
 			className={cn(
-				"flex flex-1 flex-col items-center justify-start gap-8 px-4 pb-16 pt-32",
+				"flex flex-1 flex-col items-center justify-start gap-8 p-4",
 				className
 			)}
 		>
@@ -87,29 +87,31 @@ export default function ErrorScreen({
 				)}
 			</View>
 			{error && (
-				<Collapsible
-					className="w-full"
-					open={open}
-					onOpenChange={setOpen}
-				>
-					<CollapsibleTrigger asChild>
-						<Button
-							variant="secondary"
-							className={cn(
-								"flex flex-row gap-2 w-full justify-start bg-secondary/50",
-								open && "rounded-b-none"
-							)}
-						>
-							<Icon as={ChevronsUpDown} />
-							<Text>Technical Details</Text>
-						</Button>
-					</CollapsibleTrigger>
-					<CollapsibleContent className="p-4 border border-secondary/50 rounded-b-md border-t-0">
-						<Text className="text-destructive">
-							{error.message}
-						</Text>
-					</CollapsibleContent>
-				</Collapsible>
+				<View className="flex flex-row gap-4 w-full">
+					<Collapsible
+						className="w-full"
+						open={open}
+						onOpenChange={setOpen}
+					>
+						<CollapsibleTrigger asChild>
+							<Button
+								variant="secondary"
+								className={cn(
+									"flex flex-row gap-2 w-full justify-start bg-secondary/50",
+									open && "rounded-b-none"
+								)}
+							>
+								<Icon as={ChevronsUpDown} />
+								<Text>Technical Details</Text>
+							</Button>
+						</CollapsibleTrigger>
+						<CollapsibleContent className="p-4 border border-secondary/50 rounded-b-md border-t-0">
+							<Text className="text-destructive">
+								{error.message}
+							</Text>
+						</CollapsibleContent>
+					</Collapsible>
+				</View>
 			)}
 		</View>
 	);
