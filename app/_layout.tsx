@@ -1,6 +1,8 @@
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { PortalHost } from "@rn-primitives/portal";
+import { setAudioModeAsync } from "expo-audio";
 import { Stack } from "expo-router";
+import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import {
 	ReanimatedLogLevel,
@@ -27,6 +29,14 @@ export {
 } from "expo-router";
 
 export default function RootLayout() {
+	useEffect(() => {
+		void setAudioModeAsync({
+			playsInSilentMode: true,
+			interruptionMode: "mixWithOthers",
+			shouldPlayInBackground: false
+		});
+	}, []);
+
 	return (
 		<SafeAreaProvider>
 			<GestureHandlerRootView>
