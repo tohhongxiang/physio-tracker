@@ -5,7 +5,7 @@ import {
 	BottomSheetModal as GorhomBottomSheetModal,
 	BottomSheetModalProps as GorhomBottomSheetModalProps
 } from "@gorhom/bottom-sheet";
-import { forwardRef } from "react";
+import { JSX, forwardRef } from "react";
 import { View } from "react-native";
 
 export type BottomSheetModalRef<T> = GorhomBottomSheetModal<T>;
