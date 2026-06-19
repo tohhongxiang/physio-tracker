@@ -1,31 +1,27 @@
-import { Asset } from "expo-asset";
-import { useAudioPlayer } from "expo-audio";
-import { useCallback } from "react";
-import { Platform } from "react-native";
+import { AVPlaybackSource, Audio } from "expo-av";
+import { useCallback, useEffect, useMemo } from "react";
 
-export default function useSound(audioSource: number, isMuted?: boolean) {
-	// https://github.com/expo/expo/issues/34555#issuecomment-3141001410
-	const platform = Platform.OS;
-	const getAudioSource = () => {
-		if (!__DEV__ && platform === "android") {
-			const assetinfo = Asset.fromModule(audioSource);
-			const rawPath = assetinfo.localUri?.replace("file://", "");
-			if (!rawPath) return;
-			return { uri: rawPath };
-		}
+export default function useSound(
+	audioSource: AVPlaybackSource,
+	isMuted?: boolean
+) {
+	const player = useMemo(() => new Audio.Sound(), []);
 
-		return audioSource;
-	};
+	useEffect(() => {
+		player.loadAsync(audioSource);
 
-	const player = useAudioPlayer(getAudioSource());
+		return () => {
+			player.unloadAsync();
+		};
+	}, [audioSource, player]);
 
-	const play = useCallback(() => {
+	const play = useCallback(async () => {
 		if (isMuted) {
 			return;
 		}
 
-		player.seekTo(0);
-		player.play();
+		await player.setPositionAsync(0);
+		await player.playAsync();
 	}, [player, isMuted]);
 
 	return { play };
